@@ -1,0 +1,159 @@
+$main-color: #F2F3F5;
+$main-font-color: #281C1F;
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: $main-color;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.menu{
+	width: 100%;
+	padding: 30px 12px 0;
+	&__wrapper{
+		margin-bottom: 30px;
+	}
+	&-item{
+		display: flex;
+		align-items: center;
+		height: 78px;
+		width: 100%;
+		background-color: #fff;
+		border-radius: 12px;
+		padding: 12px;
+		margin: 0 auto 12px auto;
+		opacity: 1;
+		transition: opacity 0.2s ease-out;
+		&__img{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 54px;
+			height: 54px;
+			background-color: $main-color;
+			border-radius: 100%;
+			margin-right: 11px;
+			img{
+				width: 60%;
+			}
+		}
+		&__title{
+			font-weight: 590;
+			font-size: 16px;
+			line-height: 120%;
+			color: $main-font-color;
+		}
+		&:nth-child(3){
+			.menu-item__img{
+				img{
+					width: 50%;
+				}
+			}
+		}
+		&:hover{
+			opacity: .5;
+		}
+	}
+}
+
+.input__wrapper{
+    position: relative;
+	margin-bottom: 26px;
+}
+
+.input{
+    height: 56px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #E3E2E6;
+    border-radius: 8px;
+    padding-left: 12px;
+	padding-top: 15px;
+	font-weight: 510;
+	font-size: 16px;
+	line-height: 130%;
+	color: $main-font-color;
+}
+
+.placeholder{
+	position: absolute;
+	left: 12px;
+	top: 30%;
+	font-weight: 510;
+    font-size: 16px;
+    line-height: 130%;
+    color: #BDBEC1;
+	transition: transform 0.3s;
+}
+
+.input:focus ~ .placeholder,  /* фокус на input */
+.input:not(:placeholder-shown) ~ .placeholder  /* в input есть значение */  {
+	transform: translateY(-11px) translateX(-12%) scale(0.75);
+}
+
+.custom-checkbox {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+
+.custom-checkbox+label {
+	display: inline-flex;
+	align-items: flex-start;
+	user-select: none;
+	width: 100%;
+    height: 100%;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.custom-checkbox+label::before {
+	content: '';
+	color: #fff;
+	width: 15px;
+	height: 15px;
+	border: 3px solid #3F3133;;
+	border-radius: 0.2em;
+	margin-right: 12px;
+	margin-top: 2px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 90% 90%;
+	transition: all 150ms;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+.custom-checkbox:checked+label::before {
+	color: #fff;
+    background-color: #3F3133;
+	background-image: url(../public/images/tick.svg);
+	padding-bottom: 2px;
+	height: 13px;
+}
+
+.agreement{
+	font-weight: 510;
+	font-size: 14px;
+	line-height: 130%;
+	letter-spacing: 0.1px;
+	color: #7C7C7C;
+	span {
+		color: $main-font-color;
+	}
+}
