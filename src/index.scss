@@ -1,10 +1,17 @@
 $main-color: #F2F3F5;
 $main-font-color: #281C1F;
+$second-font-color: #7C7C7C;
+$button-color: #3F3133;
+$active-color: #92DCE5;
 
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+}
+
+html{
+	scroll-behavior: smooth;
 }
 
 body {
@@ -127,7 +134,7 @@ code {
 	color: #fff;
 	width: 15px;
 	height: 15px;
-	border: 3px solid #3F3133;;
+	border: 2px solid #3F3133;;
 	border-radius: 0.2em;
 	margin-right: 12px;
 	margin-top: 2px;
@@ -141,10 +148,8 @@ code {
 
 .custom-checkbox:checked+label::before {
 	color: #fff;
-    background-color: #3F3133;
+    background-color: $button-color;
 	background-image: url(../public/images/tick.svg);
-	padding-bottom: 2px;
-	height: 13px;
 }
 
 .agreement{
@@ -155,5 +160,198 @@ code {
 	color: #7C7C7C;
 	span {
 		color: $main-font-color;
+	}
+}
+
+.subtitle{
+	font-style: normal;
+	font-weight: 700;
+	font-size: 18px;
+	line-height: 130%;
+	color: $main-font-color;
+}
+
+.navbar{
+	position: fixed;
+	left: 0;
+	top: 0;
+	height: 44px;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	background-color: $main-color;
+	z-index: 2;
+	&__wrapper{
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		overflow: auto;
+		appearance: none;
+		-webkit-appearance: none;
+		padding-bottom: 0;
+	}
+	&__wrapper::-webkit-scrollbar {
+		-webkit-appearance: none;
+		width: 0;
+		height: 0;
+		scroll-behavior: smooth;
+	}  
+	&__href{
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding: 7px 8px;
+		font-style: normal;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 18px;
+		letter-spacing: 0.1px;
+		color: #292929;
+		background: #fff;
+		border-radius: 100px;
+		text-decoration: none;
+		margin-right: 8px;
+		transition: all 0.2s ease-in;
+		white-space: nowrap;
+		-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+		-webkit-tap-highlight-color: transparent;
+		scroll-behavior: smooth;
+	}
+}
+
+.active{
+	background: $active-color;
+}
+
+.hamburger{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 20px;
+	height: 40px;
+	margin: 0 10px 0 16px;
+	flex-shrink: 0;
+}
+
+.hamburger__block{
+	display: block;
+	height: 0px;
+	width: 100%;
+	border: 1px solid #424950;
+	border-radius: 1px;
+	margin: 1px 0;
+	background-color: #424950;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+
+.button-with-price{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	.button{
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 28px;
+		width: 28px;
+		border: 2px solid $button-color;
+		border-radius: 8px;
+		margin-right: 6px;
+		transition: all 0.3s;
+		span{
+			position: absolute;
+			display: block;
+			height: 2px;
+			width: 17px;
+			border-radius: 20px;
+			flex-shrink: 0;
+			flex-grow: 0;
+			transition: all 0.3s;
+			&:nth-child(2){
+				transform: rotate(90deg);
+			}
+		}
+		&_plus{
+			background-color: $button-color;
+			span{
+				background-color: #fff;
+			}
+		}
+		&_minus{
+			background-color: #fff;
+			span{
+				background-color: $button-color;
+				&:nth-child(2){
+					transform: rotate(0);
+				}
+			}
+		}
+	}
+	.price{
+		font-weight: 700;
+		font-size: 18px;
+		line-height: 130%;
+		color: $button-color;
+	}
+}
+
+.service{
+	padding: 0 12px;
+	.subtitle{
+		margin-bottom: 12px;
+	}
+	&__group:first-child{
+		padding-top: 61px;
+	}
+	&-card{
+		position: relative;
+		width: 100%;
+		height: auto;
+		background: #FFFFFF;
+		border-radius: 12px;
+		margin-bottom: 8px;
+		&__img{
+			width: 100%;
+			img{
+				width: 100%;
+				border-radius: 12px 12px 0 0;
+			}
+		}
+		&__content{
+			padding: 12px;
+		}
+		&__title{
+			font-weight: 510;
+			font-size: 18px;
+			line-height: 125%;
+			letter-spacing: -0.2px;
+			color: $main-font-color;
+			margin-bottom: 5px;
+		}
+		&__descr{
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 125%;
+			color: $second-font-color;
+		}
+		&__bottom{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 16px;
+		}
+		&__info{
+			height: 20px;
+			width: 20px;
+			img{
+				width: 100%;
+			}
+		}
 	}
 }
