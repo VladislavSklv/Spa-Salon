@@ -11,6 +11,7 @@
     "@types/node": "^16.18.2",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
+    "@types/scroll-lock": "^2.1.0",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,6 +19,8 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
+    "react-swipeable": "^7.0.0",
+    "scroll-lock": "^2.1.5",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },

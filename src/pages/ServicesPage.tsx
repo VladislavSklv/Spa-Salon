@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useGetServicesQuery } from '../api/mainApi';
+import ModalNavBar from '../components/ModalNavBar';
 import NavBar from '../components/NavBar';
 import ServicesList from '../components/ServicesList';
+import {disablePageScroll, enablePageScroll} from 'scroll-lock';
 
 interface servicesPageProps {
     companiesId: string;
@@ -14,25 +16,15 @@ const ServicesPage:React.FC<servicesPageProps> = ({companiesId}) => {
     const [activeTab, setActiveTab] = useState(servicesCategories !== undefined ? servicesCategories[0].id : 0);
     const servicesRef = useRef<HTMLDivElement>(null);
 
-    /* console.log(servicesCategories)
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting) {
-                console.log('yee');
-            }
-        })
-    }, {
-        threshold: 0.7,
-    });
-
+    /* Disable scroll */
     useEffect(() => {
-        if(servicesRef.current !== null && servicesRef.current !== undefined) {
-            servicesRef.current.childNodes[1].childNodes.forEach((div: any) => {
-                observer.observe(div);
-            });
+        if(isModal) {
+            if(window.pageYOffset === 0) window.scrollBy(0, 1);
+            disablePageScroll(document.body);
+        } else {
+            enablePageScroll(document.body);
         }
-    }, [servicesCategories]); */
+    }, [isModal]);
 
     return (
         <>
@@ -40,6 +32,15 @@ const ServicesPage:React.FC<servicesPageProps> = ({companiesId}) => {
                 <div ref={servicesRef} className='service'>
                     <NavBar servicesCategories={servicesCategories} mainMenuRef={servicesRef} setIsModal={setIsModal} activeTab={activeTab} setIsOpacity={setIsOpacity}/>
                     <ServicesList setActiveTab={setActiveTab} servicesCategories={servicesCategories}/>
+                    <div 
+                        onClick={() => {
+                            setIsModal(false);
+                            setIsOpacity(false);
+                        }} 
+                        style={isOpacity ? {opacity: 1, pointerEvents: 'all'} : {opacity: 0, pointerEvents: 'none'}} 
+                        className='opacity-block'
+                    ></div>
+                    <ModalNavBar setIsOpacity={setIsOpacity} isModal={isModal} setIsModal={setIsModal} servicesRef={servicesRef} servicesCategories={servicesCategories} />
                 </div>
             }
         </>
