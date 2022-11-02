@@ -54,15 +54,33 @@ code {
 			background-color: $main-color;
 			border-radius: 100%;
 			margin-right: 11px;
+			flex-shrink: 0;
+			flex-grow: 0;
 			img{
 				width: 60%;
 			}
 		}
+		&__content{
+			display: flex;
+		}
+		&__category{
+			font-weight: 400;
+			font-size: 13px;
+			line-height: 16px;
+			color: $second-font-color;
+		}
 		&__title{
+			display: -webkit-box;
 			font-weight: 590;
 			font-size: 16px;
 			line-height: 120%;
 			color: $main-font-color;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-height: 40px;
+			width: 80%;
+			-webkit-line-clamp: 2;
+  			-webkit-box-orient: vertical;
 		}
 		&:nth-child(3){
 			.menu-item__img{
@@ -70,9 +88,6 @@ code {
 					width: 50%;
 				}
 			}
-		}
-		&:hover{
-			opacity: .5;
 		}
 	}
 }
@@ -253,51 +268,54 @@ code {
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	.button{
-		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 28px;
-		width: 28px;
-		border: 2px solid $button-color;
-		border-radius: 8px;
-		margin-right: 6px;
-		transition: all 0.3s;
-		span{
-			position: absolute;
-			display: block;
-			height: 2px;
-			width: 17px;
-			border-radius: 20px;
-			flex-shrink: 0;
-			flex-grow: 0;
-			transition: all 0.3s;
-			&:nth-child(2){
-				transform: rotate(90deg);
-			}
-		}
-		&_plus{
-			background-color: $button-color;
-			span{
-				background-color: #fff;
-			}
-		}
-		&_minus{
-			background-color: #fff;
-			span{
-				background-color: $button-color;
-				&:nth-child(2){
-					transform: rotate(0);
-				}
-			}
-		}
-	}
 	.price{
 		font-weight: 700;
 		font-size: 18px;
 		line-height: 130%;
 		color: $button-color;
+	}
+}
+
+.button{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 28px;
+	width: 28px;
+	border: 2px solid $button-color;
+	border-radius: 8px;
+	margin-right: 6px;
+	transition: all 0.3s;
+	flex-grow: 0;
+	flex-shrink: 0;
+	span{
+		position: absolute;
+		display: block;
+		height: 2px;
+		width: 17px;
+		border-radius: 20px;
+		flex-shrink: 0;
+		flex-grow: 0;
+		transition: all 0.3s;
+		&:nth-child(2){
+			transform: rotate(90deg);
+		}
+	}
+	&_plus{
+		background-color: $button-color;
+		span{
+			background-color: #fff;
+		}
+	}
+	&_minus{
+		background-color: #fff;
+		span{
+			background-color: $button-color;
+			&:nth-child(2){
+				transform: rotate(0);
+			}
+		}
 	}
 }
 
@@ -339,6 +357,12 @@ code {
 			font-size: 14px;
 			line-height: 125%;
 			color: $second-font-color;
+			max-height: 53px;
+			width: 100%;
+			-webkit-line-clamp: 2;
+  			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: clip;
 		}
 		&__bottom{
 			display: flex;
@@ -354,6 +378,15 @@ code {
 			}
 		}
 	}
+}
+
+.show-more{
+	font-weight: 510;
+	font-size: 14px;
+	line-height: 130%;
+	letter-spacing: 0.1px;
+	color: $active-color;
+	text-decoration: none;
 }
 
 .opacity-block{

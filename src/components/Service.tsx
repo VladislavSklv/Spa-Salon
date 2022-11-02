@@ -1,24 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { IService } from '../api/mainApi';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { addService, removeService } from '../redux/redux';
+import MyButton from './UI/MyButton';
 
 interface serviceProps {
     service: IService;
+    categoryName: string;
     setIsDetails: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
     setDetailsId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, setDetailsId}) => {
+const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, setDetailsId, categoryName}) => {
     const [isActive, setIsActive] = useState(false);
+    const descrRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useAppDispatch();
+    const {services} = useAppSelector(state => state.mainSlice);
 
     useEffect(() => {
-        if(isActive) dispatch(addService(service));
-        else dispatch(removeService(service.id));
-    }, [isActive])
+        services.forEach(item => {
+            if(item.id === service.id) setIsActive(true);
+        });
+    }, [services]);
+
+    /* Handlers */
+    const activateDetails = () => {
+        setDetailsId(service.id);
+        setIsDetails(true);
+        setIsOpacity(true);
+    }
 
     return (
         <div className='service-card' key={service.id}>
@@ -27,15 +39,24 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
             }
             <div className='service-card__content'>
                 <h3 className='service-card__title'>{service.name}</h3>
-                <h4 className='service-card__descr'>{service.description}</h4>
+                <h4 ref={descrRef} className='service-card__descr'>{service.description}</h4>
+                {(descrRef.current !== null && descrRef.current.offsetHeight < descrRef.current.scrollHeight) &&
+                    <a 
+                        className='show-more' 
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            activateDetails();
+                        }}
+                    >Подробнее</a>
+                }
                 <div className='service-card__bottom'>
                     <div className='button-with-price'>
-                        <button 
-                            className={isActive ? "button button_minus" : "button button_plus"}
-                            onClick={() => {
-                                setIsActive(prev => !prev);
-                            }}
-                        ><span></span><span></span></button>
+                        <MyButton isMinus={isActive} onClickHandler={() => {
+                            if(!isActive) dispatch(addService({...service, categoryName}));
+                            else dispatch(removeService(service.id));
+                            setIsActive(prev => !prev);
+                        }}/>
                         <p className='price'>
                             {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin != 0 && service.priceMax != 0))
                                 ? (service.priceMin === 0 ? (service.priceMax + '₽') : (service.priceMax === 0 ? service.priceMin + '₽' : `${service.priceMin} - ${service.priceMax}₽`))
@@ -43,11 +64,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
                         </p>
                     </div>
                     <div 
-                        onClick={() => {
-                            setDetailsId(service.id);
-                            setIsDetails(true);
-                            setIsOpacity(true);
-                        }}
+                        onClick={() => activateDetails()}
                         className='service-card__info'
                     ><img src="../images/info.svg" alt="i" /></div>
                 </div>

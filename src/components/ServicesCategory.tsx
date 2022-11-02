@@ -25,7 +25,7 @@ const ServicesCategory: React.FC<servicesCategoryProps> = ({servicesCategory, se
         <div ref={ref} id={servicesCategory.id.toString()} key={servicesCategory.id} className='service__group'>
             <h2 className='subtitle'>{servicesCategory.name}</h2>
             {servicesCategory.services.map(service => (
-                <Service setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} key={service.id} service={service}/>
+                <Service categoryName={servicesCategory.name} setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} key={service.id} service={service}/>
             ))}
         </div>
     );
