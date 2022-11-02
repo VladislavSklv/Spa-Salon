@@ -9,6 +9,7 @@ export interface IService {
     images: string[];
     isActive: boolean;
     sort: number;
+    length?: number;
 }
 
 export interface IServicesCategory {

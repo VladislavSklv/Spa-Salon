@@ -3,9 +3,12 @@ import { IService } from '../api/mainApi';
 
 interface serviceProps {
     service: IService;
+    setIsDetails: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
+    setDetailsId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Service:React.FC<serviceProps> = ({service}) => {
+const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, setDetailsId}) => {
     const [isActive, setIsActive] = useState(false);
 
     return (
@@ -30,7 +33,14 @@ const Service:React.FC<serviceProps> = ({service}) => {
                                 : 'Цена не указана'}
                         </p>
                     </div>
-                    <div className='service-card__info'><img src="../images/info.svg" alt="i" /></div>
+                    <div 
+                        onClick={() => {
+                            setDetailsId(service.id);
+                            setIsDetails(true);
+                            setIsOpacity(true);
+                        }}
+                        className='service-card__info'
+                    ><img src="../images/info.svg" alt="i" /></div>
                 </div>
             </div>
         </div>
