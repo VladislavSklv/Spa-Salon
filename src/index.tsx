@@ -6,13 +6,15 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { mainApi } from './api/mainApi';
+import mainSlice from './redux/redux';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
 
 const rootReducer = combineReducers({
-	[mainApi.reducerPath]: mainApi.reducer
+	[mainApi.reducerPath]: mainApi.reducer,
+	mainSlice: mainSlice
 })
 
 const store = configureStore({reducer: rootReducer})
@@ -24,3 +26,6 @@ root.render(
 		</Provider>
 	</BrowserRouter>
 );
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

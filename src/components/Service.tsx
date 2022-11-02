@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { IService } from '../api/mainApi';
+import { useAppDispatch } from '../hooks/hooks';
+import { addService, removeService } from '../redux/redux';
 
 interface serviceProps {
     service: IService;
@@ -10,6 +12,13 @@ interface serviceProps {
 
 const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, setDetailsId}) => {
     const [isActive, setIsActive] = useState(false);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if(isActive) dispatch(addService(service));
+        else dispatch(removeService(service.id));
+    }, [isActive])
 
     return (
         <div className='service-card' key={service.id}>
