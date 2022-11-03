@@ -7,14 +7,14 @@ import EmployeesPage from './pages/EmployeesPage';
 
 function App() {
 	const [isServices, setIsServices] = useState(false);
-    const [isSpecialist, setIsSpecialist] = useState(false);
+    const [isEmployee, setIsEmployee] = useState(false);
     const [isDate, setIsDate] = useState(false);
 
 	const companyId = 'dafa1b03-788e-4333-b566-10c43c16f6f3';
 	
 	return (
 		<Routes>
-			<Route path='/' element={<MainMenuPage setIsDate={setIsDate} setIsServices={setIsServices} setIsSpecialist={setIsSpecialist} />}/>
+			<Route path='/' element={<MainMenuPage setIsDate={setIsDate} setIsServices={setIsServices} setIsSpecialist={setIsEmployee} />}/>
 			<Route path='/services' element={<ServicesPage companyId={companyId}/>}/>
 			<Route path='/specialists' element={<EmployeesPage companyId={companyId}/>}/>
 			<Route path='/date' element={<DateAndTimePage/>}/>

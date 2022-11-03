@@ -6,6 +6,8 @@ import EmployeeDetails from '../components/EmployeeDetails';
 import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
 import MainCard from '../components/MainCard';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { setEmployee } from '../redux/redux';
 
 interface employeesPageProps{
     companyId: string;
@@ -15,7 +17,16 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId}) => {
     const {data: employees, isLoading, isFetching, isError} = useGetEmployeesQuery({companyId});
     const [isOpacity, setIsOpacity] = useState(false);
     const [isDetails, setIsDetails] = useState(false);
+    const [isAnyone, setIsAnyone] = useState(false);
     const [detailsId, setDetailsId] = useState(employees !== undefined ? employees[1].id : 0);
+
+    const dispatch = useAppDispatch();
+    const {employee} = useAppSelector(state => state.mainSlice);
+
+    /* Checking if employye is anyone */
+    useEffect(() => {
+        if(!(employee.name === 'Любой свободный специалист')) setIsAnyone(false);
+    }, [employee]);
 
     /* Disable scroll */
     useEffect(() => {
@@ -33,7 +44,19 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId}) => {
             {(isLoading || isFetching) && <Loader/>}
             {employees !== undefined &&
                 <div className='employees__wrapper'>
-                    <MainCard onMinusClickHandler={() => 1} mainItem={undefined} imgSrc="../images/specialist-icon.svg" title='Любой свободный специалист' onClickHandler={() => console.log('Anyone')}/>
+                    <div 
+                        onClick={() => {
+                            dispatch(setEmployee({commentsCount:0, description: '', id: Date.now(), images:{full: '', tiny:"../images/specialist-icon.svg"}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''}));
+                            setIsAnyone(true);
+                        }}
+                        className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
+                        <div className='employee-card__img employee-card__img_icon'>
+                            <img src="../images/specialist-icon.svg" alt="icon" />
+                        </div>
+                        <div>
+                            <h2 className='employee-card__name'>Любой свободный специалист</h2>
+                        </div>
+                    </div>
                     {employees.map(employee => (
                         <Employee setDetailsId={setDetailsId} setIsDetails={setIsDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
                     ))}

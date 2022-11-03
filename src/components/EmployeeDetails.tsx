@@ -56,7 +56,15 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isDetails, setIsDetails
                                 </div>
                             </div>
                             <div className='employee-details__descr'>{thisEmployee.description}</div>
-                            <button onClick={() => {if(thisEmployee.isActive) dispatch(setEmployee(thisEmployee))}}>add</button>
+                            <button 
+                                onClick={() => {
+                                    if(thisEmployee.isActive) {
+                                        dispatch(setEmployee(thisEmployee));
+                                        setIsDetails(false);
+                                        setIsOpacity(false);
+                                    }
+                                }}
+                            >add</button>
                         </div>
                         {isLoading && <Loader/>}
                         {isError && <ErrorBlock/>}

@@ -822,6 +822,13 @@ code {
 		width: 30px;
 		border-width: 4px;
 	}
+	&_anyone{
+		justify-content: flex-start;
+		align-items: center;
+		.employee-card__img{
+			margin-right: 11px;
+		}
+	}
 	&_active{
 		border-bottom: 6px solid $active-color;
 	}

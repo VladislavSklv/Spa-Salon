@@ -35,7 +35,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
         <div className={employee.isActive ? (isActive ? 'employee-card employee-card_active' : 'employee-card') : 'employee-card employee-card_blured'}>
             <div className='employee-card__content'>
                 <div className={employee.images !== undefined ? 'employee-card__img' : 'employee-card__img employee-card__img_icon'}>
-                    <img src={employee.images !== undefined ? employee.images.tiny : "../images/specialist-icon.svg"} alt="" />
+                    <img src={employee.images !== undefined ? employee.images.tiny : "../images/specialist-icon.svg"} alt="image" />
                 </div>
                 <div>
                     <p className='employee-card__specialization'>{employee.specialization}</p>
