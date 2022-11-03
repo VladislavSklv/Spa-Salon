@@ -19,17 +19,66 @@ export interface IServicesCategory {
     services: IService[];
 }
 
-interface mainApiProps{
-    companiesId: string;
+export interface IImages {
+    tiny: string;
+    full: string;
+}
+
+export interface IEmployee {
+    id: number;
+    name: string;
+    description: string;
+    specialization: string;
+    rating: number;
+    commentsCount: number;
+    images: IImages;
+    isActive: boolean;
+    sort: number;
+}
+
+export interface ISeance {
+    time: string;
+}
+
+export interface IEmployeeSchedule {
+    date: string;
+    seances: ISeance[];
+}
+
+export interface IComment {
+    id: number;
+    text: string;
+    date: Date;
+    rating: number;
+    userName: string;
+    userImage: string;
+}
+
+interface companyIdProps{
+    companyId: string;
+}
+
+interface companyIdAndEmloyeeIDProps{
+    companyId: string;
+    employeeId: string;
 }
 
 export const mainApi = createApi({
     reducerPath: 'mainApi',
     baseQuery: fetchBaseQuery({baseUrl: 'https://daomiara.ru/api/v1/'}),
     endpoints: (builder) => ({
-        getServices: builder.query<IServicesCategory[], mainApiProps>({
-            query: ({companiesId}) => `companies/${companiesId}/services`
+        getServices: builder.query<IServicesCategory[], companyIdProps>({
+            query: ({companyId}) => `companies/${companyId}/services`
+        }),
+        getEmployees: builder.query<IEmployee[], companyIdProps>({
+            query: ({companyId}) => `companies/${companyId}/employees`
+        }),
+        getEmployeeSchedule: builder.query<IEmployeeSchedule, companyIdAndEmloyeeIDProps>({
+            query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/schedule`
+        }),
+        getComments: builder.query<IComment[], companyIdAndEmloyeeIDProps>({
+            query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/comments`
         })
     })
 });
-export const {useGetServicesQuery} = mainApi;
+export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery} = mainApi;

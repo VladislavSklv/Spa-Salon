@@ -1,15 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IService } from "../api/mainApi";
+import { IEmployee, IService } from "../api/mainApi";
 
 
 export type IServiceInSlice =  IService & {
     categoryName: string;
 }
-interface serviceSpecialstDate {
+interface serviceEmployeeDate {
     services: IServiceInSlice[];
+    employee: IEmployee;
 }
 
-const initialState = {services: []} as serviceSpecialstDate;
+const initialState = {services: [], employee: {commentsCount: 0, description: '', id: -1, images: {tiny: '', full: '',}, isActive: false, name: '', rating: 0, sort: 0, specialization: ''}} as serviceEmployeeDate;
 
 const mainSlice = createSlice({
     name: 'mainSlice',
@@ -20,9 +21,15 @@ const mainSlice = createSlice({
         },
         removeService(state, action: PayloadAction<number>){
             state.services = state.services.filter(service => service.id !== action.payload);
+        },
+        setEmployee(state, action: PayloadAction<IEmployee>){
+            state.employee = action.payload;
+        },
+        unsetEmployee(state) {
+            state.employee = {commentsCount: 0, description: '', id: -1, images: {tiny: '', full: '',}, isActive: false, name: '', rating: 0, sort: 0, specialization: ''};
         }
     }
 });
 
-export const {addService, removeService} = mainSlice.actions;
+export const {addService, removeService, setEmployee, unsetEmployee} = mainSlice.actions;
 export default mainSlice.reducer;

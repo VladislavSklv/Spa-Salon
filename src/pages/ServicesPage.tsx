@@ -5,13 +5,15 @@ import NavBar from '../components/NavBar';
 import ServicesList from '../components/ServicesList';
 import {disablePageScroll, enablePageScroll} from 'scroll-lock';
 import ServiceDetails from '../components/ServiceDetails';
+import Loader from '../components/Loader';
+import ErrorBlock from '../components/ErrorBlock';
 
 interface servicesPageProps {
-    companiesId: string;
+    companyId: string;
 }
 
-const ServicesPage:React.FC<servicesPageProps> = ({companiesId}) => {
-    const {data: servicesCategories, isLoading, isError} = useGetServicesQuery({companiesId});
+const ServicesPage:React.FC<servicesPageProps> = ({companyId}) => {
+    const {data: servicesCategories, isLoading, isFetching, isError} = useGetServicesQuery({companyId});
     const [isOpacity, setIsOpacity] = useState(false);
     const [isModal, setIsModal] = useState(false);
     const [activeTab, setActiveTab] = useState(servicesCategories !== undefined ? servicesCategories[0].id : 0);
@@ -31,6 +33,8 @@ const ServicesPage:React.FC<servicesPageProps> = ({companiesId}) => {
 
     return (
         <>
+            {isError && <ErrorBlock/>}
+            {(isLoading || isFetching) && <Loader/>}
             {servicesCategories !== undefined && 
                 <div ref={servicesRef} className='service'>
                     <NavBar servicesCategories={servicesCategories} mainMenuRef={servicesRef} setIsModal={setIsModal} activeTab={activeTab} setIsOpacity={setIsOpacity}/>

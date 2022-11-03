@@ -3,32 +3,37 @@ import { useAppDispatch } from '../hooks/hooks';
 import { IServiceInSlice, removeService } from '../redux/redux';
 import MyButton from './UI/MyButton';
 
+
+export interface mainCardItem {
+    subtitle: string;
+    title: string;
+    imgSrc?: string;
+}
 interface mainCardProps{
     onClickHandler: () => void;
-    array: IServiceInSlice[];
-    isArray: boolean;
+    onMinusClickHandler: () => void;
+    mainItem: mainCardItem | undefined;
+    title: string;
+    imgSrc: string;
 }
 
-const MainCard:React.FC<mainCardProps> = ({array, isArray, onClickHandler}) => {
-
-    const dispatch = useAppDispatch();
-
+const MainCard:React.FC<mainCardProps> = ({mainItem, onClickHandler, imgSrc, title, onMinusClickHandler}) => {
     return (
         <div onClick={onClickHandler} className="menu-item">
-            {array.length > 0
+            {mainItem !== undefined
                 ?<>
-                    <div className="menu-item__img"><img src="../images/services-icon.svg" alt="services" /></div>
+                    <div className={mainItem.imgSrc !== undefined ? "menu-item__img menu-item__img_full" : "menu-item__img"}><img src={mainItem.imgSrc !== undefined ? mainItem.imgSrc : imgSrc} alt="icon" /></div>
                     <div className='menu-item__content'>
                         <div>
-                            <p className='menu-item__category'>{array[array.length - 1].categoryName}</p>
-                            <h2 className="menu-item__title">{array[array.length - 1].name}</h2>
+                            <p className='menu-item__category'>{mainItem.subtitle}</p>
+                            <h2 className="menu-item__title">{mainItem.title}</h2>
                         </div>
-                        <MyButton isMinus={true} onClickHandler={() => {dispatch(removeService(array[array.length - 1].id))}} />
+                        <MyButton isMinus={true} onClickHandler={() => onMinusClickHandler()} />
                     </div>
                 </>
                 :<>
-                    <div className="menu-item__img"><img src="../images/services-icon.svg" alt="services" /></div>
-                    <h2 className="menu-item__title">Выберите услуги</h2>
+                    <div className="menu-item__img"><img src={imgSrc} alt="services" /></div>
+                    <h2 className="menu-item__title">{title}</h2>
                 </>
             }   
         </div>

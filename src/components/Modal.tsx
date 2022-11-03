@@ -27,6 +27,7 @@ const Modal: React.FC<modalProps> = ({children, isOpened, setIsOpacity, setIsOpe
 
     return (
         <div
+            data-scroll-lock-scrollable
             {...handlers}
             onScroll={(e: any) => {
                 if(e.target.scrollTop === 0) {

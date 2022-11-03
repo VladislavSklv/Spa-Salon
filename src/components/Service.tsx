@@ -33,7 +33,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
     }
 
     return (
-        <div className='service-card' key={service.id}>
+        <div className={isActive ? 'service-card service-card_active' : 'service-card'} key={service.id}>
             {service.images !== undefined && service.images.length > 0 && 
                 <div className='service-card__img'><img src={service.images[0]} alt="service preview" /></div>
             }
@@ -58,7 +58,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
                             setIsActive(prev => !prev);
                         }}/>
                         <p className='price'>
-                            {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin != 0 && service.priceMax != 0))
+                            {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin !== 0 && service.priceMax !== 0))
                                 ? (service.priceMin === 0 ? (service.priceMax + '₽') : (service.priceMax === 0 ? service.priceMin + '₽' : `${service.priceMin} - ${service.priceMax}₽`))
                                 : 'Цена не указана'}
                         </p>
