@@ -33,7 +33,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
     return (
         <div className='menu'>
             <div className='menu__wrapper'>
-                <MainCard mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: employee.images ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} title='Выберите специалиста' onMinusClickHandler={() => dispatch(unsetEmployee())} onClickHandler={() => {setIsSpecialist(true); navigate('/specialists')}} imgSrc='../images/specialist-icon.svg'/>
+                <MainCard ifImgFull={employee.images.tiny.length > 0 ? true : false} mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} title='Выберите специалиста' onMinusClickHandler={() => dispatch(unsetEmployee())} onClickHandler={() => {setIsSpecialist(true); navigate('/specialists')}} imgSrc='../images/specialist-icon.svg'/>
                 <div onClick={() => {setIsDate(true); navigate('/date')}} className="menu-item">
                     <div className="menu-item__img"><img src="../images/date-icon.svg" alt="date" /></div>
                     <h2 className="menu-item__title">Выберить дату и время</h2>

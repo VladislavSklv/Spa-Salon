@@ -69,12 +69,11 @@ code {
 		position: relative;
 		display: flex;
 		align-items: center;
-		padding-right: 40px;
 		height: 78px;
 		width: 100%;
 		background-color: #fff;
 		border-radius: 12px;
-		padding: 12px;
+		padding: 12px 45px 12px 12px;
 		margin: 0 auto 12px auto;
 		opacity: 1;
 		transition: opacity 0.2s ease-out;
@@ -538,6 +537,17 @@ code {
 			line-height: 130%;
 			color: $button-color;
 		}
+		&__time{
+			display: flex;
+			align-items: center;
+			font-weight: 510;
+			font-size: 14px;
+			line-height: 130%;
+			color: $second-font-color;
+			img{
+				margin-right: 5px;
+			}
+		}
 	}
 	/* employee details */
 	.employee-details{
@@ -843,5 +853,145 @@ code {
 		border: 2px solid #ABAAB1;
 		border-radius: 50px;
 		margin-right: 16px;
+	}
+}
+
+.dates-seances{
+	padding-top: 30px;
+	background-color: #fff;
+	&__dates{
+		width: 100%;
+		padding-bottom: 19px;
+	}
+	&__seances{
+		background-color: $main-color;
+		padding: 12px 12px 20px;
+		.loader{
+			margin: 0;
+			height: 30px;
+			width: 30px;
+			border-width: 4px;
+		}
+	}
+	.dates{
+		position: relative;
+		&__month{
+			text-align: center;
+			text-transform: capitalize;
+			font-weight: 510;
+			font-size: 16px;
+			line-height: 130%;
+			color: $second-font-color;
+			margin-bottom: 17px;
+		}
+		&__wrapper{
+			display: flex;
+			overflow: auto;
+			-webkit-appearance: none;
+			padding-left: 12px;
+			&::-webkit-scrollbar {
+				-webkit-appearance: none;
+				width: 0;
+				height: 0;
+				scroll-behavior: smooth;
+			}  
+		}
+	}
+	.date{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 64px;
+		width: 35px;
+		font-weight: 700;
+		font-size: 14px;
+		line-height: 24px;
+		color: #292929;
+		text-transform: capitalize;
+		margin-right: 20px;
+		background-color: $main-color;
+		border-radius: 20px;
+		flex-grow: 0;
+		flex-shrink: 0;
+		transition: all 0.3s;
+		span{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 27px;
+			height: 27px;
+			background-color: #fff;
+			border-radius: 100%;
+			transition: all 0.3s;
+		}
+		&_active{
+			background-color: $button-color;
+			color: #fff;
+			span{
+				color: $button-color;
+			}
+		}
+	}
+	.seance{
+		width: 100%;
+		border-radius: 20px;
+		background-color: #fff;
+		padding: 12px;
+		margin-bottom: 12px;
+		&__title{
+			font-weight: 700;
+			font-size: 16px;
+			line-height: 130%;
+			color: $main-font-color;
+			margin-bottom: 14px;
+		}
+		&__wrapper{
+			display: flex;
+			flex-wrap: wrap;
+			list-style-type: none;
+		}
+		&__item{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 105%;
+			color: $main-font-color;
+			padding: 9px 8px;
+			border: 1px solid #D6D7DB;
+			border-radius: 100px;
+			margin-right: 16px;
+			margin-bottom: 10px;
+			transition: all 0.3s;
+			&_active{
+				border-color: $active-color;
+				background-color: $active-color;
+			}
+		}
+	}
+	.slider-arrow, .slick-arrow{
+		top: -2px;
+		position: absolute;
+		background-color: transparent;
+		border: none;
+		z-index: 2;
+		&::before{
+			content: '';
+			display: block;
+			background: url('../public/images/left-arrow.svg') center center/contain no-repeat;
+			width: 8px;
+			height: 15px;
+			opacity: 1;
+		}
+	}
+	.slider-prev, .slick-prev{
+		transform: translateY(22%);
+		left: 35%;
+	}
+	.slider-next, .slick-next{
+		right: 35%;
+		transform: rotate(180deg);
 	}
 }

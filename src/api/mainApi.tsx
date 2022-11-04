@@ -54,6 +54,15 @@ export interface IComment {
     userImage: string;
 }
 
+export interface IDates {
+    bookingDates: string[];
+    workingDates: string[];
+}
+
+export interface ISeance {
+    time: string;
+}
+
 interface companyIdProps{
     companyId: string;
 }
@@ -61,6 +70,11 @@ interface companyIdProps{
 interface companyIdAndEmloyeeIDProps{
     companyId: string;
     employeeId: string;
+}
+
+interface companyIdAndDateProps{
+    companyId: string;
+    date: string;
 }
 
 export const mainApi = createApi({
@@ -78,7 +92,13 @@ export const mainApi = createApi({
         }),
         getComments: builder.query<IComment[], companyIdAndEmloyeeIDProps>({
             query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/comments`
+        }),
+        getDates: builder.query<IDates, companyIdProps>({
+            query: ({companyId}) => `companies/${companyId}/dates`
+        }),
+        getSeances: builder.query<ISeance[], companyIdAndDateProps>({
+            query: ({companyId, date}) => `companies/${companyId}/seances/${date}`
         })
     })
 });
-export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery} = mainApi;
+export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery, useGetDatesQuery, useLazyGetSeancesQuery} = mainApi;

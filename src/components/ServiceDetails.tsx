@@ -40,6 +40,7 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                             </p>
                             {service.length !== undefined &&
                                 <p className='details__time'>
+                                    <img src="../images/time.svg" alt="time" />
                                     {service.length}
                                 </p>
                             }

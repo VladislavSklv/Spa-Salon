@@ -17,7 +17,7 @@ function App() {
 			<Route path='/' element={<MainMenuPage setIsDate={setIsDate} setIsServices={setIsServices} setIsSpecialist={setIsEmployee} />}/>
 			<Route path='/services' element={<ServicesPage companyId={companyId}/>}/>
 			<Route path='/specialists' element={<EmployeesPage companyId={companyId}/>}/>
-			<Route path='/date' element={<DateAndTimePage/>}/>
+			<Route path='/date' element={<DateAndTimePage companyId={companyId}/>}/>
 		</Routes>
 	);
 }
