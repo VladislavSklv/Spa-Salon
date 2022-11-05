@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IEmployee, useGetEmployeeScheduleQuery } from '../api/mainApi';
-import { useAppSelector } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { setEmployee } from '../redux/redux';
 import ErrorBlock from './ErrorBlock';
 import Loader from './Loader';
 
@@ -18,6 +19,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     const [isActive, setIsActive] = useState(false);
 
     const {employee: chosenEmployee} = useAppSelector(state => state.mainSlice);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if(chosenEmployee.id === employee.id) setIsActive(true);
@@ -32,7 +34,10 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     }
 
     return (
-        <div className={employee.isActive ? (isActive ? 'employee-card employee-card_active' : 'employee-card') : 'employee-card employee-card_blured'}>
+        <div 
+            onClick={() => dispatch(setEmployee(employee))}
+            className={employee.isActive ? (isActive ? 'employee-card employee-card_active' : 'employee-card') : 'employee-card employee-card_blured'}
+        >
             <div className='employee-card__content'>
                 <div className={employee.images !== undefined ? 'employee-card__img' : 'employee-card__img employee-card__img_icon'}>
                     <img src={employee.images !== undefined ? employee.images.tiny : "../images/specialist-icon.svg"} alt="image" />
@@ -56,7 +61,10 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                 </div>
             </div>
             <div 
-                onClick={() => activateDetails()}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    activateDetails();
+                }}
                 className='info'
             ><img src="../images/info.svg" alt="info" /></div>
         </div>
