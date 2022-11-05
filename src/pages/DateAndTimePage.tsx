@@ -4,6 +4,7 @@ import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
 import DatesBlock from '../components/DatesBlock';
 import SeancesList from '../components/SeancesList';
+import { useAppSelector } from '../hooks/hooks';
 
 interface dateAndTimePageProps {
     companyId: string;
@@ -32,6 +33,12 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
     const [time, setTime] = useState('');
     const [filteredSeances, setFilteredSeances] = useState<IFilteredSeances[]>();
     const [triggerSeances, {data: seances, isError: isSeancesError, isLoading: isSeancesLoading, isFetching: isSeancesFetching}] = useLazyGetSeancesQuery();
+    
+    const {date: chosenDate, time: chosenTime} = useAppSelector(state => state.mainSlice.dateAndTime); 
+
+    useEffect(() => {
+        if(chosenDate !== '' && date !== chosenDate) setDate(chosenDate);
+    }, [chosenDate]);
 
     /* Splitting seances by part of a day */
     const checkPartOfaDay = ({part, thisSeances, seance}: {part: string; thisSeances: IFilteredSeances[]; seance: ISeance}) => {
@@ -43,7 +50,8 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
             }
         })
         if(checker) thisSeances.push({partOfDay: part, seances: [seance]});
-    }
+    };
+
     useEffect(() => {
         if(seances !== undefined){
             let thisSeances: IFilteredSeances[] = [];
@@ -61,9 +69,9 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
         if(date.length > 0) triggerSeances({companyId, date});
     }, [date]);
 
-    useEffect(() => {
+    /* useEffect(() => {
         if(dates !== undefined && !isLoading && !isFetching) setDate(dates.bookingDates[0]);
-    }, [isLoading, isFetching]);
+    }, [isLoading, isFetching]); */
 
     useEffect(() => {
         if(dates !== undefined){
@@ -101,7 +109,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
                                 {isSeancesError && <ErrorBlock/>}
                                 {(isSeancesLoading || isSeancesFetching) && <Loader/>}
                                 {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 &&
-                                    <SeancesList setTime={setTime} time={time} filteredSeances={filteredSeances}/>
+                                    <SeancesList date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
                                 }
                             </div>
                         </>  

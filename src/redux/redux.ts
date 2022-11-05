@@ -5,12 +5,18 @@ import { IEmployee, IService } from "../api/mainApi";
 export type IServiceInSlice =  IService & {
     categoryName: string;
 }
+
+export interface IDateAndTime {
+    time: string;
+    date: string;
+}
 interface serviceEmployeeDate {
     services: IServiceInSlice[];
     employee: IEmployee;
+    dateAndTime: IDateAndTime;
 }
 
-const initialState = {services: [], employee: {commentsCount: 0, description: '', id: -1, images: {tiny: '', full: '',}, isActive: false, name: '', rating: 0, sort: 0, specialization: ''}} as serviceEmployeeDate;
+const initialState = {services: [], employee: {commentsCount: 0, description: '', id: -1, images: {tiny: '', full: '',}, isActive: false, name: '', rating: 0, sort: 0, specialization: ''}, dateAndTime: {date: '', time: ''}} as serviceEmployeeDate;
 
 const mainSlice = createSlice({
     name: 'mainSlice',
@@ -27,9 +33,15 @@ const mainSlice = createSlice({
         },
         unsetEmployee(state) {
             state.employee = {commentsCount: 0, description: '', id: -1, images: {tiny: '', full: '',}, isActive: false, name: '', rating: 0, sort: 0, specialization: ''};
-        }
+        },
+        setDateAndTime(state, action:PayloadAction<IDateAndTime>){
+            state.dateAndTime = {date: action.payload.date, time: action.payload.time};
+        },
+        unsetDateAndTime(state){
+            state.dateAndTime = {date: '', time: ''};
+        },
     }
 });
 
-export const {addService, removeService, setEmployee, unsetEmployee} = mainSlice.actions;
+export const {addService, removeService, setEmployee, unsetEmployee, setDateAndTime, unsetDateAndTime} = mainSlice.actions;
 export default mainSlice.reducer;

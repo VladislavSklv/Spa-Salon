@@ -5,7 +5,7 @@ import MyButton from '../components/UI/MyButton';
 import MyCheckbox from '../components/UI/MyCheckbox';
 import MyInput from '../components/UI/MyInput';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { removeService, unsetEmployee } from '../redux/redux';
+import { removeService, unsetDateAndTime, unsetEmployee } from '../redux/redux';
 
 interface mainMenuPageProps {
     setIsServices: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +18,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
     const [isAgree, setIsAgree] = useState(false);
 
     const navigate = useNavigate();
-    const {services, employee} = useAppSelector(state => state.mainSlice);
+    const {services, employee, dateAndTime} = useAppSelector(state => state.mainSlice);
     const dispatch = useAppDispatch();
 
     /* Handlers */
@@ -26,19 +26,32 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
         setIsAgree(prev => !prev);
     };
 
-    const onMinusClickHandler = ({id}: {id: number}) => {
-        dispatch(removeService(id));
-    };
-
     return (
         <div className='menu'>
             <div className='menu__wrapper'>
-                <MainCard ifImgFull={employee.images.tiny.length > 0 ? true : false} mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} title='Выберите специалиста' onMinusClickHandler={() => dispatch(unsetEmployee())} onClickHandler={() => {setIsSpecialist(true); navigate('/specialists')}} imgSrc='../images/specialist-icon.svg'/>
-                <div onClick={() => {setIsDate(true); navigate('/date')}} className="menu-item">
-                    <div className="menu-item__img"><img src="../images/date-icon.svg" alt="date" /></div>
-                    <h2 className="menu-item__title">Выберить дату и время</h2>
-                </div>
-                <MainCard mainItem={(services !== undefined && services.length > 0) ? {subtitle: services[services.length - 1].categoryName, title: services[services.length - 1].name} : undefined} onMinusClickHandler={() => dispatch(removeService(services[services.length - 1].id))} imgSrc="../images/services-icon.svg" title='Выберите услуги' onClickHandler={() => {setIsServices(true); navigate('/services')}}/>
+                <MainCard 
+                    mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} 
+                    onClickHandler={() => {setIsSpecialist(true); navigate('/specialists')}} 
+                    onMinusClickHandler={() => dispatch(unsetEmployee())} 
+                    title='Выберите специалиста' 
+                    imgSrc='../images/specialist-icon.svg'
+                    ifImgFull={employee.images.tiny.length > 0 ? true : false} 
+                />
+                <MainCard 
+                    mainItem={(dateAndTime.date !== '' && dateAndTime.time !== '') ? {subtitle: new Date(dateAndTime.date).toLocaleDateString('ru-RU', {weekday: 'long', day: 'numeric', month: 'long'}), title: dateAndTime.time} : undefined}
+                    onClickHandler={() => {setIsDate(true); navigate('/date')}} 
+                    onMinusClickHandler={() => dispatch(unsetDateAndTime())} 
+                    title='Выберить дату и время' 
+                    imgSrc='../images/date-icon.svg' 
+                    
+                />
+                <MainCard 
+                    mainItem={(services !== undefined && services.length > 0) ? {subtitle: services[services.length - 1].categoryName, title: services[services.length - 1].name} : undefined} 
+                    onClickHandler={() => {setIsServices(true); navigate('/services')}}
+                    onMinusClickHandler={() => dispatch(removeService(services[services.length - 1].id))} 
+                    title='Выберите услуги' 
+                    imgSrc="../images/services-icon.svg" 
+                />
             </div>
             <form>
                 <MyInput placeholder='Оставить комментарий' type='text' id='comment' inputValue={comment} setInputValue={setComment}/>
