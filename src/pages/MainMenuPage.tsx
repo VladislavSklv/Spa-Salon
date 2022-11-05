@@ -9,11 +9,14 @@ import { removeService, unsetDateAndTime, unsetEmployee } from '../redux/redux';
 
 interface mainMenuPageProps {
     setIsServices: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsSpecialist: React.Dispatch<React.SetStateAction<boolean>>;
+    isServices: boolean;
+    setIsEmployee: React.Dispatch<React.SetStateAction<boolean>>;
+    isEmployee: boolean;
+    isDate: boolean;
     setIsDate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, setIsSpecialist}) => {
+const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, setIsEmployee, isDate, isServices, isEmployee}) => {
     const [comment, setComment] = useState('');
     const [isAgree, setIsAgree] = useState(false);
 
@@ -26,12 +29,43 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
         setIsAgree(prev => !prev);
     };
 
+    /* Setting Telegram */
+    const onMainBtnClick = () => {
+        if(!isDate && !isEmployee && !isServices && isAgree){
+            window.Telegram.WebApp.showPopup({message: 'Спасибо за заказ!'});
+        }
+    } 
+
+    window.Telegram.WebApp.MainButton.disable().hide();
+    window.Telegram.WebApp.MainButton.setParams({text: 'Отправить', color: '#3F3133', text_color: '#ffffff'});
+
+    useEffect(() => {
+        window.Telegram.WebApp.onEvent('mainButtonClicked', onMainBtnClick);
+        return () => {
+            window.Telegram.WebApp.offEvent('mainButtonClicked', onMainBtnClick);
+        };
+    }, [onMainBtnClick, isDate, isEmployee, isServices, isAgree]);
+
+    useEffect(() => {
+        if(!isDate && !isEmployee && !isServices){
+            if(isAgree && employee.id > 0 && services.length > 0 && dateAndTime.date !== '' && dateAndTime.time !== ''){
+                window.Telegram.WebApp.MainButton.enable().show();
+            } else {
+                window.Telegram.WebApp.MainButton.disable().hide();
+            }
+        }
+    }, [services, employee, dateAndTime, isAgree]);
+
+    useEffect(() => {
+		window.Telegram.WebApp.HapticFeedback.selectionChanged();
+	}, [isAgree]);
+
     return (
         <div className='menu'>
             <div className='menu__wrapper'>
                 <MainCard 
                     mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} 
-                    onClickHandler={() => {setIsSpecialist(true); navigate('/specialists')}} 
+                    onClickHandler={() => {setIsEmployee(true); navigate('/specialists')}} 
                     onMinusClickHandler={() => dispatch(unsetEmployee())} 
                     title='Выберите специалиста' 
                     imgSrc='../images/specialist-icon.svg'

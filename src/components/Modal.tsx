@@ -38,7 +38,7 @@ const Modal: React.FC<modalProps> = ({children, isOpened, setIsOpacity, setIsOpe
                     setIsSwiped(false);
                 };
             }}
-            style={isOpened ? {transform: 'none'} : {transform: 'translateY(250%)'}} 
+            style={isOpened ? {transform: 'translateY(0)'} : {transform: 'translateY(250%)'}} 
             className='modal'
         >
             {children}

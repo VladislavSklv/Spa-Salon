@@ -14,6 +14,7 @@
     "@types/react-dom": "^18.0.8",
     "@types/react-slick": "^0.23.10",
     "@types/scroll-lock": "^2.1.0",
+    "@types/telegram-web-app": "^6.2.2",
     "node-sass": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,6 +26,8 @@
     "react-swipeable": "^7.0.0",
     "scroll-lock": "^2.1.5",
     "slick-carousel": "^1.8.1",
+    "telegram-web-app": "^0.0.0",
+    "telegram-webapps-types": "^1.0.5",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },

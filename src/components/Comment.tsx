@@ -1,13 +1,25 @@
 import React, { useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { IComment } from '../api/mainApi';
 
 interface commentProps{
     comment: IComment;
+    isEmployeeDetails: boolean;
 }
 
-const Comment:React.FC<commentProps> = ({comment}) => {
+const Comment:React.FC<commentProps> = ({comment, isEmployeeDetails}) => {
     const textRef = useRef<HTMLDivElement>(null);
     const [isTextFull, setIsTextFull] = useState(false);
+    const [isRef, setIsRef] = useState(false);
+
+    useEffect(() => {
+        if(!isEmployeeDetails) setIsTextFull(false);
+    }, [isEmployeeDetails]);
+
+    useEffect(() => {
+        if(textRef.current !== null) setIsRef(true);
+        else setIsRef(false);
+    }, [textRef.current]);
 
     // Calculating the time difference between two dates
     const diffInTime = new Date(Date.now()).getTime() - new Date(comment.date).getTime();
@@ -41,7 +53,6 @@ const Comment:React.FC<commentProps> = ({comment}) => {
         timeToShow = inclineWords({number: diffInTime / (1000 * 60 * 60 * 24 * 30 * 12), text1: 'лет назад', text2: 'год назад', text3: 'года назад'});
     }
 
-
     return (
         <div key={comment.id} className='comment'>
             <div className='comment__content'>
@@ -56,16 +67,19 @@ const Comment:React.FC<commentProps> = ({comment}) => {
                     </div>
                 </div>
             </div>
-            {comment.text !== undefined && <div style={isTextFull ? {maxHeight: '10000000000px'} : {maxHeight: '53px'}} ref={textRef} className='comment__text'>{comment.text}</div>}
-            {(comment.text !== undefined && (textRef.current !== null && textRef.current.offsetHeight < textRef.current.scrollHeight) && !isTextFull) &&
-                <a 
-                    className='show-more' 
-                    href="#"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setIsTextFull(true);
-                    }}
-                >Читать полностью</a>
+            {comment.text !== undefined && <div style={isTextFull ? {maxHeight: '10000000px'} : {maxHeight: '53px'}} ref={textRef} className='comment__text'>{comment.text}</div>}
+            {isRef && textRef.current !== null && (comment.text !== undefined && !isTextFull && (textRef.current.offsetHeight < textRef.current.scrollHeight)) 
+                ?<>
+                    <a 
+                        className='show-more' 
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setIsTextFull(true);
+                        }}
+                    >Читать полностью</a>
+                </>
+                : <div></div>
             }
         </div>
     );

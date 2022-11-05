@@ -391,6 +391,7 @@ code {
 			border-bottom: 0px solid $active-color;
 			border-radius: 12px;
 			transition: border-bottom 0.2s linear;
+			pointer-events: none;
 		}
 		&__img{
 			width: 100%;
@@ -777,6 +778,7 @@ code {
 		border-bottom: 0px solid $active-color;
 		border-radius: 12px;
 		transition: border-bottom 0.2s linear;
+		pointer-events: none;
 	}
 	&__content{
 		display: flex;
@@ -863,6 +865,9 @@ code {
 		align-items: center;
 		.employee-card__img{
 			margin-right: 11px;
+		}
+		.employee-card__name{
+			margin-bottom: 0;
 		}
 	}
 	&_active{

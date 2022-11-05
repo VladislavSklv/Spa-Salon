@@ -5,9 +5,12 @@ import Loader from '../components/Loader';
 import DatesBlock from '../components/DatesBlock';
 import SeancesList from '../components/SeancesList';
 import { useAppSelector } from '../hooks/hooks';
+import { useNavigate } from 'react-router-dom';
 
 interface dateAndTimePageProps {
     companyId: string;
+    isDate: boolean;
+    setIsDate: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IFilteredSeances {
@@ -26,7 +29,7 @@ export interface datesObj {
     days: IDay[];
 }
 
-const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
+const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, setIsDate}) => {
     const {data: dates, isLoading, isFetching, isError} = useGetDatesQuery({companyId});
     const [months, setMonths] = useState<datesObj[]>([]);
     const [date, setDate] = useState(dates !== undefined ? dates.bookingDates[0] : '');
@@ -35,6 +38,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
     const [triggerSeances, {data: seances, isError: isSeancesError, isLoading: isSeancesLoading, isFetching: isSeancesFetching}] = useLazyGetSeancesQuery();
     
     const {date: chosenDate, time: chosenTime} = useAppSelector(state => state.mainSlice.dateAndTime); 
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(chosenDate !== '' && date !== chosenDate) setDate(chosenDate);
@@ -95,6 +99,32 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId}) => {
             setMonths(thisMonths);
         }
     }, [dates]);
+
+    /* Setting Telegram */
+    const onMainBtnClick = () => {
+        if(isDate && chosenDate !== '' && chosenTime !== ''){
+            setIsDate(false);
+            navigate('/');
+        }
+    }
+
+    useEffect(() => {
+        window.Telegram.WebApp.onEvent('mainButtonClicked', onMainBtnClick);
+        return () => {
+            window.Telegram.WebApp.offEvent('mainButtonClicked', onMainBtnClick);
+        }
+    }, [onMainBtnClick, isDate, chosenDate, chosenTime]);
+
+    useEffect(() => {
+        if(isDate && chosenDate !== '' && chosenTime !== ''){
+            if(!window.Telegram.WebApp.MainButton.isVisible){
+                window.Telegram.WebApp.MainButton.setParams({text: 'Записаться', color: '#3F3133', text_color: '#ffffff'});
+                window.Telegram.WebApp.MainButton.enable().show();
+            }
+        } else {
+            window.Telegram.WebApp.MainButton.disable().hide();
+        }
+    }, [isDate, chosenDate, chosenTime]);
 
     return (
         <>
