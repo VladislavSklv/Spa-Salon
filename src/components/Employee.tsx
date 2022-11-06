@@ -47,7 +47,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
 
     return (
         <div 
-            onClick={() => dispatch(setEmployee(employee))}
+            onClick={() => employee.isActive && dispatch(setEmployee(employee))}
             className={employee.isActive ? (isActive ? 'employee-card employee-card_active' : 'employee-card') : 'employee-card employee-card_blured'}
         >
             <div className='employee-card__content'>
@@ -61,14 +61,18 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                         <div className='employee-card__stars'><div style={{width: `${starBlurWidth}px`}} className='employee-card__bluring-stars'></div><img src="../images/stars.svg" alt="stars" /></div>
                         <span className='employee-card__number-of-comments'>{employee.commentsCount} {commentText !== '' && commentText}</span>
                     </div>
-                    {isError && <ErrorBlock/>}
-                    {(isLoading || isFetching) && <Loader/>}
-                    {schedule !== undefined &&
-                        <div className='schedule'>
-                            {schedule.seances.map((seance, i) => (
-                                i < 3 && <div key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
-                            ))}
-                        </div>
+                    {employee.isActive &&
+                        <>
+                            {isError && <ErrorBlock/>}
+                            {(isLoading || isFetching) && <Loader/>}
+                            {schedule !== undefined &&
+                                <div className='schedule'>
+                                    {schedule.seances.map((seance, i) => (
+                                        i < 3 && <div key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
+                                    ))}
+                                </div>
+                            }
+                        </>
                     }
                 </div>
             </div>

@@ -33,7 +33,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
     }
 
     return (
-        <div className={isActive ? 'service-card service-card_active' : 'service-card'} key={service.id}>
+        <div className={isActive ? (service.isActive ? 'service-card service-card_active service-card__blured' : 'service-card service-card_active') : (service.isActive ? 'service-card service-card__blured' : 'service-card')} key={service.id}>
             {service.images !== undefined && service.images.length > 0 && 
                 <div className='service-card__img'><img src={service.images[0]} alt="service preview" /></div>
             }
@@ -53,13 +53,15 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
                 <div className='service-card__bottom'>
                     <div className='button-with-price'>
                         <MyButton isMinus={isActive} onClickHandler={() => {
-                            if(!isActive) dispatch(addService({...service, categoryName}));
-                            else dispatch(removeService(service.id));
-                            setIsActive(prev => !prev);
+                            if(service.isActive){
+                                if(!isActive) dispatch(addService({...service, categoryName}));
+                                else dispatch(removeService(service.id));
+                                setIsActive(prev => !prev);
+                            }
                         }}/>
                         <p className='price'>
                             {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin !== 0 && service.priceMax !== 0))
-                                ? (service.priceMin === 0 ? (service.priceMax + '₽') : (service.priceMax === 0 ? service.priceMin + '₽' : `${service.priceMin} - ${service.priceMax}₽`))
+                                ? (service.priceMax === service.priceMin ? (service.priceMax + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin} - ${service.priceMax}₽` : service.priceMin + '₽'))
                                 : 'Цена не указана'}
                         </p>
                     </div>

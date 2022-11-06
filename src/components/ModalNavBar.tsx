@@ -27,6 +27,8 @@ const ModalNavBar: React.FC<modalNavBarProps> = ({servicesCategories, servicesRe
                                             window.scrollBy(0, div.getBoundingClientRect().top);
                                         }
                                     })
+                                    setIsModal(false);
+                                    setIsOpacity(false);
                                 }
                             }}
                         >{servicesCategory.name}</li>

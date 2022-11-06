@@ -52,7 +52,7 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                     setIsDetails(false);
                     setIsOpacity(false);
                 } else {
-                    dispatch(addService(service));
+                    if(service.isActive) dispatch(addService(service));
                     setIsDetails(false);
                     setIsOpacity(false);
                 }
@@ -70,10 +70,11 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
     }, [onMainBtnClick, isServices, isDetails, service, isServiceChosen]);
 
     useEffect(() => {
-        if(isDetails === true && isServices === true){
-            window.Telegram.WebApp.MainButton.setParams({text: 'Добавить', color: '#3F3133', text_color: '#ffffff'}).enable().show();
+        if(isDetails === true && isServices === true && service !== undefined){
+            if(service.isActive === false) window.Telegram.WebApp.MainButton.setParams({text: 'Продолжить', color: '#3F3133', text_color: '#ffffff'}).enable().show();
+            else window.Telegram.WebApp.MainButton.setParams({text: 'Добавить', color: '#3F3133', text_color: '#ffffff'}).enable().show();
         }
-    }, [isDetails, isServices]);
+    }, [isDetails, isServices, service]);
 
     return (
         <Modal setIsOpacity={setIsOpacity} setIsOpened={setIsDetails} isOpened={isDetails}>

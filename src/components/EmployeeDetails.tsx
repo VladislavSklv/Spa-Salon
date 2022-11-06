@@ -57,11 +57,9 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
     /* Setting Telegram */
     const onMainBtnClick = () => {
         if(isEmployeeDetails && isEmployee && thisEmployee !== undefined){
-            if(thisEmployee.isActive) {
-                dispatch(setEmployee(thisEmployee));
-                setIsEmployeeDetails(false);
-                setIsOpacity(false);
-            }
+            if(thisEmployee.isActive) dispatch(setEmployee(thisEmployee));
+            setIsEmployeeDetails(false);
+            setIsOpacity(false);
         }
     };
 
@@ -74,7 +72,8 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
 
     useEffect(() => {
         if(isEmployeeDetails && isEmployee){
-            window.Telegram.WebApp.MainButton.setParams({text: 'Выбрать', color: '#3F3133', text_color: '#ffffff', is_active: true, is_visible: true}).show();
+            if(thisEmployee.isActive === true) window.Telegram.WebApp.MainButton.setParams({text: 'Выбрать', color: '#3F3133', text_color: '#ffffff', is_active: true, is_visible: true}).show();
+            else window.Telegram.WebApp.MainButton.setParams({text: 'Продолжить', color: '#3F3133', text_color: '#ffffff', is_active: true, is_visible: true}).show();
         }
     }, [isEmployeeDetails, isEmployee]);
 

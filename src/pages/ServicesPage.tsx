@@ -26,6 +26,9 @@ const ServicesPage:React.FC<servicesPageProps> = ({companyId, isServices, setIsS
     const servicesRef = useRef<HTMLDivElement>(null);
 
     const { services } = useAppSelector(state => state.mainSlice);
+    useEffect(() => {
+        console.log(servicesCategories);
+    }, [servicesCategories])
 
     /* Disable scroll */
     useEffect(() => {

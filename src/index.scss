@@ -432,6 +432,7 @@ code {
 		&__info{
 			height: 20px;
 			width: 20px;
+			z-index: 2;
 			img{
 				width: 100%;
 			}
@@ -440,6 +441,9 @@ code {
 			&::before{
 				border-bottom: 6px solid $active-color;
 			}
+		}
+		&_blured{
+			opacity: .4;
 		}
 	}
 }
@@ -850,6 +854,12 @@ code {
 		right: 12px;
 		flex-grow: 0;
 		flex-shrink: 0;
+		width: 20px;
+		height: 20px;
+		z-index: 2;
+		img{
+			width: 100%;
+		}
 	}
 	&_blured{
 		opacity: .4;
@@ -883,9 +893,13 @@ code {
 	margin-top: 8px;
 	&__item{
 		padding: 9px 8px;
-		border: 2px solid #ABAAB1;
+		border: 2px solid #D6D7DB;
 		border-radius: 50px;
 		margin-right: 16px;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 105%;
+		color: #292929;
 	}
 }
 
@@ -993,8 +1007,8 @@ code {
 			line-height: 105%;
 			color: $main-font-color;
 			padding: 9px 8px;
-			border: 1px solid #D6D7DB;
-			border-radius: 100px;
+			border: 2px solid #D6D7DB;
+			border-radius: 50px;
 			margin-right: 16px;
 			margin-bottom: 10px;
 			transition: all 0.3s;
