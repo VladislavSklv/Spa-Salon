@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainCard from '../components/MainCard';
-import MyButton from '../components/UI/MyButton';
 import MyCheckbox from '../components/UI/MyCheckbox';
 import MyInput from '../components/UI/MyInput';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';

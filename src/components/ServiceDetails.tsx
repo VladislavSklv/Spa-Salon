@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IService, IServicesCategory } from '../api/mainApi';
+import { IServicesCategory } from '../api/mainApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { addService, IServiceInSlice } from '../redux/redux';
 import Modal from './Modal';
@@ -85,14 +85,14 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                         {service.images !== undefined && service.images.length > 0 && 
                             <div className='details__img'><img src={service.images[0]} alt="details preview" /></div>
                         }
-                        <div className='details__content'>
+                        <div style={(!(service.images !== undefined && service.images.length > 0)) ? {marginTop: '15px'} : {}} className='details__content'>
                             <h3 className="details__title">{service.name}</h3>
                             <p className='details__descr'>{service.description !== undefined && service.description}</p>
                             <div className='details__bottom'>
                                 <p className='details__price'>
-                                    {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin != 0 && service.priceMax != 0))
-                                        ? (service.priceMin === 0 ? (service.priceMax + '₽') : (service.priceMax === 0 ? service.priceMin + '₽' : `${service.priceMin} - ${service.priceMax}₽`))
-                                        : 'Цена не указана'}
+                                    {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin !== 0 && service.priceMax !== 0))
+                                    ? (service.priceMax === service.priceMin ? (service.priceMax + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin} - ${service.priceMax}₽` : service.priceMin + '₽'))
+                                    : 'Цена не указана'}
                                 </p>
                                 {service.length !== undefined &&
                                     <p className='details__time'>

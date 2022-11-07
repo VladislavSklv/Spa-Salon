@@ -242,7 +242,7 @@ code {
 	justify-content: flex-start;
 	align-items: center;
 	background-color: $main-color;
-	z-index: 2;
+	z-index: 3;
 	&__wrapper{
 		display: flex;
 		justify-content: flex-start;
@@ -464,7 +464,7 @@ code {
 	right: 0;
 	bottom: 0;
 	background-color: rgba(0, 0, 0, .35);
-	z-index: 2;
+	z-index: 4;
 	transition: opacity 0.4s;
 }
 
@@ -476,7 +476,7 @@ code {
 	width: 100%;
 	background: #FFFFFF;
 	border-radius: 20px 20px 0px 0px;
-	z-index: 3;
+	z-index: 5;
 	transition: all 0.4s;
 	overflow: auto;
 	&::before{
@@ -491,7 +491,7 @@ code {
 		background: #6D7885;
 		opacity: 0.7;
 		border-radius: 3px;
-		z-index: 4;
+		z-index: 6;
 	}
 	/* modal navbar */
 	&-navbar{

@@ -7,7 +7,6 @@ import {disablePageScroll, enablePageScroll} from 'scroll-lock';
 import ServiceDetails from '../components/ServiceDetails';
 import Loader from '../components/Loader';
 import ErrorBlock from '../components/ErrorBlock';
-import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../hooks/hooks';
 
 interface servicesPageProps {
@@ -26,9 +25,6 @@ const ServicesPage:React.FC<servicesPageProps> = ({companyId, isServices, setIsS
     const servicesRef = useRef<HTMLDivElement>(null);
 
     const { services } = useAppSelector(state => state.mainSlice);
-    useEffect(() => {
-        console.log(servicesCategories);
-    }, [servicesCategories])
 
     /* Disable scroll */
     useEffect(() => {

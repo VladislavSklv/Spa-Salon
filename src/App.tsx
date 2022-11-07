@@ -19,26 +19,24 @@ function App() {
 	window.Telegram.WebApp.enableClosingConfirmation();
 	window.Telegram.WebApp.expand();
 
+	const backBtnClick = () => {
+		if(isServices || isEmployee || isDate) {
+			navigate('/');
+			setIsServices(false);
+			setIsEmployee(false);
+			setIsDate(false);
+		}
+	};
+
 	useEffect(() => {
 		if(isServices || isEmployee || isDate){
 			window.Telegram.WebApp.BackButton.show();
 		} else {
 			window.Telegram.WebApp.BackButton.hide();
 		}
-		window.Telegram.WebApp.BackButton.onClick(() => {
-			if(isServices || isEmployee || isDate) {
-				navigate('/');
-			}
-		});
+		window.Telegram.WebApp.BackButton.onClick(backBtnClick);
 		return () => {
-			window.Telegram.WebApp.BackButton.onClick(() => {
-				if(isServices || isEmployee || isDate) {
-					navigate('/');
-					setIsServices(false);
-					setIsEmployee(false);
-					setIsDate(false);
-				}
-			});
+			window.Telegram.WebApp.BackButton.offClick(backBtnClick);
 		}
 	}, [isServices, isEmployee, isDate]);
 

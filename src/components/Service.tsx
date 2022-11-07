@@ -33,7 +33,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
     }
 
     return (
-        <div className={isActive ? (service.isActive ? 'service-card service-card_active service-card__blured' : 'service-card service-card_active') : (service.isActive ? 'service-card service-card__blured' : 'service-card')} key={service.id}>
+        <div className={isActive ? (service.isActive ? 'service-card service-card_active' : 'service-card service-card_active service-card_blured') : (service.isActive ? 'service-card' : 'service-card service-card_blured')} key={service.id}>
             {service.images !== undefined && service.images.length > 0 && 
                 <div className='service-card__img'><img src={service.images[0]} alt="service preview" /></div>
             }

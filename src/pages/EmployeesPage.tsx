@@ -6,7 +6,6 @@ import Employee from '../components/Employee';
 import EmployeeDetails from '../components/EmployeeDetails';
 import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
-import MainCard from '../components/MainCard';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { setEmployee } from '../redux/redux';
 
