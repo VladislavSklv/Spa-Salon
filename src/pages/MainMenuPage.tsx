@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainCard from '../components/MainCard';
 import MyCheckbox from '../components/UI/MyCheckbox';
 import MyInput from '../components/UI/MyInput';
@@ -18,6 +18,9 @@ interface mainMenuPageProps {
 const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, setIsEmployee, isDate, isServices, isEmployee}) => {
     const [comment, setComment] = useState('');
     const [isAgree, setIsAgree] = useState(false);
+    /* Getting Get param */
+    const [searchParams, setSearchParams] = useSearchParams();
+	const companyId = searchParams.get('companyId');
 
     const navigate = useNavigate();
     const {services, employee, dateAndTime} = useAppSelector(state => state.mainSlice);
@@ -64,7 +67,11 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
             <div className='menu__wrapper'>
                 <MainCard 
                     mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} 
-                    onClickHandler={() => {setIsEmployee(true); navigate('/specialists')}} 
+                    onClickHandler={() => {
+                        setIsEmployee(true); 
+                        if(companyId === null) navigate('/specialists');
+                        else navigate(`/specialists/?companyId=${companyId}`);
+                    }} 
                     onMinusClickHandler={() => dispatch(unsetEmployee())} 
                     title='Выберите специалиста' 
                     imgSrc='../images/specialist-icon.svg'
@@ -72,7 +79,11 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                 />
                 <MainCard 
                     mainItem={(dateAndTime.date !== '' && dateAndTime.time !== '') ? {subtitle: new Date(dateAndTime.date).toLocaleDateString('ru-RU', {weekday: 'long', day: 'numeric', month: 'long'}), title: dateAndTime.time} : undefined}
-                    onClickHandler={() => {setIsDate(true); navigate('/date')}} 
+                    onClickHandler={() => {
+                        setIsDate(true); 
+                        if(companyId === null) navigate('/date');
+                        else navigate(`/date/?companyId=${companyId}`);
+                    }} 
                     onMinusClickHandler={() => dispatch(unsetDateAndTime())} 
                     title='Выберить дату и время' 
                     imgSrc='../images/date-icon.svg' 
@@ -80,7 +91,11 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                 />
                 <MainCard 
                     mainItem={(services !== undefined && services.length > 0) ? {subtitle: services[services.length - 1].categoryName, title: services[services.length - 1].name} : undefined} 
-                    onClickHandler={() => {setIsServices(true); navigate('/services')}}
+                    onClickHandler={() => {
+                        setIsServices(true); 
+                        if(companyId === null) navigate('/services');
+                        else navigate(`/services/?companyId=${companyId}`);
+                    }}
                     onMinusClickHandler={() => dispatch(removeService(services[services.length - 1].id))} 
                     title='Выберите услуги' 
                     imgSrc="../images/services-icon.svg" 

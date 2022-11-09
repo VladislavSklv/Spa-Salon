@@ -101,4 +101,4 @@ export const mainApi = createApi({
         })
     })
 });
-export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery, useGetDatesQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery} = mainApi;
+export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery, useGetDatesQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery} = mainApi;
