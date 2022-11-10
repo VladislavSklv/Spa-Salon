@@ -12,6 +12,13 @@ $active-color: #92DCE5;
 
 html{
 	scroll-behavior: smooth;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+	width: 0;
+	height: 0;
 }
 
 body {
@@ -22,7 +29,15 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-color: $main-color;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
+
+body::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+}
+
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -251,6 +266,8 @@ code {
 		appearance: none;
 		-webkit-appearance: none;
 		padding-bottom: 0;
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
 	&__wrapper::-webkit-scrollbar {
 		-webkit-appearance: none;
@@ -936,6 +953,8 @@ code {
 			overflow: auto;
 			-webkit-appearance: none;
 			padding-left: 12px;
+			-ms-overflow-style: none;
+			scrollbar-width: none;
 			&::-webkit-scrollbar {
 				-webkit-appearance: none;
 				width: 0;
@@ -977,6 +996,13 @@ code {
 			color: #fff;
 			span{
 				color: $button-color;
+			}
+		}
+		&_blured{
+			opacity: .8;
+			color: #D6D7DB;
+			span{
+				color: #D6D7DB;
 			}
 		}
 	}

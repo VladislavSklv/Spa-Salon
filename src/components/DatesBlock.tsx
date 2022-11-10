@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import { datesObj } from '../pages/DateAndTimePage';
 import MyNextArrow from './UI/MyNextArrow';
@@ -9,10 +9,21 @@ interface datesBlockProps{
     date: string;
     setDate: React.Dispatch<React.SetStateAction<string>>;
     setTime: React.Dispatch<React.SetStateAction<string>>;
+    setIndexOfMonths: React.Dispatch<React.SetStateAction<number>>;
+    initialMonth: string;
 }
 
-const DatesBlock:React.FC<datesBlockProps> = ({months, date, setDate, setTime}) => {
+const DatesBlock:React.FC<datesBlockProps> = ({months, date, setDate, setTime, setIndexOfMonths, initialMonth}) => {
     const sliderRef = useRef<Slider>(null);
+    const [initialSlide, setInitialSlide] = useState(0);
+
+    useEffect(() => {
+        setTimeout(() => {
+            months.forEach((month, i) => {
+                if(month.month.toLowerCase() === initialMonth.toLowerCase() && sliderRef !== null) sliderRef.current?.slickGoTo(i);
+            })
+        }, 500);
+    }, []);
 
     let settings = {
         dots: false,
@@ -25,9 +36,9 @@ const DatesBlock:React.FC<datesBlockProps> = ({months, date, setDate, setTime}) 
         swipe: false,
         nextArrow: <MyNextArrow />,
         prevArrow: <MyPrevArrow />,
-        beforeChange: () => {
-            setDate('');
-            setTime('');
+        initialSlide,
+        afterChange: (e: any) => {
+            setIndexOfMonths(e);
         }
     };
 
@@ -42,10 +53,12 @@ const DatesBlock:React.FC<datesBlockProps> = ({months, date, setDate, setTime}) 
                                 <div 
                                     key={day.date} 
                                     onClick={() => {
-                                        setDate(day.date); 
-                                        if(date !== day.date) setTime('');
+                                        if(day.isActive){
+                                            setDate(day.date); 
+                                            if(date !== day.date) setTime('');
+                                        }
                                     }} 
-                                    className={date === day.date ? 'date date_active' : 'date'}
+                                    className={date === day.date ? (day.isActive ? 'date date_active' : 'date date_active date_blured') : (day.isActive ? 'date' : 'date date_blured')}
                                 >{day.weekDay}<span>{day.day}</span></div>    
                             )}
                         </div>

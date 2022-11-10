@@ -24,11 +24,6 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
     const [isDetails, setIsDetails] = useState(false);
     const [detailsId, setDetailsId] = useState(servicesCategories !== undefined ? servicesCategories[0].id : 0);
     const servicesRef = useRef<HTMLDivElement>(null);
-    /* Getting Get param */
-    /* const [searchParams, setSearchParams] = useSearchParams();
-	const companyId = searchParams.get('companyId');
-    if(companyId !== null) servicesTrigger({companyId});
-    else console.error('required parameter companyId was not passed'); */
 
     const { services } = useAppSelector(state => state.mainSlice);
 
@@ -76,7 +71,7 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
                                 className='opacity-block'
                             ></div>
                             <ModalNavBar setIsOpacity={setIsOpacity} isModal={isModal} setIsModal={setIsModal} servicesRef={servicesRef} servicesCategories={servicesCategories} />
-                            <ServiceDetails setIsServices={setIsServices} isServices={isServices} detailsId={detailsId} isDetails={isDetails} servicesCategories={servicesCategories} setIsDetails={setIsDetails} setIsOpacity={setIsOpacity} />
+                            <ServiceDetails companyId={companyId} setIsServices={setIsServices} isServices={isServices} detailsId={detailsId} isDetails={isDetails} servicesCategories={servicesCategories} setIsDetails={setIsDetails} setIsOpacity={setIsOpacity} />
                         </div>
                     }
                 </>

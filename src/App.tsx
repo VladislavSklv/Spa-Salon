@@ -10,6 +10,8 @@ function App() {
 	const [isServices, setIsServices] = useState(false);
     const [isEmployee, setIsEmployee] = useState(false);
     const [isDate, setIsDate] = useState(false);
+	const [datesFirstOpened, setDatesFirstOpened] = useState(true);
+	const [initialMonth, setInitialMonth] = useState('');
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const companyId = searchParams.get('companyId');
@@ -19,13 +21,24 @@ function App() {
 	const { dateAndTime, employee, services } = useAppSelector(state => state.mainSlice);
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if(dateAndTime.date !== '' && dateAndTime.time !== ''){
+			setInitialMonth(new Date(dateAndTime.date).toLocaleString('ru-RU', {month: 'long'}));
+		}
+	}, [dateAndTime]);
+
+	useEffect(() => {
+		console.log(initialMonth)
+	}, [initialMonth])
+
 	/* Setting Telegram */
 	window.Telegram.WebApp.enableClosingConfirmation();
 	window.Telegram.WebApp.expand();
 
 	const backBtnClick = () => {
 		if(isServices || isEmployee || isDate) {
-			navigate('/');
+			if(companyId !== null) navigate(`/?companyId${companyId}`);
+			else navigate('/');
 			setIsServices(false);
 			setIsEmployee(false);
 			setIsDate(false);
@@ -56,7 +69,7 @@ function App() {
 					<Route path='/' element={<MainMenuPage isDate={isDate} isServices={isServices} isEmployee={isEmployee} setIsDate={setIsDate} setIsServices={setIsServices} setIsEmployee={setIsEmployee} />}/>
 					<Route path={`/services`} element={<ServicesPage setIsServices={setIsServices} isServices={isServices} companyId={companyId}/>}/>
 					<Route path={`/specialists`} element={<EmployeesPage setIsEmployee={setIsEmployee} isEmployee={isEmployee} companyId={companyId}/>}/>
-					<Route path={`/date`} element={<DateAndTimePage setIsDate={setIsDate} isDate={isDate} companyId={companyId}/>}/>
+					<Route path={`/date`} element={<DateAndTimePage initialMonth={initialMonth} firstOpened={datesFirstOpened} setFirstOpened={setDatesFirstOpened} setIsDate={setIsDate} isDate={isDate} companyId={companyId}/>}/>
 				</Routes>
 				:
 				<div></div>

@@ -45,7 +45,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     const onMainBtnClick = () => {
         if(isEmployee && !isEmployeeDetails) {
             setIsEmployee(false);
-            navigate('/');
+            navigate(`/?companyId=${companyId}`);
         }
     };
 
@@ -68,36 +68,42 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
 
     return (
         <>
-            {isError && <ErrorBlock/>}
-            {(isLoading || isFetching) && <Loader/>}
-            {employees !== undefined &&
-                <div className='employees__wrapper'>
-                    <div 
-                        onClick={() => {
-                            dispatch(setEmployee({commentsCount:0, description: '', id: Date.now(), images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''}));
-                            setIsAnyone(true);
-                        }}
-                        className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
-                        <div className='employee-card__img employee-card__img_icon'>
-                            <img src="../images/specialist-icon.svg" alt="icon" />
+            {companyId !== null
+            ?
+                <>
+                    {isError && <ErrorBlock/>}
+                    {(isLoading || isFetching) && <Loader/>}
+                    {employees !== undefined &&
+                        <div className='employees__wrapper'>
+                            <div 
+                                onClick={() => {
+                                    dispatch(setEmployee({commentsCount:0, description: '', id: Date.now(), images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''}));
+                                    setIsAnyone(true);
+                                }}
+                                className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
+                                <div className='employee-card__img employee-card__img_icon'>
+                                    <img src="../images/specialist-icon.svg" alt="icon" />
+                                </div>
+                                <div>
+                                    <h2 className='employee-card__name'>Любой свободный специалист</h2>
+                                </div>
+                            </div>
+                            {employees.map(employee => (
+                                <Employee setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
+                            ))}
+                            <div 
+                                onClick={() => {
+                                    setIsOpacity(false);
+                                    setIsEmployeeDetails(false);
+                                }} 
+                                style={isOpacity ? {opacity: 1, pointerEvents: 'all'} : {opacity: 0, pointerEvents: 'none'}} 
+                                className='opacity-block'
+                            ></div>
+                            <EmployeeDetails isEmployee={isEmployee} companyId={companyId} detailsId={detailsId} employees={employees} isEmployeeDetails={isEmployeeDetails} setIsEmployeeDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity}/>
                         </div>
-                        <div>
-                            <h2 className='employee-card__name'>Любой свободный специалист</h2>
-                        </div>
-                    </div>
-                    {employees.map(employee => (
-                        <Employee setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
-                    ))}
-                    <div 
-                        onClick={() => {
-                            setIsOpacity(false);
-                            setIsEmployeeDetails(false);
-                        }} 
-                        style={isOpacity ? {opacity: 1, pointerEvents: 'all'} : {opacity: 0, pointerEvents: 'none'}} 
-                        className='opacity-block'
-                    ></div>
-                    <EmployeeDetails isEmployee={isEmployee} companyId={companyId} detailsId={detailsId} employees={employees} isEmployeeDetails={isEmployeeDetails} setIsEmployeeDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity}/>
-                </div>
+                    }
+                </>
+            : <div></div>
             }
         </>
     );

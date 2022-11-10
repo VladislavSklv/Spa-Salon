@@ -26,7 +26,7 @@ const Seance: React.FC<seanceProps> = ({date, seance, setTime, time}) => {
                 setTime(seance.time);
                 dispatch(setDateAndTime({time: seance.time, date}))
             }} 
-            className={time === seance.time ? 'seance__item seance__item_active' : 'seance__item'}
+            className={(time === seance.time && date === dateAndTime.date) ? 'seance__item seance__item_active' : 'seance__item'}
         >{seance.time}</li>   
     );
 };

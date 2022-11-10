@@ -13,9 +13,10 @@ interface serviceDetailsProps {
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
     detailsId: number;
     setIsServices: React.Dispatch<React.SetStateAction<boolean>>;
+    companyId: string;
 }
 
-const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices}) => {
+const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices, companyId}) => {
     const [service, setService] = useState<IServiceInSlice>();
     const [isServiceChosen, setIsServiceChosen] = useState(false);
 
@@ -45,7 +46,7 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
     const onMainBtnClick = () => {
         if(isDetails === false){
             setIsServices(false);
-            navigate('/');
+            navigate(`/?companyId=${companyId}`);
         } else {
             if(service !== undefined){
                 if(isServiceChosen){
