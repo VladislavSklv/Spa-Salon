@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ISeance, useGetDatesQuery, useLazyGetDatesQuery, useLazyGetSeancesQuery } from '../api/mainApi';
+import { ISeance, useLazyGetDatesQuery, useLazyGetSeancesQuery } from '../api/mainApi';
 import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
 import DatesBlock from '../components/DatesBlock';

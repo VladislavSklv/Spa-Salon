@@ -50,7 +50,7 @@ const NavBar:React.FC<navBarProps> = ({servicesCategories, setIsModal, setIsOpac
                             if(mainMenuRef.current !== null) {
                                 mainMenuRef.current.childNodes[1].childNodes.forEach((div: any) => {
                                     if(div.id && div.id === e.target.dataset.href){
-                                        window.scrollBy(0, div.getBoundingClientRect().top);
+                                        window.scrollBy(0, div.getBoundingClientRect().top - 45);
                                     }
                                 })
                             }

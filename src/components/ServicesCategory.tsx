@@ -9,17 +9,18 @@ interface servicesCategoryProps {
     setIsDetails: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
     setDetailsId: React.Dispatch<React.SetStateAction<number>>;
+    servicesListRef: React.RefObject<HTMLDivElement>;
 }
 
-const ServicesCategory: React.FC<servicesCategoryProps> = ({servicesCategory, setActiveTab, setIsDetails, setIsOpacity, setDetailsId}) => {
+
+const ServicesCategory: React.FC<servicesCategoryProps> = ({servicesCategory, setActiveTab, setIsDetails, setIsOpacity, setDetailsId, servicesListRef}) => {
     const { ref, inView, entry } = useInView({
         /* Optional options */
-        threshold: 0.1,
+        threshold: 0.3,
+        onChange(inView) {
+            if(inView) setActiveTab(servicesCategory.id);
+        },
     });
-
-    useEffect(() => {
-        if(inView) setActiveTab(servicesCategory.id);
-    }, [inView]);
 
     return (
         <div ref={ref} id={servicesCategory.id.toString()} key={servicesCategory.id} className='service__group'>

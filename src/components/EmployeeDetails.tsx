@@ -40,8 +40,8 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
     }, [detailsId]);
 
     useEffect(() => {
-        if(isEmployeeDetails) trigger({companyId, employeeId: thisEmployee.id.toString()});
-    }, [thisEmployee, isEmployeeDetails]);
+        trigger({companyId, employeeId: thisEmployee.id.toString()});
+    }, [thisEmployee]);
 
     useEffect(() => {
         if(thisEmployee.commentsCount % 10 === 1) {

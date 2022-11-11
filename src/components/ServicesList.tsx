@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { IServicesCategory } from '../api/mainApi';
 import ServicesCategory from './ServicesCategory';
 
@@ -11,10 +11,12 @@ interface servicesListProps {
 }
 
 const ServicesList:React.FC<servicesListProps> = ({servicesCategories, setActiveTab, setIsDetails, setIsOpacity, setDetailsId}) => {
+    const servicesListRef = useRef<HTMLDivElement>(null);
+
     return (
-        <div className='service__list'>
+        <div ref={servicesListRef} className='service__list'>
             {servicesCategories.map(servicesCategory => (
-                <ServicesCategory setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} key={servicesCategory.id} servicesCategory={servicesCategory} setActiveTab={setActiveTab} />
+                <ServicesCategory servicesListRef={servicesListRef} setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} key={servicesCategory.id} servicesCategory={servicesCategory} setActiveTab={setActiveTab} />
             ))}
         </div>
     );

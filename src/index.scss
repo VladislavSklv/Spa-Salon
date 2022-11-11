@@ -383,13 +383,13 @@ code {
 }
 
 .service{
-	padding: 0 12px;
+	padding: 61px 12px 0;
 	.subtitle{
 		margin-bottom: 12px;
 	}
-	&__group:first-child{
+	/* &__group:first-child{
 		padding-top: 61px;
-	}
+	} */
 	&-card{
 		position: relative;
 		width: 100%;
@@ -531,6 +531,9 @@ code {
 				color: $main-font-color;
 				padding: 14px 8px;
 				border-bottom: 1px solid #E7E8EA;
+				&:last-child{
+					border-bottom: none;
+				}
 			}
 		}
 	}

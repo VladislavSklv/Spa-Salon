@@ -67,11 +67,13 @@ interface companyIdProps{
     companyId: string;
     serviceIds?: number[];
     employeeId?: number;
+    datetime?: string;
 }
 
 interface companyIdAndEmloyeeIDProps{
     companyId: string;
     employeeId: string;
+    serviceIds?: number[];
 }
 
 interface companyIdAndDateProps{
@@ -89,10 +91,29 @@ export const mainApi = createApi({
             query: ({companyId}) => `companies/${companyId}/services`
         }),
         getEmployees: builder.query<IEmployee[], companyIdProps>({
-            query: ({companyId}) => `companies/${companyId}/employees`
+            query: ({companyId, datetime, serviceIds}) => {
+                let params = '';
+                if(datetime !== undefined) params = `/?datetime=${datetime}`;
+                if(serviceIds !== undefined){
+                    serviceIds.forEach(serviceId => {
+                        if(params === '') params = `/?serviceIds[]=${serviceId}`;
+                        else params += `&serviceIds[]=${serviceId}`;
+                    });
+                }
+                return `companies/${companyId}/employees${params}`;
+            }
         }),
         getEmployeeSchedule: builder.query<IEmployeeSchedule, companyIdAndEmloyeeIDProps>({
-            query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/schedule`
+            query: ({companyId, employeeId, serviceIds}) => {
+                let params = '';
+                if(serviceIds !== undefined){
+                    serviceIds.forEach(serviceId => {
+                        if(params === '') params = `/?serviceIds[]=${serviceId}`;
+                        else params += `&serviceIds[]=${serviceId}`;
+                    });
+                }
+                return `companies/${companyId}/employees/${employeeId}/schedule${params}`
+            }
         }),
         getComments: builder.query<IComment[], companyIdAndEmloyeeIDProps>({
             query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/comments`
@@ -125,4 +146,4 @@ export const mainApi = createApi({
         })
     })
 });
-export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery, useGetDatesQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery, useLazyGetDatesQuery} = mainApi;
+export const {useGetServicesQuery, useLazyGetEmployeesQuery, useGetCommentsQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery, useLazyGetDatesQuery, useLazyGetEmployeeScheduleQuery} = mainApi;

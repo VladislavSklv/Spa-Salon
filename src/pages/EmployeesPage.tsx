@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { disablePageScroll, enablePageScroll } from 'scroll-lock';
-import { useGetEmployeesQuery } from '../api/mainApi';
+import { useLazyGetEmployeesQuery } from '../api/mainApi';
 import Employee from '../components/Employee';
 import EmployeeDetails from '../components/EmployeeDetails';
 import ErrorBlock from '../components/ErrorBlock';
@@ -16,15 +16,32 @@ interface employeesPageProps{
 }
 
 const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, setIsEmployee}) => {
-    const {data: employees, isLoading, isFetching, isError} = useGetEmployeesQuery({companyId});
+    const [employeesTrigger, {data: employees, isLoading, isFetching, isError}] = useLazyGetEmployeesQuery();
     const [isOpacity, setIsOpacity] = useState(false);
     const [isEmployeeDetails, setIsEmployeeDetails] = useState(false);
     const [isAnyone, setIsAnyone] = useState(false);
-    const [detailsId, setDetailsId] = useState(employees !== undefined ? employees[1].id : 0);
+    const [detailsId, setDetailsId] = useState(0);
 
     const dispatch = useAppDispatch();
-    const {employee} = useAppSelector(state => state.mainSlice);
+    const {employee, dateAndTime, services} = useAppSelector(state => state.mainSlice);
     const navigate = useNavigate();
+
+    /* Fetching employees */
+    useEffect(() => {
+        if(dateAndTime.date !== '' && dateAndTime.time !== '' && services.length > 0) {
+            let serviceIds: number[] = [];
+            services.forEach(service => serviceIds.push(service.id));
+            let datetime = `${dateAndTime.date}T${dateAndTime.time}`;
+            employeesTrigger({companyId, serviceIds, datetime});
+        } else if(services.length > 0){
+            let serviceIds: number[] = [];
+            services.forEach(service => serviceIds.push(service.id));
+            employeesTrigger({companyId, serviceIds});
+        } else if(dateAndTime.date !== '' && dateAndTime.time !== '') {
+            let datetime = `${dateAndTime.date}T${dateAndTime.time}`;
+            employeesTrigger({companyId, datetime});
+        } else employeesTrigger({companyId});
+    }, [dateAndTime, services]);
 
     /* Checking if employye is anyone */
     useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IEmployee, useGetEmployeeScheduleQuery } from '../api/mainApi';
+import { IEmployee, useLazyGetEmployeeScheduleQuery } from '../api/mainApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { setEmployee } from '../redux/redux';
 import ErrorBlock from './ErrorBlock';
@@ -14,13 +14,24 @@ interface employeeProps {
 }
 
 const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, setIsDetails, setIsOpacity}) => {
-    const {data: schedule, isError, isLoading, isFetching} = useGetEmployeeScheduleQuery({companyId, employeeId: employee.id.toString()});
+    const [shceduleTrigger, {data: schedule, isError, isLoading, isFetching}] = useLazyGetEmployeeScheduleQuery();
     const starBlurWidth = 68 - (employee.rating * (68 / 5));
     const [isActive, setIsActive] = useState(false);
     const [commentText, setCommentText] = useState('');
 
-    const {employee: chosenEmployee} = useAppSelector(state => state.mainSlice);
+    const {employee: chosenEmployee, services} = useAppSelector(state => state.mainSlice);
     const dispatch = useAppDispatch();
+
+    /* Fetching employee schedule */
+    useEffect(() => {
+        if(employee.isActive) {
+            if(services.length > 0){
+                let serviceIds: number[] = [];
+                services.forEach(service => serviceIds.push(service.id));
+                shceduleTrigger({companyId, serviceIds, employeeId: employee.id.toString()});
+            } else shceduleTrigger({companyId, employeeId: employee.id.toString()});
+        }
+    }, [employee, services]);
 
     useEffect(() => {
         if(employee.commentsCount % 10 === 1) {
@@ -41,8 +52,10 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     /* Handlers */
     const activateDetails = () => {
         setDetailsId(employee.id);
-        setIsDetails(true);
         setIsOpacity(true);
+        setTimeout(() => {
+            setIsDetails(true);
+        }, 200);
     }
 
     return (
