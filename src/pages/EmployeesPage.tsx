@@ -77,7 +77,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                         <div className='employees__wrapper'>
                             <div 
                                 onClick={() => {
-                                    dispatch(setEmployee({commentsCount:0, description: '', id: Date.now(), images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''}));
+                                    dispatch(setEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''}));
                                     setIsAnyone(true);
                                 }}
                                 className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 

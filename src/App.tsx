@@ -27,17 +27,13 @@ function App() {
 		}
 	}, [dateAndTime]);
 
-	useEffect(() => {
-		console.log(initialMonth)
-	}, [initialMonth])
-
 	/* Setting Telegram */
 	window.Telegram.WebApp.enableClosingConfirmation();
 	window.Telegram.WebApp.expand();
 
 	const backBtnClick = () => {
 		if(isServices || isEmployee || isDate) {
-			if(companyId !== null) navigate(`/?companyId${companyId}`);
+			if(companyId !== null) navigate(`/?companyId=${companyId}`);
 			else navigate('/');
 			setIsServices(false);
 			setIsEmployee(false);

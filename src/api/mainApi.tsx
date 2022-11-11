@@ -65,6 +65,8 @@ export interface ISeance {
 
 interface companyIdProps{
     companyId: string;
+    serviceIds?: number[];
+    employeeId?: number;
 }
 
 interface companyIdAndEmloyeeIDProps{
@@ -75,6 +77,8 @@ interface companyIdAndEmloyeeIDProps{
 interface companyIdAndDateProps{
     companyId: string;
     date: string;
+    serviceIds?: number[];
+    employeeId?: number;
 }
 
 export const mainApi = createApi({
@@ -94,11 +98,31 @@ export const mainApi = createApi({
             query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/comments`
         }),
         getDates: builder.query<IDates, companyIdProps>({
-            query: ({companyId}) => `companies/${companyId}/dates`
+            query: ({companyId, employeeId, serviceIds}) => {
+                let params = '';
+                if(employeeId !== undefined) params = `/?employeeId=${employeeId}`
+                if(serviceIds !== undefined){
+                    serviceIds.forEach(serviceId => {
+                        if(params === '') params = `/?serviceIds[]=${serviceId}`;
+                        else params += `&serviceIds[]=${serviceId}`;
+                    });
+                }
+                return `companies/${companyId}/dates${params}`;
+            }
         }),
         getSeances: builder.query<ISeance[], companyIdAndDateProps>({
-            query: ({companyId, date}) => `companies/${companyId}/seances/${date}`
+            query: ({companyId, date, employeeId, serviceIds}) => {
+                let params = '';
+                if(employeeId !== undefined) params = `/?employeeId=${employeeId}`
+                if(serviceIds !== undefined){
+                    serviceIds.forEach(serviceId => {
+                        if(params === '') params = `/?serviceIds[]=${serviceId}`;
+                        else params += `&serviceIds[]=${serviceId}`;
+                    });
+                }
+                return `companies/${companyId}/seances/${date}${params}`
+            }
         })
     })
 });
-export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery, useGetDatesQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery} = mainApi;
+export const {useGetServicesQuery, useGetEmployeesQuery, useGetCommentsQuery, useGetEmployeeScheduleQuery, useGetDatesQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery, useLazyGetDatesQuery} = mainApi;

@@ -66,7 +66,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
         <div className='menu'>
             <div className='menu__wrapper'>
                 <MainCard 
-                    mainItem={(employee !== undefined && employee.id > 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} 
+                    mainItem={(employee !== undefined && employee.id >= 0) ? {subtitle: employee.specialization, title: employee.name, imgSrc: (employee.images && employee.images.tiny.length > 0) ? employee.images.tiny : '../images/specialist-icon.svg'} : undefined} 
                     onClickHandler={() => {
                         setIsEmployee(true); 
                         if(companyId === null) navigate('/specialists');
@@ -85,7 +85,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                         else navigate(`/date/?companyId=${companyId}`);
                     }} 
                     onMinusClickHandler={() => dispatch(unsetDateAndTime())} 
-                    title='Выберить дату и время' 
+                    title='Выберите дату и время' 
                     imgSrc='../images/date-icon.svg' 
                     
                 />

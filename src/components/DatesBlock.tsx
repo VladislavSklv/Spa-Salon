@@ -15,7 +15,6 @@ interface datesBlockProps{
 
 const DatesBlock:React.FC<datesBlockProps> = ({months, date, setDate, setTime, setIndexOfMonths, initialMonth}) => {
     const sliderRef = useRef<Slider>(null);
-    const [initialSlide, setInitialSlide] = useState(0);
 
     useEffect(() => {
         setTimeout(() => {
@@ -36,7 +35,6 @@ const DatesBlock:React.FC<datesBlockProps> = ({months, date, setDate, setTime, s
         swipe: false,
         nextArrow: <MyNextArrow />,
         prevArrow: <MyPrevArrow />,
-        initialSlide,
         afterChange: (e: any) => {
             setIndexOfMonths(e);
         }

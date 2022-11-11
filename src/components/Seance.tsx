@@ -17,7 +17,7 @@ const Seance: React.FC<seanceProps> = ({date, seance, setTime, time}) => {
 
     useEffect(() => {
         if(date === dateAndTime.date && seance.time === dateAndTime.time) setTime(seance.time);
-    }, [dateAndTime]);
+    }, [dateAndTime, date]);
 
     return (
         <li 
