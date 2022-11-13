@@ -24,6 +24,8 @@ function App() {
 	useEffect(() => {
 		if(dateAndTime.date !== '' && dateAndTime.time !== ''){
 			setInitialMonth(new Date(dateAndTime.date).toLocaleString('ru-RU', {month: 'long'}));
+		} else {
+			setInitialMonth('');
 		}
 	}, [dateAndTime]);
 

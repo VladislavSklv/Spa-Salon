@@ -77,7 +77,7 @@ const Comment:React.FC<commentProps> = ({comment, isEmployeeDetails}) => {
                             e.preventDefault();
                             setIsTextFull(true);
                         }}
-                    >Читать полностью</a>
+                    >еще</a>
                 </>
                 : <div></div>
             }

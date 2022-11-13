@@ -88,7 +88,21 @@ export const mainApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: 'https://daomiara.ru/api/v1/'}),
     endpoints: (builder) => ({
         getServices: builder.query<IServicesCategory[], companyIdProps>({
-            query: ({companyId}) => `companies/${companyId}/services`
+            query: ({companyId, datetime, employeeId, serviceIds}) => {
+                let params = '';
+                if(employeeId !== undefined) params = `/?employeeId=${employeeId}`;
+                if(datetime !== undefined) {
+                    if(params === '') params = `/?datetime=${datetime}`;
+                    else params += `&datetime=${datetime}`;
+                };
+                if(serviceIds !== undefined){
+                    serviceIds.forEach(serviceId => {
+                        if(params === '') params = `/?serviceIds[]=${serviceId}`;
+                        else params += `&serviceIds[]=${serviceId}`;
+                    });
+                }
+                return `companies/${companyId}/services${params}`;
+            }
         }),
         getEmployees: builder.query<IEmployee[], companyIdProps>({
             query: ({companyId, datetime, serviceIds}) => {
@@ -146,4 +160,4 @@ export const mainApi = createApi({
         })
     })
 });
-export const {useGetServicesQuery, useLazyGetEmployeesQuery, useGetCommentsQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery, useLazyGetDatesQuery, useLazyGetEmployeeScheduleQuery} = mainApi;
+export const {useLazyGetEmployeesQuery, useGetCommentsQuery, useLazyGetSeancesQuery, useLazyGetCommentsQuery, useLazyGetServicesQuery, useLazyGetDatesQuery, useLazyGetEmployeeScheduleQuery} = mainApi;

@@ -18,9 +18,22 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     const starBlurWidth = 68 - (employee.rating * (68 / 5));
     const [isActive, setIsActive] = useState(false);
     const [commentText, setCommentText] = useState('');
+    const [scheduleDate, setScheduleDate] = useState('');
 
     const {employee: chosenEmployee, services} = useAppSelector(state => state.mainSlice);
     const dispatch = useAppDispatch();
+
+    /* Setting schedule date */
+    useEffect(() => {
+        if(schedule !== undefined){
+            let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            let date = new Date(new Date(schedule.date).getFullYear(), new Date(schedule.date).getMonth(), new Date(schedule.date).getDate());
+            if(today.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}) === date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'})) setScheduleDate('сегодня');
+            else if(date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}) === new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'})) setScheduleDate('завтра');
+            else if(date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}) === new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'})) setScheduleDate('послезавтра');
+            else setScheduleDate(date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}));
+        }
+    }, [schedule]);
 
     /* Fetching employee schedule */
     useEffect(() => {
@@ -70,20 +83,25 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                 <div>
                     <p className='employee-card__specialization'>{employee.specialization}</p>
                     <h2 className='employee-card__name'>{employee.name}</h2>
-                    <div className='employee-card__rating'>
-                        <div className='employee-card__stars'><div style={{width: `${starBlurWidth}px`}} className='employee-card__bluring-stars'></div><img src="../images/stars.svg" alt="stars" /></div>
-                        <span className='employee-card__number-of-comments'>{employee.commentsCount} {commentText !== '' && commentText}</span>
-                    </div>
+                    {employee.commentsCount > 0 &&
+                        <div className='employee-card__rating'>
+                            <div className='employee-card__stars'><div style={{width: `${starBlurWidth}px`}} className='employee-card__bluring-stars'></div><img src="../images/stars.svg" alt="stars" /></div>
+                            <span className='employee-card__number-of-comments'>{employee.commentsCount} {commentText !== '' && commentText}</span>
+                        </div>
+                    }
                     {employee.isActive &&
                         <>
                             {isError && <ErrorBlock/>}
                             {(isLoading || isFetching) && <Loader/>}
-                            {schedule !== undefined &&
-                                <div className='schedule'>
-                                    {schedule.seances.map((seance, i) => (
-                                        i < 3 && <div key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
-                                    ))}
-                                </div>
+                            {schedule !== undefined && scheduleDate !== '' &&
+                                <>
+                                    <h4 className="schedule-date">Ближайшее время для записи {scheduleDate}</h4>
+                                    <div className='schedule'>
+                                        {schedule.seances.map((seance, i) => (
+                                            i < 3 && <div key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
+                                        ))}
+                                    </div>
+                                </>
                             }
                         </>
                     }

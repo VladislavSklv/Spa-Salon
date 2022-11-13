@@ -37,10 +37,11 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     const [triggerDates, {data: dates, isLoading, isFetching, isError}] = useLazyGetDatesQuery();
     const [months, setMonths] = useState<datesObj[]>([]);
     const [indexOfMonths, setIndexOfMonths] = useState(0);
-    const [date, setDate] = useState(dates !== undefined ? dates.bookingDates[0] : '');
+    const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [filteredSeances, setFilteredSeances] = useState<IFilteredSeances[]>();
     const [triggerSeances, {data: seances, isError: isSeancesError, isLoading: isSeancesLoading, isFetching: isSeancesFetching}] = useLazyGetSeancesQuery();
+    const [isNoSeances, setIsNoSeances] = useState(false);
     
     const {dateAndTime, employee, services} = useAppSelector(state => state.mainSlice); 
     const navigate = useNavigate();
@@ -48,6 +49,11 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     useEffect(() => {
         if(dateAndTime.date !== '' && date !== dateAndTime.date) setDate(dateAndTime.date);
     }, [dateAndTime.date, indexOfMonths]);
+
+    useEffect(() => {
+        console.log(date);
+        console.log(time);
+    }, [dateAndTime]);
 
     /* Fetching dates */
     useEffect(() => {
@@ -104,6 +110,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
 
     /* Setting first date active */
     useEffect(() => {
+        console.log(initialMonth)
         if(dates !== undefined && firstOpened === true && indexOfMonths === 0) {
             setDate(dates.bookingDates[0]);
             setFirstOpened(false);
@@ -122,7 +129,10 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                 }
             })
             if(checker && checker1) {
+                setIsNoSeances(true);
                 setDate('');
+            } else {
+                setIsNoSeances(false);
             }
         }
     }, [dates, indexOfMonths, months]);
@@ -171,6 +181,11 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                                 {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 &&
                                     <SeancesList date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
                                 }
+                                {isNoSeances && 
+                                <div className='no-seances'>
+                                    <div className='no-seances__img'><img src="../images/date-icon.svg" alt="date" /></div>    
+                                    <h2 className="no-seances__title">На выбранную дату<br/> нет доступных таймслотов</h2>
+                                </div>}
                             </div>
                         </>  
                     }

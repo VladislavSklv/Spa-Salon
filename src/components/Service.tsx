@@ -48,7 +48,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
                             e.preventDefault();
                             activateDetails();
                         }}
-                    >Подробнее</a>
+                    >еще</a>
                 }
                 <div className='service-card__bottom'>
                     <div className='button-with-price'>
@@ -61,7 +61,7 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
                         }}/>
                         <p className='price'>
                             {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin !== 0 && service.priceMax !== 0))
-                                ? (service.priceMax === service.priceMin ? (service.priceMax + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin} - ${service.priceMax}₽` : service.priceMin + '₽'))
+                                ? (service.priceMax === service.priceMin ? (service.priceMax.toLocaleString() + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin.toLocaleString()} - ${service.priceMax.toLocaleString()}₽` : service.priceMin.toLocaleString() + '₽'))
                                 : 'Цена не указана'}
                         </p>
                     </div>

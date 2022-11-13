@@ -92,7 +92,7 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                             <div className='details__bottom'>
                                 <p className='details__price'>
                                     {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin !== 0 && service.priceMax !== 0))
-                                    ? (service.priceMax === service.priceMin ? (service.priceMax + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin} - ${service.priceMax}₽` : service.priceMin + '₽'))
+                                    ? (service.priceMax === service.priceMin ? (service.priceMax.toLocaleString() + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin.toLocaleString()} - ${service.priceMax.toLocaleString()}₽` : service.priceMin.toLocaleString() + '₽'))
                                     : 'Цена не указана'}
                                 </p>
                                 {service.length !== undefined &&

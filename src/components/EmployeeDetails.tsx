@@ -90,24 +90,34 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                                 <div className='employee-details__about'>
                                     <p className='employee-details__specialization'>{thisEmployee.specialization}</p>
                                     <h2 className='employee-details__name'>{thisEmployee.name}</h2>
-                                    <div className='employee-details__rating'>
-                                        <div className='employee-details__stars'><div style={{width: `${90 - (thisEmployee.rating * (90 / 5))}px`}} className='employee-details__bluring-stars'></div><img src="../images/stars.svg" alt="stars" /></div>
-                                        <span className='employee-details__number-of-comments'>{thisEmployee.commentsCount} {commentText !== '' && commentText}</span>
-                                    </div>
+                                    {thisEmployee.commentsCount > 0 &&
+                                        <div className='employee-details__rating'>
+                                            <div className='employee-details__stars'><div style={{width: `${90 - (thisEmployee.rating * (90 / 5))}px`}} className='employee-details__bluring-stars'></div><img src="../images/stars.svg" alt="stars" /></div>
+                                            <span className='employee-details__number-of-comments'>{thisEmployee.commentsCount} {commentText !== '' && commentText}</span>
+                                        </div>    
+                                    }
                                 </div>
                             </div>
                             <div className='employee-details__descr'>{thisEmployee.description}</div>
                         </div>
-                        {(isLoading || isFetching) && <Loader/>}
-                        {isError && <ErrorBlock/>}
-                        {comments !== undefined && comments.length > 0 && (!isLoading && !isFetching) && 
                             <div className='comments'> 
                                 <h3 className='comments__title'>Отзывы</h3>
-                                {comments.map(comment => 
-                                    <Comment isEmployeeDetails={isEmployeeDetails} comment={comment} key={comment.id}/>
-                                )}
+                                {(isLoading || isFetching) && <Loader/>}
+                                {isError && <ErrorBlock/>}
+                                {comments !== undefined && comments.length > 0 && (!isLoading && !isFetching) 
+                                    ?
+                                   <>
+                                        {comments.map(comment => 
+                                            <Comment isEmployeeDetails={isEmployeeDetails} comment={comment} key={comment.id}/>
+                                        )}
+                                   </>
+                                   :
+                                   <div className='no-comments'>
+                                        <div className='no-comments__img'><img src="../images/no-comments.svg" alt="no comments" /></div>
+                                        <h3 className="no-comments__title">Здесь пока ничего нет</h3>
+                                   </div>
+                                }
                             </div>
-                        }
                     </div>
                 }
             </>

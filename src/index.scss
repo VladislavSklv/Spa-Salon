@@ -17,6 +17,7 @@ html{
 }
 
 html::-webkit-scrollbar {
+	display: none;
 	width: 0;
 	height: 0;
 }
@@ -259,6 +260,7 @@ code {
 	background-color: $main-color;
 	z-index: 3;
 	&__wrapper{
+		height: 100%;
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
@@ -268,6 +270,7 @@ code {
 		padding-bottom: 0;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
+		clip-path: inset(0 0 6px 0);
 	}
 	&__wrapper::-webkit-scrollbar {
 		-webkit-appearance: none;
@@ -383,13 +386,11 @@ code {
 }
 
 .service{
+	position: relative;
 	padding: 61px 12px 0;
 	.subtitle{
 		margin-bottom: 12px;
 	}
-	/* &__group:first-child{
-		padding-top: 61px;
-	} */
 	&-card{
 		position: relative;
 		width: 100%;
@@ -461,17 +462,40 @@ code {
 		}
 		&_blured{
 			opacity: .4;
+			.show-more{
+				color: #D6D7DB;
+			}
 		}
 	}
 }
 
+.service-page{
+	.loader{
+		position: absolute;
+		top: 63px;
+		right: 12px;
+		z-index: 2;
+		width: 25px;
+		height: 25px;
+		border-width: 4px;
+		margin-top: 0;
+	}
+}
+
 .show-more{
+	position: absolute;
+	right: 12px;
+	bottom: 56px;
+	background-color: #fff;
+	padding-left: 4px;
+	padding-right: 2px;
 	font-weight: 510;
 	font-size: 14px;
 	line-height: 130%;
 	letter-spacing: 0.1px;
 	color: $active-color;
 	text-decoration: none;
+	box-shadow: -1em 0 5px white;
 }
 
 .opacity-block{
@@ -591,9 +615,13 @@ code {
 	}
 	/* employee details */
 	.employee-details{
+		height: calc(100vh - 15px);
+		display: flex;
+		flex-direction: column;
 		padding-top: 33px;
 		&__top{
 			padding: 0 12px;
+			flex-shrink: 0;
 		}
 		&__wrapper{
 			display: flex;
@@ -674,10 +702,32 @@ code {
 			width: 30px;
 			border-width: 4px;
 		}
+		.no-comments{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin-bottom: 17px;
+			margin-top: 15vh;
+			&__img{
+				width: 61px;
+				img{
+					width: 100%;
+				}
+			}
+			&__title{
+				font-weight: 590;
+				font-size: 16px;
+				line-height: 120%;
+				text-align: center;
+				color: $second-font-color;
+			}
+		}
 	}
 	
 	.comments{
 		background-color: $main-color;
+		flex-grow: 1;
 		padding: 18px 12px 20px;
 		&__title{
 			font-weight: 590;
@@ -689,6 +739,7 @@ code {
 	}
 	
 	.comment{
+		position: relative;
 		width: 100%;
 		height: auto;
 		background: #FFFFFF;
@@ -767,17 +818,21 @@ code {
 			-webkit-box-orient: vertical;
 			overflow: hidden;
 			text-overflow: clip;
-			.show-more{
-				font-weight: 400;
-				font-size: 14px;
-				line-height: 125%;
-			}
+		}
+		.show-more{
+			bottom: 12px;
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 125%;
 		}
 	}
 }
 
 .employees__wrapper{
 	padding: 30px 12px 20px;
+	.modal{
+		height: calc(100vh - 10px);
+	}
 }
 
 .employee-card{
@@ -907,6 +962,13 @@ code {
 	}
 }
 
+.schedule-date{
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 100%;
+	color: $second-font-color;
+}
+
 .schedule{
 	display: flex;
 	align-items: center;
@@ -928,7 +990,7 @@ code {
 	background-color: #fff;
 	&__dates{
 		width: 100%;
-		padding-bottom: 19px;
+		padding-bottom: 9px;
 	}
 	&__seances{
 		background-color: $main-color;
@@ -938,6 +1000,28 @@ code {
 			height: 30px;
 			width: 30px;
 			border-width: 4px;
+		}
+		.no-seances{
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width: 225px;
+			margin: 20vh auto 0;
+			&__img{
+				width: 50px;
+				margin-bottom: 19px;
+				img{
+					width: 100%;
+				}
+			}
+			&__title{
+				font-weight: 590;
+				font-size: 16px;
+				line-height: 120%;
+				text-align: center;
+				color: $second-font-color;
+			}
 		}
 	}
 	.dates{
@@ -956,6 +1040,8 @@ code {
 			overflow: auto;
 			-webkit-appearance: none;
 			padding-left: 12px;
+			padding-bottom: 10px;
+			clip-path: inset(0 0 10px 0);
 			-ms-overflow-style: none;
 			scrollbar-width: none;
 			&::-webkit-scrollbar {
