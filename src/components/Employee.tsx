@@ -6,6 +6,8 @@ import ErrorBlock from './ErrorBlock';
 import Loader from './Loader';
 
 interface employeeProps {
+    chosenEmployee: IEmployee;
+    setChosenEmployee: React.Dispatch<React.SetStateAction<IEmployee>>;
     employee: IEmployee;
     companyId: string;
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,15 +15,14 @@ interface employeeProps {
     setDetailsId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, setIsDetails, setIsOpacity}) => {
+const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, setIsDetails, setIsOpacity, chosenEmployee, setChosenEmployee}) => {
     const [shceduleTrigger, {data: schedule, isError, isLoading, isFetching}] = useLazyGetEmployeeScheduleQuery();
     const starBlurWidth = 68 - (employee.rating * (68 / 5));
     const [isActive, setIsActive] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [scheduleDate, setScheduleDate] = useState('');
 
-    const {employee: chosenEmployee, services} = useAppSelector(state => state.mainSlice);
-    const dispatch = useAppDispatch();
+    const {services} = useAppSelector(state => state.mainSlice);
 
     /* Setting schedule date */
     useEffect(() => {
@@ -73,7 +74,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
 
     return (
         <div 
-            onClick={() => employee.isActive && dispatch(setEmployee(employee))}
+            onClick={() => employee.isActive && setChosenEmployee(employee)}
             className={employee.isActive ? (isActive ? 'employee-card employee-card_active' : 'employee-card') : 'employee-card employee-card_blured'}
         >
             <div className='employee-card__content'>

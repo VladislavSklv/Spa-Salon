@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { disablePageScroll, enablePageScroll } from 'scroll-lock';
-import { useLazyGetEmployeesQuery } from '../api/mainApi';
+import { IEmployee, useLazyGetEmployeesQuery } from '../api/mainApi';
 import Employee from '../components/Employee';
 import EmployeeDetails from '../components/EmployeeDetails';
 import ErrorBlock from '../components/ErrorBlock';
@@ -16,6 +16,7 @@ interface employeesPageProps{
 }
 
 const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, setIsEmployee}) => {
+    const [chosenEmployee, setChosenEmployee] = useState<IEmployee>({commentsCount: 0, description: '', id: -1, images: {tiny: '', full: '',}, isActive: false, name: '', rating: 0, sort: 0, specialization: ''});
     const [employeesTrigger, {data: employees, isLoading, isFetching, isError}] = useLazyGetEmployeesQuery();
     const [isOpacity, setIsOpacity] = useState(false);
     const [isEmployeeDetails, setIsEmployeeDetails] = useState(false);
@@ -45,8 +46,8 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
 
     /* Checking if employye is anyone */
     useEffect(() => {
-        if(!(employee.name === 'Любой свободный специалист')) setIsAnyone(false);
-    }, [employee]);
+        if(!(chosenEmployee.name === 'Любой свободный специалист')) setIsAnyone(false);
+    }, [chosenEmployee]);
 
     /* Disable scroll */
     useEffect(() => {
@@ -61,6 +62,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     /* Setting Telegram */
     const onMainBtnClick = () => {
         if(isEmployee && !isEmployeeDetails) {
+            dispatch(setEmployee(chosenEmployee));
             setIsEmployee(false);
             navigate(`/?companyId=${companyId}`);
         }
@@ -75,13 +77,13 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     
     window.Telegram.WebApp.MainButton.setParams({color: '#3F3133', text_color: '#ffffff'});
     useEffect(() => {
-        if(isEmployee && !isEmployeeDetails && employee.id > 0) {
+        if(isEmployee && !isEmployeeDetails && chosenEmployee.id >= 0) {
             window.Telegram.WebApp.MainButton.setText(`Продолжить`);
             window.Telegram.WebApp.MainButton.enable().show();
         } else if(isEmployee && !isEmployeeDetails) {
             window.Telegram.WebApp.MainButton.disable().hide();
         }
-    }, [employee, isEmployeeDetails, isEmployee]);
+    }, [chosenEmployee, isEmployeeDetails, isEmployee]);
 
     return (
         <>
@@ -94,7 +96,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                         <div className='employees__wrapper'>
                             <div 
                                 onClick={() => {
-                                    dispatch(setEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''}));
+                                    setChosenEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''});
                                     setIsAnyone(true);
                                 }}
                                 className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
@@ -106,7 +108,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                                 </div>
                             </div>
                             {employees.map(employee => (
-                                <Employee setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
+                                <Employee chosenEmployee={chosenEmployee} setChosenEmployee={setChosenEmployee} setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
                             ))}
                             <div 
                                 onClick={() => {
@@ -116,7 +118,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                                 style={isOpacity ? {opacity: 1, pointerEvents: 'all'} : {opacity: 0, pointerEvents: 'none'}} 
                                 className='opacity-block'
                             ></div>
-                            <EmployeeDetails isEmployee={isEmployee} companyId={companyId} detailsId={detailsId} employees={employees} isEmployeeDetails={isEmployeeDetails} setIsEmployeeDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity}/>
+                            <EmployeeDetails setChosenEmployee={setChosenEmployee} isEmployee={isEmployee} companyId={companyId} detailsId={detailsId} employees={employees} isEmployeeDetails={isEmployeeDetails} setIsEmployeeDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity}/>
                         </div>
                     }
                 </>

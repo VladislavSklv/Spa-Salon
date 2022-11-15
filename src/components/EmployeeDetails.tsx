@@ -9,6 +9,7 @@ import Loader from './Loader';
 import Modal from './Modal';
 
 interface employeeDetailsProps{
+    setChosenEmployee: React.Dispatch<React.SetStateAction<IEmployee>>;
     employees: IEmployee[];
     isEmployee: boolean;
     companyId: string;
@@ -18,13 +19,11 @@ interface employeeDetailsProps{
     setIsEmployeeDetails: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setIsEmployeeDetails, setIsOpacity, employees, detailsId, companyId, isEmployee}) => {
+const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setIsEmployeeDetails, setIsOpacity, employees, detailsId, companyId, isEmployee, setChosenEmployee}) => {
     const [thisEmployee, setThisEmployee] = useState<IEmployee>(employees[0]);
     const [commentText, setCommentText] = useState('');
     /* const {data: comments, isError, isLoading, isFetching} = useGetCommentsQuery({companyId, employeeId: thisEmployee.id.toString()}); */
     const [trigger, {data: comments, isError, isLoading, isFetching}] = useLazyGetCommentsQuery();
-
-    const dispatch = useAppDispatch();
 
     /* Enable scroll */
     useEffect(() => {
@@ -57,7 +56,7 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
     /* Setting Telegram */
     const onMainBtnClick = () => {
         if(isEmployeeDetails && isEmployee && thisEmployee !== undefined){
-            if(thisEmployee.isActive) dispatch(setEmployee(thisEmployee));
+            if(thisEmployee.isActive) setChosenEmployee(thisEmployee);
             setIsEmployeeDetails(false);
             setIsOpacity(false);
         }
