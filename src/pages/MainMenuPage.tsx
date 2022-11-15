@@ -50,7 +50,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
 
     useEffect(() => {
         if(!isDate && !isEmployee && !isServices){
-            if(isAgree && employee.id > 0 && services.length > 0 && dateAndTime.date !== '' && dateAndTime.time !== ''){
+            if(isAgree && employee.id >= 0 && services.length > 0 && dateAndTime.date !== '' && dateAndTime.time !== ''){
                 window.Telegram.WebApp.MainButton.enable().show();
             } else {
                 window.Telegram.WebApp.MainButton.disable().hide();

@@ -27,6 +27,12 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     const {employee, dateAndTime, services} = useAppSelector(state => state.mainSlice);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if(employee.id >= 0){
+            setChosenEmployee(employee);
+        }
+    }, [employee]);
+
     /* Fetching employees */
     useEffect(() => {
         if(dateAndTime.date !== '' && dateAndTime.time !== '' && services.length > 0) {
@@ -46,7 +52,8 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
 
     /* Checking if employye is anyone */
     useEffect(() => {
-        if(!(chosenEmployee.name === 'Любой свободный специалист')) setIsAnyone(false);
+        if(chosenEmployee.id === 0) setIsAnyone(true);
+        else setIsAnyone(false);
     }, [chosenEmployee]);
 
     /* Disable scroll */
@@ -97,7 +104,6 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                             <div 
                                 onClick={() => {
                                     setChosenEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''});
-                                    setIsAnyone(true);
                                 }}
                                 className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
                                 <div className='employee-card__img employee-card__img_icon'>

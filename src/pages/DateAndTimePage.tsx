@@ -4,8 +4,9 @@ import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
 import DatesBlock from '../components/DatesBlock';
 import SeancesList from '../components/SeancesList';
-import { useAppSelector, useTransformFormatOfDates } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector, useTransformFormatOfDates } from '../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
+import { IDateAndTime, setDateAndTime } from '../redux/redux';
 
 interface dateAndTimePageProps {
     companyId: string;
@@ -34,6 +35,7 @@ export interface datesObj {
 }
 
 const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, setIsDate, firstOpened, setFirstOpened, initialMonth}) => {
+    const [chosenDateAndTime, setChosenDateAndTime] = useState<IDateAndTime>({date: '', time: ''});
     const [triggerDates, {data: dates, isLoading, isFetching, isError}] = useLazyGetDatesQuery();
     const [months, setMonths] = useState<datesObj[]>([]);
     const [indexOfMonths, setIndexOfMonths] = useState(0);
@@ -44,16 +46,16 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     const [isNoSeances, setIsNoSeances] = useState(false);
     
     const {dateAndTime, employee, services} = useAppSelector(state => state.mainSlice); 
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(dateAndTime.date !== '' && date !== dateAndTime.date) setDate(dateAndTime.date);
-    }, [dateAndTime.date, indexOfMonths]);
+        if(dateAndTime.date !== '' && dateAndTime.time !== '' )setChosenDateAndTime(dateAndTime);
+    }, [dateAndTime]);
 
     useEffect(() => {
-        console.log(date);
-        console.log(time);
-    }, [dateAndTime]);
+        if(chosenDateAndTime.date !== '' && date !== chosenDateAndTime.date) setDate(chosenDateAndTime.date);
+    }, [chosenDateAndTime.date, indexOfMonths]);
 
     /* Fetching dates */
     useEffect(() => {
@@ -142,7 +144,8 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
 
     /* Setting Telegram */
     const onMainBtnClick = () => {
-        if(isDate && dateAndTime.date !== '' && dateAndTime.time !== ''){
+        if(isDate && chosenDateAndTime.date !== '' && chosenDateAndTime.time !== ''){
+            dispatch(setDateAndTime(chosenDateAndTime))
             setIsDate(false);
             navigate(`/?companyId=${companyId}`);
         }
@@ -153,10 +156,10 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
         return () => {
             window.Telegram.WebApp.offEvent('mainButtonClicked', onMainBtnClick);
         }
-    }, [onMainBtnClick, isDate, dateAndTime.date, dateAndTime.time]);
+    }, [onMainBtnClick, isDate, chosenDateAndTime.date, chosenDateAndTime.time]);
 
     useEffect(() => {
-        if(isDate && dateAndTime.date !== '' && dateAndTime.time !== ''){
+        if(isDate && chosenDateAndTime.date !== '' && chosenDateAndTime.time !== ''){
             if(!window.Telegram.WebApp.MainButton.isVisible){
                 window.Telegram.WebApp.MainButton.setParams({text: 'Записаться', color: '#3F3133', text_color: '#ffffff'});
                 window.Telegram.WebApp.MainButton.enable().show();
@@ -164,7 +167,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
         } else {
             window.Telegram.WebApp.MainButton.disable().hide();
         }
-    }, [isDate, dateAndTime.date, dateAndTime.time]);
+    }, [isDate, chosenDateAndTime.date, chosenDateAndTime.time]);
 
     return (
         <>
@@ -179,7 +182,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                                 {isSeancesError && <ErrorBlock/>}
                                 {(isSeancesLoading || isSeancesFetching) && <Loader/>}
                                 {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 &&
-                                    <SeancesList date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
+                                    <SeancesList setChosenDateAndTime={setChosenDateAndTime} chosenDateAndTime={chosenDateAndTime} date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
                                 }
                                 {isNoSeances && 
                                 <div className='no-seances'>
