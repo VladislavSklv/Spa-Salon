@@ -100,22 +100,24 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                     {isError && <ErrorBlock/>}
                     {(isLoading || isFetching) && <Loader/>}
                     {employees !== undefined &&
-                        <div className='employees__wrapper'>
-                            <div 
-                                onClick={() => {
-                                    setChosenEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''});
-                                }}
-                                className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
-                                <div className='employee-card__img employee-card__img_icon'>
-                                    <img src="../images/specialist-icon.svg" alt="icon" />
+                        <div className='employees-page'>
+                            <div className='employees__wrapper'>
+                                <div 
+                                    onClick={() => {
+                                        setChosenEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''});
+                                    }}
+                                    className={isAnyone ? 'employee-card employee-card_anyone employee-card_active' : 'employee-card employee-card_anyone'}> 
+                                    <div className='employee-card__img employee-card__img_icon'>
+                                        <img src="../images/specialist-icon.svg" alt="icon" />
+                                    </div>
+                                    <div>
+                                        <h2 className='employee-card__name'>Любой свободный специалист</h2>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 className='employee-card__name'>Любой свободный специалист</h2>
-                                </div>
+                                {employees.map(employee => (
+                                    <Employee chosenEmployee={chosenEmployee} setChosenEmployee={setChosenEmployee} setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
+                                ))}
                             </div>
-                            {employees.map(employee => (
-                                <Employee chosenEmployee={chosenEmployee} setChosenEmployee={setChosenEmployee} setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
-                            ))}
                             <div 
                                 onClick={() => {
                                     setIsOpacity(false);
