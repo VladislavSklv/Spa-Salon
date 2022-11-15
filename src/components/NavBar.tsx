@@ -7,9 +7,10 @@ export interface navBarProps {
     setIsOpacity?: React.Dispatch<React.SetStateAction<boolean>>;
     setIsModal?: React.Dispatch<React.SetStateAction<boolean>>;
     activeTab?: number;
+    servicesListRef: React.RefObject<HTMLDivElement>;
 }
 
-const NavBar:React.FC<navBarProps> = ({servicesCategories, setIsModal, setIsOpacity, activeTab, mainMenuRef}) => {
+const NavBar:React.FC<navBarProps> = ({servicesCategories, setIsModal, setIsOpacity, activeTab, mainMenuRef, servicesListRef}) => {
     const tabRef = createRef<HTMLDivElement>();
 
     useEffect(() => {
@@ -48,9 +49,10 @@ const NavBar:React.FC<navBarProps> = ({servicesCategories, setIsModal, setIsOpac
                         className={activeTab == servicesCategory.id ? 'navbar__href active' : 'navbar__href'} 
                         onClick={(e: any) => {
                             if(mainMenuRef.current !== null) {
-                                mainMenuRef.current.childNodes[1].childNodes.forEach((div: any) => {
-                                    if(div.id && div.id === e.target.dataset.href){
-                                        window.scrollBy(0, div.getBoundingClientRect().top - 45);
+                                mainMenuRef.current.childNodes[1].childNodes.forEach((div: any, i) => {
+                                    if(div.id && div.id === e.target.dataset.href && servicesListRef.current !== null){
+                                        if(i === 0) servicesListRef.current.scrollBy(0, div.getBoundingClientRect().top - 61);
+                                        else servicesListRef.current.scrollBy(0, div.getBoundingClientRect().top - 45);
                                     }
                                 })
                             }

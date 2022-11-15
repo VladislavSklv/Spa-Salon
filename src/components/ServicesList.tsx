@@ -11,11 +11,10 @@ interface servicesListProps {
     setIsDetails: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
     setDetailsId: React.Dispatch<React.SetStateAction<number>>;
+    servicesListRef: React.RefObject<HTMLDivElement>;
 }
 
-const ServicesList:React.FC<servicesListProps> = ({servicesCategories, setActiveTab, setIsDetails, setIsOpacity, setDetailsId, chosenServices, setChosenServices}) => {
-    const servicesListRef = useRef<HTMLDivElement>(null);
-
+const ServicesList:React.FC<servicesListProps> = ({servicesCategories, setActiveTab, setIsDetails, setIsOpacity, setDetailsId, chosenServices, setChosenServices, servicesListRef}) => {
     return (
         <div ref={servicesListRef} className='service__list'>
             {servicesCategories.map(servicesCategory => (

@@ -8,9 +8,10 @@ interface modalNavBarProps {
     isModal: boolean;
     setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
+    servicesListRef: React.RefObject<HTMLDivElement>;
 }
 
-const ModalNavBar: React.FC<modalNavBarProps> = ({servicesCategories, servicesRef, isModal, setIsModal, setIsOpacity}) => {
+const ModalNavBar: React.FC<modalNavBarProps> = ({servicesCategories, servicesRef, isModal, setIsModal, setIsOpacity, servicesListRef}) => {
     return (
         <Modal setIsOpened={setIsModal} setIsOpacity={setIsOpacity} isOpened={isModal}>
             <div className='modal-navbar'>
@@ -22,9 +23,10 @@ const ModalNavBar: React.FC<modalNavBarProps> = ({servicesCategories, servicesRe
                             key={servicesCategory.id}
                             onClick={(e: any) => {
                                 if(servicesRef.current !== null) {
-                                    servicesRef.current.childNodes[1].childNodes.forEach((div: any) => {
-                                        if(div.id && div.id === e.target.dataset.href){
-                                            window.scrollBy(0, div.getBoundingClientRect().top - 45);
+                                    servicesRef.current.childNodes[1].childNodes.forEach((div: any, i) => {
+                                        if(div.id && div.id === e.target.dataset.href && servicesListRef.current !== null){
+                                            if(i === 0) servicesListRef.current.scrollBy(0, div.getBoundingClientRect().top - 61);
+                                            else servicesListRef.current.scrollBy(0, div.getBoundingClientRect().top - 45);
                                         }
                                     })
                                     setIsModal(false);

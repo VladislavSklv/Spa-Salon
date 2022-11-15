@@ -25,6 +25,7 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
     const [isDetails, setIsDetails] = useState(false);
     const [detailsId, setDetailsId] = useState(servicesCategories !== undefined ? servicesCategories[0].id : 0);
     const servicesRef = useRef<HTMLDivElement>(null);
+    const servicesListRef = useRef<HTMLDivElement>(null);
 
     const { services, dateAndTime, employee } = useAppSelector(state => state.mainSlice);
 
@@ -96,8 +97,8 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
                     {(isLoading || isFetching) && <Loader/>}
                     {servicesCategories !== undefined && 
                         <div ref={servicesRef} className='service'>
-                            <NavBar servicesCategories={servicesCategories} mainMenuRef={servicesRef} setIsModal={setIsModal} activeTab={activeTab} setIsOpacity={setIsOpacity}/>
-                            <ServicesList chosenServices={chosenServices} setChosenServices={setChosenServices} setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} setActiveTab={setActiveTab} servicesCategories={servicesCategories}/>
+                            <NavBar servicesListRef={servicesListRef} servicesCategories={servicesCategories} mainMenuRef={servicesRef} setIsModal={setIsModal} activeTab={activeTab} setIsOpacity={setIsOpacity}/>
+                            <ServicesList servicesListRef={servicesListRef} chosenServices={chosenServices} setChosenServices={setChosenServices} setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} setActiveTab={setActiveTab} servicesCategories={servicesCategories}/>
                             <div 
                                 onClick={() => {
                                     setIsModal(false);
@@ -107,7 +108,7 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
                                 style={isOpacity ? {opacity: 1, pointerEvents: 'all'} : {opacity: 0, pointerEvents: 'none'}} 
                                 className='opacity-block'
                             ></div>
-                            <ModalNavBar setIsOpacity={setIsOpacity} isModal={isModal} setIsModal={setIsModal} servicesRef={servicesRef} servicesCategories={servicesCategories} />
+                            <ModalNavBar servicesListRef={servicesListRef} setIsOpacity={setIsOpacity} isModal={isModal} setIsModal={setIsModal} servicesRef={servicesRef} servicesCategories={servicesCategories} />
                             <ServiceDetails chosenServices={chosenServices} setChosenServices={setChosenServices} companyId={companyId} setIsServices={setIsServices} isServices={isServices} detailsId={detailsId} isDetails={isDetails} servicesCategories={servicesCategories} setIsDetails={setIsDetails} setIsOpacity={setIsOpacity} />
                         </div>
                     }
