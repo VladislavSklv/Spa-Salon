@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IServicesCategory } from '../api/mainApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { addService, IServiceInSlice } from '../redux/redux';
+import { addService, IServiceInSlice, setServices } from '../redux/redux';
 import Modal from './Modal';
 
 interface serviceDetailsProps {
+    chosenServices: IServiceInSlice[];
+    setChosenServices: React.Dispatch<React.SetStateAction<IServiceInSlice[]>>;
     servicesCategories: IServicesCategory[];
     isDetails: boolean;
     isServices: boolean;
@@ -16,22 +18,21 @@ interface serviceDetailsProps {
     companyId: string;
 }
 
-const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices, companyId}) => {
+const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices, companyId, chosenServices, setChosenServices}) => {
     const [service, setService] = useState<IServiceInSlice>();
     const [isServiceChosen, setIsServiceChosen] = useState(false);
 
-    const dispatch = useAppDispatch();
-    const {services} = useAppSelector(state => state.mainSlice);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     /* Checking if service is chosen */
     useEffect(() => {
-        if(services !== undefined && services.length > 0 && service !== undefined){
+        if(chosenServices.length > 0 && service !== undefined){
             let checker = true;
-            services.forEach(chosenService => chosenService.id === service.id ? setIsServiceChosen(true) : checker = false);
+            chosenServices.forEach(chosenService => chosenService.id === service.id ? setIsServiceChosen(true) : checker = false);
             if(!checker) setIsServiceChosen(false);
         }
-    }, [services, service]);
+    }, [chosenServices, service]);
 
     /* Finding this service */
     useEffect(() => {
@@ -45,6 +46,7 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
     /* Setting Telegram */
     const onMainBtnClick = () => {
         if(isDetails === false){
+            dispatch(setServices(chosenServices));
             setIsServices(false);
             navigate(`/?companyId=${companyId}`);
         } else {
@@ -53,7 +55,9 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                     setIsDetails(false);
                     setIsOpacity(false);
                 } else {
-                    if(service.isActive) dispatch(addService(service));
+                    if(service.isActive) {
+                        setChosenServices(prev => [...prev, service]);
+                    }
                     setIsDetails(false);
                     setIsOpacity(false);
                 }

@@ -8,6 +8,7 @@ import ServiceDetails from '../components/ServiceDetails';
 import Loader from '../components/Loader';
 import ErrorBlock from '../components/ErrorBlock';
 import { useAppSelector } from '../hooks/hooks';
+import { IServiceInSlice } from '../redux/redux';
 
 interface servicesPageProps {
     isServices: boolean;
@@ -16,6 +17,7 @@ interface servicesPageProps {
 }
 
 const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, companyId}) => {
+    const [chosenServices, setChosenServices] = useState<IServiceInSlice[]>([]);
     const [servicesTrigger, {data: servicesCategories, isLoading, isFetching, isError}] = useLazyGetServicesQuery();
     const [isOpacity, setIsOpacity] = useState(false);
     const [isModal, setIsModal] = useState(false);
@@ -26,35 +28,41 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
 
     const { services, dateAndTime, employee } = useAppSelector(state => state.mainSlice);
 
+    useEffect(() => {
+        if(services.length > 0){
+            setChosenServices(services);
+        }
+    }, [services]);
+
     /* Fetching services */
     useEffect(() => {
-        if(dateAndTime.date !== '' && dateAndTime.time !== '' && employee.id >= 0 && services.length > 0){
+        if(dateAndTime.date !== '' && dateAndTime.time !== '' && employee.id >= 0 && chosenServices.length > 0){
             let datetime = `${dateAndTime.date}T${dateAndTime.time}`;
             let serviceIds: number[] = [];
-            services.forEach(service => serviceIds.push(service.id));
+            chosenServices.forEach(service => serviceIds.push(service.id));
             servicesTrigger({companyId, datetime, employeeId: employee.id, serviceIds});
         } else if(dateAndTime.date !== '' && dateAndTime.time && employee.id >= 0){
             let datetime = `${dateAndTime.date}T${dateAndTime.time}`;
             servicesTrigger({companyId, datetime, employeeId: employee.id});
-        } else if(dateAndTime.date !== '' && dateAndTime.time && services.length > 0){
+        } else if(dateAndTime.date !== '' && dateAndTime.time && chosenServices.length > 0){
             let datetime = `${dateAndTime.date}T${dateAndTime.time}`;
             let serviceIds: number[] = [];
-            services.forEach(service => serviceIds.push(service.id));
+            chosenServices.forEach(service => serviceIds.push(service.id));
             servicesTrigger({companyId, datetime, serviceIds});
-        } else if(employee.id >= 0 && services.length > 0){
+        } else if(employee.id >= 0 && chosenServices.length > 0){
             let serviceIds: number[] = [];
-            services.forEach(service => serviceIds.push(service.id));
+            chosenServices.forEach(service => serviceIds.push(service.id));
             servicesTrigger({companyId, employeeId: employee.id, serviceIds});
         }  else if(dateAndTime.date !== '' && dateAndTime.time){
             let datetime = `${dateAndTime.date}T${dateAndTime.time}`;
             servicesTrigger({companyId, datetime});
-        } else if(services.length > 0){
+        } else if(chosenServices.length > 0){
             let serviceIds: number[] = [];
-            services.forEach(service => serviceIds.push(service.id));
+            chosenServices.forEach(service => serviceIds.push(service.id));
             servicesTrigger({companyId, serviceIds});
         } else if(employee.id >= 0) servicesTrigger({companyId, employeeId: employee.id});
         else servicesTrigger({companyId});
-    }, [dateAndTime, employee, services]);
+    }, [dateAndTime, employee, chosenServices]);
 
     /* Disable scroll */
     useEffect(() => {
@@ -70,13 +78,13 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
 
     window.Telegram.WebApp.MainButton.setParams({color: '#3F3133', text_color: '#ffffff'});
     useEffect(() => {
-        if(isServices && !isDetails && services.length > 0) {
-            window.Telegram.WebApp.MainButton.setText(`Продолжить ${services.length}`);
-            if(services.length === 1) window.Telegram.WebApp.MainButton.enable().show();
+        if(isServices && !isDetails && chosenServices.length > 0) {
+            window.Telegram.WebApp.MainButton.setText(`Продолжить ${chosenServices.length}`);
+            if(chosenServices.length === 1) window.Telegram.WebApp.MainButton.enable().show();
         } else if(isServices && !isDetails) {
             window.Telegram.WebApp.MainButton.disable().hide();
         }
-    }, [services, isServices, isDetails]);
+    }, [chosenServices, isServices, isDetails]);
 
     return (
         <>
@@ -89,7 +97,7 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
                     {servicesCategories !== undefined && 
                         <div ref={servicesRef} className='service'>
                             <NavBar servicesCategories={servicesCategories} mainMenuRef={servicesRef} setIsModal={setIsModal} activeTab={activeTab} setIsOpacity={setIsOpacity}/>
-                            <ServicesList setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} setActiveTab={setActiveTab} servicesCategories={servicesCategories}/>
+                            <ServicesList chosenServices={chosenServices} setChosenServices={setChosenServices} setDetailsId={setDetailsId} setIsOpacity={setIsOpacity} setIsDetails={setIsDetails} setActiveTab={setActiveTab} servicesCategories={servicesCategories}/>
                             <div 
                                 onClick={() => {
                                     setIsModal(false);
@@ -100,7 +108,7 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
                                 className='opacity-block'
                             ></div>
                             <ModalNavBar setIsOpacity={setIsOpacity} isModal={isModal} setIsModal={setIsModal} servicesRef={servicesRef} servicesCategories={servicesCategories} />
-                            <ServiceDetails companyId={companyId} setIsServices={setIsServices} isServices={isServices} detailsId={detailsId} isDetails={isDetails} servicesCategories={servicesCategories} setIsDetails={setIsDetails} setIsOpacity={setIsOpacity} />
+                            <ServiceDetails chosenServices={chosenServices} setChosenServices={setChosenServices} companyId={companyId} setIsServices={setIsServices} isServices={isServices} detailsId={detailsId} isDetails={isDetails} servicesCategories={servicesCategories} setIsDetails={setIsDetails} setIsOpacity={setIsOpacity} />
                         </div>
                     }
                 </div>

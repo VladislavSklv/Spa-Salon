@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IService } from '../api/mainApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { addService, removeService } from '../redux/redux';
+import { addService, IServiceInSlice, removeService } from '../redux/redux';
 import MyButton from './UI/MyButton';
 
 interface serviceProps {
+    chosenServices: IServiceInSlice[];
+    setChosenServices: React.Dispatch<React.SetStateAction<IServiceInSlice[]>>;
     service: IService;
     categoryName: string;
     setIsDetails: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,18 +14,15 @@ interface serviceProps {
     setDetailsId: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, setDetailsId, categoryName}) => {
+const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, setDetailsId, categoryName, chosenServices, setChosenServices}) => {
     const [isActive, setIsActive] = useState(false);
     const descrRef = useRef<HTMLDivElement>(null);
 
-    const dispatch = useAppDispatch();
-    const {services} = useAppSelector(state => state.mainSlice);
-
     useEffect(() => {
-        services.forEach(item => {
+        chosenServices.forEach(item => {
             if(item.id === service.id) setIsActive(true);
         });
-    }, [services]);
+    }, [chosenServices]);
 
     /* Handlers */
     const activateDetails = () => {
@@ -54,8 +53,9 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
                     <div className='button-with-price'>
                         <MyButton isMinus={isActive} onClickHandler={() => {
                             if(service.isActive){
-                                if(!isActive) dispatch(addService({...service, categoryName}));
-                                else dispatch(removeService(service.id));
+                                if(!isActive) {
+                                    setChosenServices(prev => [...prev, {...service, categoryName}]);
+                                } else setChosenServices(prev => prev.filter(item => item.id !== service.id));
                                 setIsActive(prev => !prev);
                             }
                         }}/>

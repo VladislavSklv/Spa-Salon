@@ -28,6 +28,9 @@ const mainSlice = createSlice({
         removeService(state, action: PayloadAction<number>){
             state.services = state.services.filter(service => service.id !== action.payload);
         },
+        setServices(state, action: PayloadAction<IServiceInSlice[]>){
+            state.services = action.payload;
+        },
         setEmployee(state, action: PayloadAction<IEmployee>){
             state.employee = action.payload;
         },
@@ -43,5 +46,5 @@ const mainSlice = createSlice({
     }
 });
 
-export const {addService, removeService, setEmployee, unsetEmployee, setDateAndTime, unsetDateAndTime} = mainSlice.actions;
+export const {addService, removeService, setEmployee, unsetEmployee, setDateAndTime, unsetDateAndTime, setServices} = mainSlice.actions;
 export default mainSlice.reducer;
