@@ -452,6 +452,7 @@ code {
 			justify-content: space-between;
 			align-items: center;
 			margin-top: 16px;
+			min-height: 28px;
 		}
 		&__info{
 			height: 20px;
@@ -490,6 +491,12 @@ code {
 
 .show-more{
 	position: absolute;
+	box-sizing: content-box;
+	width: 30px;
+	height: 20px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
 	right: 12px;
 	bottom: 56px;
 	background-color: #fff;
@@ -826,7 +833,7 @@ code {
 			text-overflow: clip;
 		}
 		.show-more{
-			bottom: 12px;
+			bottom: 11px;
 			font-weight: 400;
 			font-size: 14px;
 			line-height: 125%;
