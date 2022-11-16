@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { disablePageScroll, enablePageScroll } from 'scroll-lock';
 import { IEmployee, useLazyGetEmployeesQuery } from '../api/mainApi';
@@ -22,6 +22,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     const [isEmployeeDetails, setIsEmployeeDetails] = useState(false);
     const [isAnyone, setIsAnyone] = useState(false);
     const [detailsId, setDetailsId] = useState(0);
+    const employeesWrapperRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useAppDispatch();
     const {employee, dateAndTime, services} = useAppSelector(state => state.mainSlice);
@@ -59,7 +60,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     /* Disable scroll */
     useEffect(() => {
         if(isEmployeeDetails) {
-            if(window.pageYOffset === 0) window.scrollBy(0, 1);
+            if(employeesWrapperRef.current !== null && employeesWrapperRef.current.scrollTop === 0) employeesWrapperRef.current.scrollBy(0, 1);
             disablePageScroll(document.body);
         } else {
             enablePageScroll(document.body);
@@ -101,7 +102,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                     {(isLoading || isFetching) && <Loader/>}
                     {employees !== undefined &&
                         <div className='employees-page'>
-                            <div className='employees__wrapper'>
+                            <div ref={employeesWrapperRef} className='employees__wrapper'>
                                 <div 
                                     onClick={() => {
                                         setChosenEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''});

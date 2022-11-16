@@ -68,7 +68,7 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
     /* Disable scroll */
     useEffect(() => {
         if(isModal || isDetails) {
-            if(window.pageYOffset === 0) window.scrollBy(0, 1);
+            if(servicesListRef.current !== null && servicesListRef.current.scrollTop === 0) servicesListRef.current.scrollBy(0, 1);
             disablePageScroll(document.body);
         } else {
             enablePageScroll(document.body);
