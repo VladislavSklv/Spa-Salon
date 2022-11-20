@@ -102,6 +102,11 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                     {(isLoading || isFetching) && <Loader/>}
                     {employees !== undefined &&
                         <div className='employees-page'>
+                            <button onClick={() => {
+                                dispatch(setEmployee(chosenEmployee));
+                                setIsEmployee(false);
+                                navigate(`/?companyId=${companyId}`);
+                            }}>Add</button>
                             <div ref={employeesWrapperRef} className='employees__wrapper'>
                                 <div 
                                     onClick={() => {

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainCard from '../components/MainCard';
+import MainMenuServiceItem from '../components/MainMenuServiceItem';
+import MyButton from '../components/UI/MyButton';
 import MyCheckbox from '../components/UI/MyCheckbox';
 import MyInput from '../components/UI/MyInput';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { removeService, unsetDateAndTime, unsetEmployee } from '../redux/redux';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 interface mainMenuPageProps {
     setIsServices: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,10 +24,34 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
     /* Getting Get param */
     const [searchParams, setSearchParams] = useSearchParams();
 	const companyId = searchParams.get('companyId');
+    const [totalPrice, setTotalPrice] = useState('');
 
     const navigate = useNavigate();
     const {services, employee, dateAndTime} = useAppSelector(state => state.mainSlice);
     const dispatch = useAppDispatch();
+
+    /* Counting total services price */
+    useEffect(() => {
+        if(services.length > 0){
+            let total = '';
+            let from = false;
+            let priceMax = 0;
+            let priceMin = 0;
+            services.forEach(service => {
+                priceMax += service.priceMax;
+                priceMin += service.priceMin;
+                if((service.priceMin === undefined && service.priceMax === undefined) || (service.priceMin === 0 && service.priceMax === 0)) from = true;
+            })
+            total = ((priceMin !== undefined && priceMax !== undefined) && (priceMin !== 0 && priceMax !== 0))
+            ? (priceMax === priceMin ? (priceMax.toLocaleString() + '₽') : (priceMax > priceMin ? `${priceMin.toLocaleString()} - ${priceMax.toLocaleString()}₽` : priceMin.toLocaleString() + '₽'))
+            : '';
+            if(from){
+                if(priceMin > 0) total = `от ${priceMin}₽`;
+                else total = '';
+            }
+            setTotalPrice(total);
+        }
+    }, [services]);
 
     /* Handlers */
     const onCheckboxClickHandler = () => {
@@ -76,6 +103,8 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                     title='Выберите специалиста' 
                     imgSrc='../images/specialist-icon.svg'
                     ifImgFull={employee.images.tiny.length > 0 ? true : false} 
+                    commentsCount={employee.commentsCount}
+                    rating={employee.rating}
                 />
                 <MainCard 
                     mainItem={(dateAndTime.date !== '' && dateAndTime.time !== '') ? {subtitle: new Date(dateAndTime.date).toLocaleDateString('ru-RU', {weekday: 'long', day: 'numeric', month: 'long'}), title: dateAndTime.time} : undefined}
@@ -89,17 +118,46 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                     imgSrc='../images/date-icon.svg' 
                     
                 />
-                <MainCard 
-                    mainItem={(services !== undefined && services.length > 0) ? {subtitle: services[services.length - 1].categoryName, title: services[services.length - 1].name} : undefined} 
-                    onClickHandler={() => {
-                        setIsServices(true); 
-                        if(companyId === null) navigate('/services');
-                        else navigate(`/services/?companyId=${companyId}`);
-                    }}
-                    onMinusClickHandler={() => dispatch(removeService(services[services.length - 1].id))} 
-                    title='Выберите услуги' 
-                    imgSrc="../images/services-icon.svg" 
-                />
+                <div className="menu-item menu-item_services">
+                    <div 
+                        onClick={() => {
+                            setIsServices(true); 
+                            if(companyId === null) navigate('/services');
+                            else navigate(`/services/?companyId=${companyId}`);
+                        }} 
+                        className='menu-item__top'
+                    >
+                        <div className="menu-item__img" >
+                            <img src='../images/services-icon.svg' alt="services-icon" />
+                        </div>
+                        <div style={services.length > 0 ? {justifyContent: 'center'} : {}} className='menu-item__content'>
+                            {services.length > 0 
+                                ?
+                                <>
+                                    <p className='menu-item__category'>Услуги</p>
+                                    {totalPrice !== '' && <h2 className="menu-item__title">{totalPrice}{/* <span><img src='../images/time.svg' alt='time'/> time</span> */}</h2>}
+                                </>
+                                :
+                                <>
+                                    <p className='menu-item__title'>Выберите услуги</p>
+                                </>
+                            }
+                        </div>
+                    </div>
+                    <div onClick={(e) => e.stopPropagation()} className="menu-item__wrapper">
+                        <TransitionGroup>
+                            {services.map(service => (
+                                <CSSTransition
+                                    key={service.id}
+                                    timeout={500}
+                                    classNames="menu-service-transition"
+                                >
+                                    <MainMenuServiceItem service={service}/>
+                                </CSSTransition>
+                            ))}
+                            </TransitionGroup>
+                    </div>
+                </div>
             </div>
             <form>
                 <MyInput placeholder='Оставить комментарий' type='text' id='comment' inputValue={comment} setInputValue={setComment}/>

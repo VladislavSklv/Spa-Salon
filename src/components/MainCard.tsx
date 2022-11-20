@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MyButton from './UI/MyButton';
 
 
@@ -14,9 +14,26 @@ interface mainCardProps{
     title: string;
     imgSrc: string;
     ifImgFull?: boolean;
+    rating?: number;
+    commentsCount?: number;
 }
 
-const MainCard:React.FC<mainCardProps> = ({mainItem, onClickHandler, imgSrc, title, onMinusClickHandler, ifImgFull}) => {
+const MainCard:React.FC<mainCardProps> = ({mainItem, onClickHandler, imgSrc, title, onMinusClickHandler, ifImgFull, rating, commentsCount}) => {
+    const [commentText, setCommentText] = useState('');
+
+    useEffect(() => {
+        if(commentsCount !== undefined){
+            if(commentsCount % 10 === 1) {
+                if(commentsCount % 100 > 10 && commentsCount % 100 < 20) setCommentText('отзывов');
+                else setCommentText('отзыв');
+            } else if(commentsCount % 10 >= 2 && commentsCount % 10 < 5) {
+                if(commentsCount % 100 > 10 && commentsCount % 100 < 20) setCommentText('отзывов');
+                else setCommentText('отзыва');
+            }
+            else setCommentText('отзывов');
+        }
+    }, []);
+
     return (
         <div onClick={onClickHandler} className="menu-item">
             {mainItem !== undefined
@@ -25,6 +42,12 @@ const MainCard:React.FC<mainCardProps> = ({mainItem, onClickHandler, imgSrc, tit
                     <div style={mainItem.subtitle === '' ? {justifyContent: 'center'} : {}} className='menu-item__content'>
                         <p className='menu-item__category'>{mainItem.subtitle}</p>
                         <h2 className="menu-item__title">{mainItem.title}</h2>
+                        {(rating !== undefined && commentsCount !== undefined && rating > 0 && commentsCount > 0) &&
+                            <div className='employee-card__rating'>
+                                <div className='employee-card__stars'><div style={{width: `${68 - (rating * (68 / 5))}px`}} className='employee-card__bluring-stars'></div><img src="../images/stars.svg" alt="stars" /></div>
+                                <span className='employee-card__number-of-comments'>{commentsCount} {commentText !== '' && commentText}</span>
+                            </div>
+                        }
                         <MyButton isMinus={true} onClickHandler={() => onMinusClickHandler()} />
                     </div>
                 </>

@@ -92,6 +92,11 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                         }
                         <div style={(!(service.images !== undefined && service.images.length > 0)) ? {marginTop: '15px'} : {}} className='details__content'>
                             <h3 className="details__title">{service.name}</h3>
+                            <button onClick={() => {
+                                dispatch(setServices(chosenServices));
+                                setIsServices(false);
+                                navigate(`/?companyId=${companyId}`);
+                            }}>Add</button>
                             <p className='details__descr'>{service.description !== undefined && service.description}</p>
                             <div className='details__bottom'>
                                 <p className='details__price'>

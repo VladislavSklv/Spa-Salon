@@ -31,6 +31,19 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
         setIsOpacity(true);
     }
 
+    /* useEffect(() => {
+        if(service.length !== undefined){
+            let time = service.length;
+            let hours = time / 60 / 60;
+            let minutes = Math.floor(time / 60);
+            if(hours > 0) {
+                hours = Math.floor(time / 60 / 60);
+                minutes = Math.floor(time / 60) - (hours * 60);
+            }
+            console.log(hours + ' ч. ' + minutes + ' мин.');
+        }
+    }, []); */
+
     return (
         <div className={isActive ? (service.isActive ? 'service-card service-card_active' : 'service-card service-card_active service-card_blured') : (service.isActive ? 'service-card' : 'service-card service-card_blured')} key={service.id}>
             {service.images !== undefined && service.images.length > 0 && 

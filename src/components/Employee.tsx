@@ -90,7 +90,9 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                             <span className='employee-card__number-of-comments'>{employee.commentsCount} {commentText !== '' && commentText}</span>
                         </div>
                     }
-                    {employee.isActive &&
+                </div>
+            </div>
+            {employee.isActive &&
                         <>
                             {isError && <ErrorBlock/>}
                             {(isLoading || isFetching) && <Loader/>}
@@ -106,8 +108,6 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                             }
                         </>
                     }
-                </div>
-            </div>
             <div 
                 onClick={(e) => {
                     e.stopPropagation();

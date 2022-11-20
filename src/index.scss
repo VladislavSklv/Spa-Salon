@@ -78,6 +78,9 @@ code {
 .menu{
 	width: 100%;
 	padding: 30px 12px 0;
+	height: 100vh;
+	overflow: auto;
+	clip-path: inset(0 12px 0 0);
 	&__wrapper{
 		margin-bottom: 30px;
 	}
@@ -119,6 +122,7 @@ code {
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+			transition: all 300ms;
 		}
 		&__category{
 			font-weight: 400;
@@ -128,7 +132,7 @@ code {
 			text-transform: capitalize;
 		}
 		&__title{
-			display: -webkit-box;
+			display: flex;
 			font-weight: 590;
 			font-size: 16px;
 			line-height: 120%;
@@ -138,11 +142,25 @@ code {
 			max-height: 40px;
 			-webkit-line-clamp: 2;
   			-webkit-box-orient: vertical;
+			span{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: 510;
+				font-size: 14px;
+				line-height: 130%;
+				color: $second-font-color;
+				margin-left: 10px;
+				img{
+					margin-right: 5px;
+				}
+			}
 		}
 		.button{
 			position: absolute;
 			right: 12px;
-			top: 12px;
+			top: 50%;
+			transform: translateY(-50%);
 		}
 		&:nth-child(3){
 			.menu-item__img{
@@ -152,6 +170,80 @@ code {
 			}
 		}
 	}
+}
+
+.menu-item_services{
+	padding: 12px 0 0 0;
+	display: block;
+	height: auto;
+	.menu-item__top{
+		display: flex;
+		align-items: center;
+		padding: 0 12px 12px;
+	}
+	.menu-item__wrapper{
+		display: block;
+		width: 100%;
+		background-color: #fff;
+		border-radius: 0 0 12px 12px;
+		transition: all 500ms ease-in;
+	}
+	.menu-service{
+		position: relative;
+		padding: 12px 45px 12px 12px;
+		border-top: 1px solid #E7E8EA;
+		width: 100%;
+		overflow: hidden;
+		transition: all 300ms ease-in;
+		&__title{
+			display: flex;
+			font-weight: 690;
+			font-size: 14px;
+			line-height: 24px;
+			color: #292929;
+			span{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: 510;
+				font-size: 14px; 
+				line-height: 130%;
+				color: $second-font-color;
+				margin-left: 25px;
+				img{
+					margin-right: 5px;
+				}
+			}
+		}
+		&__subtitle{
+			font-weight: 400;
+			font-size: 14px;
+			line-height: 130%;
+			letter-spacing: 0.1px;
+			color: $second-font-color;
+		}
+		.button{
+			position: absolute;
+			right: 12px;
+			margin: 0;
+		}
+	}
+}
+
+.menu-service-transition-enter {
+	opacity: 0;
+}
+.menu-service-transition-enter-active {
+	opacity: 1;
+	transition: all 300ms ease-in;
+}
+.menu-service-transition-exit {
+	opacity: 1;
+}
+.menu-service-transition-exit-active {
+	opacity: 0;
+	padding: 0 12px;
+	transition: all 300ms ease-in;
 }
 
 .input__wrapper{
@@ -404,6 +496,7 @@ code {
 		background: #FFFFFF;
 		border-radius: 12px;
 		margin-bottom: 8px;
+		transition: 0.4s all;
 		&::before{
 			content: '';
 			display: block;
@@ -486,6 +579,13 @@ code {
 		height: 25px;
 		border-width: 4px;
 		margin-top: 0;
+	}
+	.error{
+		position: absolute;
+		top: 63px;
+		right: 12px;
+		font-size: 24px;
+		z-index: 2;
 	}
 }
 
@@ -843,13 +943,12 @@ code {
 
 .employees-page{
 	position: relative;
-	padding: 30px 0 20px;
 }
 .employees__wrapper{
 	height: 100vh;
 	overflow: auto;
-	padding: 0 12px;
 	clip-path: inset(0 12px 0 0);
+	padding: 30px 12px 20px;
 	.modal{
 		height: calc(100vh - 10px);
 	}
@@ -857,8 +956,6 @@ code {
 
 .employee-card{
 	position: relative;
-	display: flex;
-	justify-content: space-between;
 	padding: 12px;
 	background: #FFFFFF;
 	border-radius: 12px;
@@ -882,6 +979,7 @@ code {
 	&__content{
 		display: flex;
 		width: calc(100% - 34px);
+		margin-bottom: 10px;
 	}
 	&__img{
 		display: flex;
@@ -921,7 +1019,6 @@ code {
 		position: relative;
 		display: flex;
 		align-items: center;
-		margin-bottom: 8px;
 		img{
 			margin-right: 5px;
 		}
@@ -966,6 +1063,7 @@ code {
 		border-width: 4px;
 	}
 	&_anyone{
+		display: flex;
 		justify-content: flex-start;
 		align-items: center;
 		.employee-card__img{
@@ -994,6 +1092,10 @@ code {
 	align-items: center;
 	margin-top: 8px;
 	&__item{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: calc((100% / 3) - 16px);
 		padding: 9px 8px;
 		border: 2px solid #D6D7DB;
 		border-radius: 50px;
@@ -1006,15 +1108,23 @@ code {
 }
 
 .dates-seances{
-	padding-top: 30px;
-	background-color: #fff;
+	padding-top: 151px;
+	height: 100vh;
+	overflow: hidden;
 	&__dates{
+		position: fixed;
+		top: 0;
 		width: 100%;
-		padding-bottom: 9px;
+		padding: 30px 0 9px;
+		background-color: #fff;
+		z-index: 2;
 	}
 	&__seances{
 		background-color: $main-color;
 		padding: 12px 12px 20px;
+		height: 100%;
+		overflow: auto;
+		clip-path: inset(0 12px 0 0);
 		.loader{
 			margin: 0;
 			height: 30px;
@@ -1137,6 +1247,7 @@ code {
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			width: calc((100% / 3) - 16px);
 			font-weight: 400;
 			font-size: 14px;
 			line-height: 105%;
@@ -1159,6 +1270,7 @@ code {
 		background-color: transparent;
 		border: none;
 		z-index: 2;
+		transition: 0.3s opacity;
 		&::before{
 			content: '';
 			display: block;
@@ -1175,5 +1287,8 @@ code {
 	.slider-next, .slick-next{
 		right: 35%;
 		transform: rotate(180deg);
+	}
+	.slick-disabled{
+		opacity: .4;
 	}
 }
