@@ -21,8 +21,9 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     const [isActive, setIsActive] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [scheduleDate, setScheduleDate] = useState('');
+    const [date, setDate] = useState({date: '', time: ''});
 
-    const {services} = useAppSelector(state => state.mainSlice);
+    const {services, dateAndTime} = useAppSelector(state => state.mainSlice);
 
     /* Setting schedule date */
     useEffect(() => {
@@ -38,14 +39,14 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
 
     /* Fetching employee schedule */
     useEffect(() => {
-        if(employee.isActive) {
+        if(employee.isActive && dateAndTime.time === '' && dateAndTime.date === '') {
             if(services.length > 0){
                 let serviceIds: number[] = [];
                 services.forEach(service => serviceIds.push(service.id));
                 shceduleTrigger({companyId, serviceIds, employeeId: employee.id.toString()});
             } else shceduleTrigger({companyId, employeeId: employee.id.toString()});
         }
-    }, [employee, services]);
+    }, [employee, services, dateAndTime]);
 
     useEffect(() => {
         if(employee.commentsCount % 10 === 1) {
@@ -101,7 +102,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                                     <h4 className="schedule-date">Ближайшее время для записи {scheduleDate}</h4>
                                     <div className='schedule'>
                                         {schedule.seances.map((seance, i) => (
-                                            i < 3 && <div key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
+                                            i < 3 && <div onClick={() => setDate({date: schedule.date, time: seance.time})} key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
                                         ))}
                                     </div>
                                 </>

@@ -979,7 +979,6 @@ code {
 	&__content{
 		display: flex;
 		width: calc(100% - 34px);
-		margin-bottom: 10px;
 	}
 	&__img{
 		display: flex;
@@ -1085,6 +1084,7 @@ code {
 	font-size: 12px;
 	line-height: 100%;
 	color: $second-font-color;
+	margin-top: 10px;
 }
 
 .schedule{

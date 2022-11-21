@@ -182,7 +182,16 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                                 {isSeancesError && <ErrorBlock/>}
                                 {(isSeancesLoading || isSeancesFetching) && <Loader/>}
                                 {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 &&
-                                    <SeancesList setChosenDateAndTime={setChosenDateAndTime} chosenDateAndTime={chosenDateAndTime} date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
+                                    <>
+                                        <SeancesList setChosenDateAndTime={setChosenDateAndTime} chosenDateAndTime={chosenDateAndTime} date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
+                                        <button
+                                            onClick={() => {
+                                                dispatch(setDateAndTime(chosenDateAndTime))
+                                                setIsDate(false);
+                                                navigate(`/?companyId=${companyId}`);
+                                            }}
+                                        >Add</button>
+                                    </>
                                 }
                                 {isNoSeances && 
                                 <div className='no-seances'>
