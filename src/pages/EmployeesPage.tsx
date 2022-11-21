@@ -7,7 +7,7 @@ import EmployeeDetails from '../components/EmployeeDetails';
 import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { setEmployee } from '../redux/redux';
+import { IDateAndTime, setDateAndTime, setEmployee } from '../redux/redux';
 
 interface employeesPageProps{
     companyId: string;
@@ -22,6 +22,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     const [isEmployeeDetails, setIsEmployeeDetails] = useState(false);
     const [isAnyone, setIsAnyone] = useState(false);
     const [detailsId, setDetailsId] = useState(0);
+    const [date, setDate] = useState({date: '', time: '', employeeId: -1});
     const employeesWrapperRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useAppDispatch();
@@ -33,6 +34,11 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
             setChosenEmployee(employee);
         }
     }, [employee]);
+
+    /* Unsetting chosen date */
+    useEffect(() => {
+        if(chosenEmployee.id !== date.employeeId) setDate({date: '', time: '', employeeId: -1});
+    }, [chosenEmployee]);
 
     /* Fetching employees */
     useEffect(() => {
@@ -71,6 +77,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
     const onMainBtnClick = () => {
         if(isEmployee && !isEmployeeDetails) {
             dispatch(setEmployee(chosenEmployee));
+            if((date.date !== '' && date.time !== '') && (dateAndTime.date === '' && dateAndTime.time === '')) dispatch(setDateAndTime(date));
             setIsEmployee(false);
             navigate(`/?companyId=${companyId}`);
         }
@@ -81,7 +88,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
         return () => {
             window.Telegram.WebApp.offEvent('mainButtonClicked', onMainBtnClick);
         }
-    }, [onMainBtnClick, isEmployee, isEmployeeDetails]);
+    }, [onMainBtnClick, isEmployee, isEmployeeDetails, date, dateAndTime]);
     
     window.Telegram.WebApp.MainButton.setParams({color: '#3F3133', text_color: '#ffffff'});
     useEffect(() => {
@@ -121,7 +128,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                                     </div>
                                 </div>
                                 {employees.map(employee => (
-                                    <Employee chosenEmployee={chosenEmployee} setChosenEmployee={setChosenEmployee} setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
+                                    <Employee date={date} setDate={setDate} chosenEmployee={chosenEmployee} setChosenEmployee={setChosenEmployee} setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
                                 ))}
                             </div>
                             <div 

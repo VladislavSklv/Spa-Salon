@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IEmployee, useLazyGetEmployeeScheduleQuery } from '../api/mainApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { setEmployee } from '../redux/redux';
+import { IDateAndTime, setEmployee } from '../redux/redux';
 import ErrorBlock from './ErrorBlock';
 import Loader from './Loader';
 
@@ -13,15 +13,24 @@ interface employeeProps {
     setIsOpacity: React.Dispatch<React.SetStateAction<boolean>>;
     setIsDetails: React.Dispatch<React.SetStateAction<boolean>>;
     setDetailsId: React.Dispatch<React.SetStateAction<number>>;
+    date: {
+        date: string;
+        time: string;
+        employeeId: number;
+    };
+    setDate: React.Dispatch<React.SetStateAction<{
+        date: string;
+        time: string;
+        employeeId: number;
+    }>>;
 }
 
-const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, setIsDetails, setIsOpacity, chosenEmployee, setChosenEmployee}) => {
+const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, setIsDetails, setIsOpacity, chosenEmployee, setChosenEmployee, setDate, date}) => {
     const [shceduleTrigger, {data: schedule, isError, isLoading, isFetching}] = useLazyGetEmployeeScheduleQuery();
     const starBlurWidth = 68 - (employee.rating * (68 / 5));
     const [isActive, setIsActive] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [scheduleDate, setScheduleDate] = useState('');
-    const [date, setDate] = useState({date: '', time: ''});
 
     const {services, dateAndTime} = useAppSelector(state => state.mainSlice);
 
@@ -102,7 +111,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                                     <h4 className="schedule-date">Ближайшее время для записи {scheduleDate}</h4>
                                     <div className='schedule'>
                                         {schedule.seances.map((seance, i) => (
-                                            i < 3 && <div onClick={() => setDate({date: schedule.date, time: seance.time})} key={seance.time + Date.now()} className='schedule__item'>{seance.time}</div>
+                                            i < 3 && <div onClick={() => setDate({date: schedule.date, time: seance.time, employeeId: employee.id})} key={seance.time + Date.now()} className={(date.employeeId === employee.id && date.time === seance.time && date.date === schedule.date) ? 'schedule__item schedule__item_active' : 'schedule__item'}>{seance.time}</div>
                                         ))}
                                     </div>
                                 </>

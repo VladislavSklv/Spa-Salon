@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { enablePageScroll } from 'scroll-lock';
 import { IEmployee, useLazyGetCommentsQuery } from '../api/mainApi';
 import { useAppDispatch } from '../hooks/hooks';
-import { setEmployee } from '../redux/redux';
+import { IDateAndTime, setEmployee } from '../redux/redux';
 import Comment from './Comment';
 import ErrorBlock from './ErrorBlock';
 import Loader from './Loader';
