@@ -1,0 +1,111 @@
+$skeleton-main-color: #F2F3F5;
+$skeleton-second-color: #7C7C7C;
+
+.skeleton{
+    display: block;
+    background-color: $skeleton-main-color;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.skeleton.text{
+    width: 100%;
+    height: 15px;
+}
+
+.skeleton.title{
+    width: 30%;
+    height: 22px;
+    margin: 2px 0 15px 2px;
+}
+
+.skeleton.avatar{
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    margin: 0 5px 0 0;
+}
+
+.skeleton.text-mini{
+    height: 12px;
+    width: 30%;
+    margin: 0 5px 0 0;
+}
+
+.skeleton.timestamp{
+    height: 34px;
+    width: calc((100% / 3) - 18px);
+    margin: 0 16px 10px 0;
+    border-radius: 50px;
+}
+
+.skeleton-timeblock{
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.skeleton-comment{
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    .skeleton-wrapper{
+        align-items: center;
+    }
+    .skeleton-wrapper:first-child{
+        margin-bottom: 15px;
+    }
+    .skeleton-comment__content{
+        width: 75%;
+    }
+    .skeleton.title{
+        flex-shrink: 0;
+        margin-bottom: 7px;
+    }
+    .skeleton.text:last-child{
+        margin-bottom: 0;
+    }
+}
+
+.skeleton-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    width: 100%;
+}
+
+// animation
+.shimmer-wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: shimmer-anim 1s infinite;
+}
+
+.shimmer{
+    width: 50%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, .5);
+    box-shadow: 0 0 30px 30px rgba(255, 255, 255, 0.05);
+    transform: skewX(-20deg);
+}
+
+@keyframes shimmer-anim {
+    0%{
+        transform: translateX(-120%);
+    }50%{
+        transform: translateX(-50%);
+    }100%{
+        transform: translateX(110%);
+    }
+}

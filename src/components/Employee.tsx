@@ -77,9 +77,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     const activateDetails = () => {
         setDetailsId(employee.id);
         setIsOpacity(true);
-        setTimeout(() => {
-            setIsDetails(true);
-        }, 200);
+        setIsDetails(true);
     }
 
     return (

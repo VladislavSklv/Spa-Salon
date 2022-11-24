@@ -7,6 +7,7 @@ import SeancesList from '../components/SeancesList';
 import { useAppDispatch, useAppSelector, useTransformFormatOfDates } from '../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 import { IDateAndTime, setDateAndTime } from '../redux/redux';
+import SkeletonTimeBlock from '../components/skeletons/SkeletonTimeBlock';
 
 interface dateAndTimePageProps {
     companyId: string;
@@ -112,7 +113,6 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
 
     /* Setting first date active */
     useEffect(() => {
-        console.log(initialMonth)
         if(dates !== undefined && firstOpened === true && indexOfMonths === 0) {
             setDate(dates.bookingDates[0]);
             setFirstOpened(false);
@@ -180,8 +180,13 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                             <DatesBlock initialMonth={initialMonth} setIndexOfMonths={setIndexOfMonths} date={date} months={months} setTime={setTime} setDate={setDate}/>
                             <div className='dates-seances__seances'>
                                 {isSeancesError && <ErrorBlock/>}
-                                {(isSeancesLoading || isSeancesFetching) && <Loader/>}
-                                {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 &&
+                                {(isSeancesLoading || isSeancesFetching) && 
+                                <>
+                                    {[1, 2, 3].map(i => (
+                                        <SkeletonTimeBlock key={i}/>
+                                    ))}
+                                </>}
+                                {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 && !isSeancesLoading && !isSeancesFetching &&
                                     <>
                                         <SeancesList setChosenDateAndTime={setChosenDateAndTime} chosenDateAndTime={chosenDateAndTime} date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
                                         <button

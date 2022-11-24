@@ -7,6 +7,7 @@ import Comment from './Comment';
 import ErrorBlock from './ErrorBlock';
 import Loader from './Loader';
 import Modal from './Modal';
+import SkeletonComment from './skeletons/SkeletonComment';
 
 interface employeeDetailsProps{
     setChosenEmployee: React.Dispatch<React.SetStateAction<IEmployee>>;
@@ -101,7 +102,12 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                         </div>
                             <div className='comments'> 
                                 <h3 className='comments__title'>Отзывы</h3>
-                                {(isLoading || isFetching) && <Loader/>}
+                                {(isLoading || isFetching) && 
+                                <>
+                                    {[1, 2, 3, 4, 5, 6].map(i => (
+                                        <SkeletonComment key={i}/>
+                                    ))}
+                                </>}
                                 {isError && <ErrorBlock/>}
                                 {comments !== undefined && comments.length > 0 && (!isLoading && !isFetching) 
                                     ?
