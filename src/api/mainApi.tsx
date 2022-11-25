@@ -10,6 +10,7 @@ export interface IService {
     isActive: boolean;
     sort: number;
     length?: number;
+    video?: string;
 }
 
 export interface IServicesCategory {

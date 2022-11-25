@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
 import { IServicesCategory } from '../api/mainApi';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { addService, IServiceInSlice, setServices } from '../redux/redux';
@@ -21,6 +22,8 @@ interface serviceDetailsProps {
 const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices, companyId, chosenServices, setChosenServices}) => {
     const [service, setService] = useState<IServiceInSlice>();
     const [isServiceChosen, setIsServiceChosen] = useState(false);
+    const [canPlayVideo, setCanPlayVideo] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -42,6 +45,12 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
             });
         });
     }, [detailsId]);
+
+    useEffect(() => {
+        if(!isDetails){
+            setCanPlayVideo(false);
+        }
+    }, [isDetails]);
 
     /* Setting Telegram */
     const onMainBtnClick = () => {
@@ -87,9 +96,25 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                 {service !== undefined 
                     ?
                     <div className='details'>
-                        {service.images !== undefined && service.images.length > 0 && 
-                            <div className='details__img'><img src={service.images[0]} alt="details preview" /></div>
-                        }
+                        <CSSTransition
+                            in={service.images !== undefined && service.images.length > 0 && canPlayVideo === false}
+                            classNames='details-img'
+                            timeout={300}
+                            unmountOnExit
+                            mountOnEnter
+                        >
+                            <div style={canPlayVideo ? {opacity: 0, position: 'absolute', width: 0} : {opacity: 1, position: 'relative'}} className='details__img'><img src={service.images[0]} alt="details preview" /></div>
+                        </CSSTransition>
+
+                        <CSSTransition
+                            in={service.video !== undefined && isDetails && canPlayVideo === true}
+                            classNames='details-video'
+                            timeout={300}
+                        >
+                            <div style={!canPlayVideo ? {position: 'absolute', width: 0} : {position: 'relative'}} className='details__video'>
+                                <video playsInline={true} style={!canPlayVideo ? {opacity: 0} : {opacity: 1}} onCanPlay={() => setCanPlayVideo(true)} muted={true} ref={videoRef} autoPlay={true} loop={true} src={service.video}></video>
+                            </div>
+                        </CSSTransition>
                         <div style={(!(service.images !== undefined && service.images.length > 0)) ? {marginTop: '15px'} : {}} className='details__content'>
                             <h3 className="details__title">{service.name}</h3>
                             <button onClick={() => {

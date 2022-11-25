@@ -701,6 +701,18 @@ code {
 				border-radius: 16px;
 			}
 		}
+		&__video{
+			width: 100%;
+			height: auto;
+			opacity: 1;
+			transition: opacity 0.3s;
+			video{
+				width: 100%;
+				border-radius: 16px;
+				opacity: 1;
+				transition: opacity 0.3s;
+			}
+		}
 		&__content{
 			padding: 12px;
 		}
@@ -1319,3 +1331,18 @@ code {
 		opacity: .4;
 	}
 } 
+
+.details-img-enter, .details-video-enter {
+	opacity: 0;
+}
+.details-img-enter-active, .details-video-enter-active {
+	opacity: 1;
+	transition: opacity 300ms;
+}
+.details-img-exit, .details-video-exit {
+	opacity: 1;
+}
+.details-img-exit-active, .details-video-exit-active {
+	opacity: 0;
+	transition: opacity 300ms;
+}
