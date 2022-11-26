@@ -35,6 +35,7 @@ export interface IEmployee {
     images: IImages;
     isActive: boolean;
     sort: number;
+    video?: string;
 }
 
 export interface ISeance {

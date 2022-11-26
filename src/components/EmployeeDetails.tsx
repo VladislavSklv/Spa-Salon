@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { enablePageScroll } from 'scroll-lock';
 import { IEmployee, useLazyGetCommentsQuery } from '../api/mainApi';
 import { useAppDispatch } from '../hooks/hooks';
@@ -25,6 +26,7 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
     const [commentText, setCommentText] = useState('');
     /* const {data: comments, isError, isLoading, isFetching} = useGetCommentsQuery({companyId, employeeId: thisEmployee.id.toString()}); */
     const [trigger, {data: comments, isError, isLoading, isFetching}] = useLazyGetCommentsQuery();
+    const [canPlayVideo, setCanPlayVideo] = useState(false);
 
     /* Enable scroll */
     useEffect(() => {
@@ -53,6 +55,12 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
         }
         else setCommentText('отзывов');
     }, [thisEmployee]);
+
+    useEffect(() => {
+        if(!isEmployeeDetails){
+            setCanPlayVideo(false);
+        }
+    }, [isEmployeeDetails]);
 
     /* Setting Telegram */
     const onMainBtnClick = () => {
@@ -84,9 +92,27 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                     <div className='employee-details'>
                         <div className='employee-details__top'>
                             <div className='employee-details__wrapper'>
-                                <div className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
+                            <CSSTransition
+                                in={canPlayVideo === false}
+                                classNames='details-img'
+                                timeout={300}
+                                unmountOnExit
+                                mountOnEnter
+                            >
+                                <div style={canPlayVideo ? {opacity: 0, position: 'absolute', width: 0} : {opacity: 1, position: 'relative'}} className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
                                     <img src={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} alt="avatar" />
                                 </div>
+                            </CSSTransition>
+
+                            <CSSTransition
+                                in={thisEmployee.video !== undefined && isEmployeeDetails && canPlayVideo === true}
+                                classNames='details-video'
+                                timeout={300}
+                            >
+                                <div style={!canPlayVideo ? {position: 'absolute', width: 0} : {position: 'relative'}} className='employee-details__video'>
+                                    <video style={!canPlayVideo ? {opacity: 0} : {opacity: 1}} playsInline={true} onCanPlay={() => setCanPlayVideo(true)} muted={true} autoPlay={true} loop={true} src={thisEmployee.video}></video>
+                                </div>
+                            </CSSTransition>
                                 <div className='employee-details__about'>
                                     <p className='employee-details__specialization'>{thisEmployee.specialization}</p>
                                     <h2 className='employee-details__name'>{thisEmployee.name}</h2>
