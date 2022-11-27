@@ -87,6 +87,10 @@ const ServicesPage:React.FC<servicesPageProps> = ({isServices, setIsServices, co
         }
     }, [chosenServices, isServices, isDetails]);
 
+    useEffect(() => {
+        window.Telegram.WebApp.HapticFeedback.selectionChanged();
+    }, [chosenServices]);
+
     return (
         <>
             {

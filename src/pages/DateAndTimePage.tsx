@@ -169,6 +169,10 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
         }
     }, [isDate, chosenDateAndTime.date, chosenDateAndTime.time]);
 
+    useEffect(() => {
+        window.Telegram.WebApp.HapticFeedback.selectionChanged();
+    }, [date, time]);
+
     return (
         <>
             {isError && <ErrorBlock/>}
@@ -189,13 +193,6 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                                 {filteredSeances !== undefined && filteredSeances.length > 0 && date.length > 0 && !isSeancesLoading && !isSeancesFetching &&
                                     <>
                                         <SeancesList setChosenDateAndTime={setChosenDateAndTime} chosenDateAndTime={chosenDateAndTime} date={date} setTime={setTime} time={time} filteredSeances={filteredSeances}/>
-                                        <button
-                                            onClick={() => {
-                                                dispatch(setDateAndTime(chosenDateAndTime))
-                                                setIsDate(false);
-                                                navigate(`/?companyId=${companyId}`);
-                                            }}
-                                        >Add</button>
                                     </>
                                 }
                                 {isNoSeances && 

@@ -92,27 +92,54 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                     <div className='employee-details'>
                         <div className='employee-details__top'>
                             <div className='employee-details__wrapper'>
-                            <CSSTransition
-                                in={canPlayVideo === false}
-                                classNames='details-img'
-                                timeout={300}
-                                unmountOnExit
-                                mountOnEnter
-                            >
-                                <div style={canPlayVideo ? {opacity: 0, position: 'absolute', width: 0} : {opacity: 1, position: 'relative'}} className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
-                                    <img src={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} alt="avatar" />
-                                </div>
-                            </CSSTransition>
+                                {/* <CSSTransition
+                                    in={thisEmployee.video === undefined || !isEmployeeDetails}
+                                    classNames='details-img'
+                                    timeout={300}
+                                    unmountOnExit
+                                    mountOnEnter
+                                >
+                                    <div style={canPlayVideo ? {opacity: 0, position: 'absolute', width: 0} : {opacity: 1, position: 'relative'}} className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
+                                        <img src={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} alt="avatar" />
+                                    </div>
+                                </CSSTransition> */}
 
-                            <CSSTransition
-                                in={thisEmployee.video !== undefined && isEmployeeDetails && canPlayVideo === true}
-                                classNames='details-video'
-                                timeout={300}
-                            >
-                                <div style={!canPlayVideo ? {position: 'absolute', width: 0} : {position: 'relative'}} className='employee-details__video'>
-                                    <video style={!canPlayVideo ? {opacity: 0} : {opacity: 1}} playsInline={true} onCanPlay={() => setCanPlayVideo(true)} muted={true} autoPlay={true} loop={true} src={thisEmployee.video}></video>
-                                </div>
-                            </CSSTransition>
+                                {thisEmployee.video === undefined &&
+                                    <div className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
+                                        <img src={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} alt="avatar" />
+                                    </div>
+                                }
+
+                                {thisEmployee.video !== undefined &&
+                                    <video poster={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} className='employee-details__video' playsInline muted loop controls autoPlay>
+                                        <source src={thisEmployee.video} type='video/mp4'/>
+                                    </video>
+                                }
+
+                                {/* <CSSTransition
+                                    in={thisEmployee.video !== undefined && isEmployeeDetails}
+                                    classNames='details-img'
+                                    timeout={300}
+                                    unmountOnExit
+                                    mountOnEnter
+                                >
+                                    <video className='employee-details__video' playsInline muted autoPlay loop controls>
+                                        <source src={thisEmployee.video} type='video/mp4'/>
+                                    </video>
+                                </CSSTransition>
+ */}
+                                {/* {isEmployeeDetails === true && thisEmployee.video !== undefined &&
+                                    <div >
+                                        <video className='employee-details__video' playsInline onLoadedData={() => setCanPlayVideo(true)} muted autoPlay loop controls>
+                                            <source src={thisEmployee.video} type='video/mp4'/>
+                                        </video>
+                                    </div>
+                                } */}
+                                {/* {thisEmployee.video !== undefined &&
+                                <video autoPlay loop muted controls>
+                                    <source src={thisEmployee.video} type='video/mp4'/>
+                                </video>
+                                } */}
                                 <div className='employee-details__about'>
                                     <p className='employee-details__specialization'>{thisEmployee.specialization}</p>
                                     <h2 className='employee-details__name'>{thisEmployee.name}</h2>
@@ -136,17 +163,18 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                                 </>}
                                 {isError && <ErrorBlock/>}
                                 {comments !== undefined && comments.length > 0 && (!isLoading && !isFetching) 
-                                    ?
+                                    &&
                                    <>
                                         {comments.map(comment => 
                                             <Comment isEmployeeDetails={isEmployeeDetails} comment={comment} key={comment.id}/>
                                         )}
                                    </>
-                                   :
-                                   <div className='no-comments'>
+                                }
+                                {!isLoading && !isFetching && (comments === undefined || comments?.length === 0) &&
+                                    <div className='no-comments'>
                                         <div className='no-comments__img'><img src="../images/no-comments.svg" alt="no comments" /></div>
                                         <h3 className="no-comments__title">Здесь пока ничего нет</h3>
-                                   </div>
+                                    </div>
                                 }
                             </div>
                     </div>

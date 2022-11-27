@@ -119,7 +119,9 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
             <div 
                 onClick={(e) => {
                     e.stopPropagation();
-                    activateDetails();
+                    setTimeout(() => {
+                        activateDetails();
+                    }, 100);
                 }}
                 className='info'
             ><img src="../images/info.svg" alt="info" /></div>
