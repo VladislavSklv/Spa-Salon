@@ -19,6 +19,7 @@ interface employeeDetailsProps{
 
 const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setIsEmployeeDetails, setIsOpacity, employees, detailsId, companyId, isEmployee, setChosenEmployee}) => {
     const [thisEmployee, setThisEmployee] = useState<IEmployee>(employees[0]);
+    const [isCommentsReadyToFetch, setIsCommentsReadyToFetch] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [trigger, {data: comments, isError, isLoading, isFetching}] = useLazyGetCommentsQuery();
 
@@ -36,8 +37,13 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
     }, [detailsId]);
 
     useEffect(() => {
-        if(isEmployeeDetails === true) trigger({companyId, employeeId: thisEmployee.id.toString()}, true);
+        if(isEmployeeDetails === true) setIsCommentsReadyToFetch(true);
+        else setIsCommentsReadyToFetch(false);
     }, [thisEmployee, isEmployeeDetails]);
+
+    useEffect(() => {
+        if(isCommentsReadyToFetch === true) trigger({companyId, employeeId: thisEmployee.id.toString()});
+    }, [isCommentsReadyToFetch]);
 
     useEffect(() => {
         if(thisEmployee.commentsCount % 10 === 1) {

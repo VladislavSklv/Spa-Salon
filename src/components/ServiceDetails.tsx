@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IServicesCategory } from '../api/mainApi';
 import { useAppDispatch } from '../hooks/hooks';
@@ -21,8 +21,6 @@ interface serviceDetailsProps {
 const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices, companyId, chosenServices, setChosenServices}) => {
     const [service, setService] = useState<IServiceInSlice>();
     const [isServiceChosen, setIsServiceChosen] = useState(false);
-    const [canPlayVideo, setCanPlayVideo] = useState(false);
-    const videoRef = useRef<HTMLVideoElement>(null);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -44,12 +42,6 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
             });
         });
     }, [detailsId]);
-
-    useEffect(() => {
-        if(!isDetails){
-            setCanPlayVideo(false);
-        }
-    }, [isDetails]);
 
     /* Setting Telegram */
     const onMainBtnClick = () => {
@@ -108,6 +100,11 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                         }
                         <div style={(!(service.images !== undefined && service.images.length > 0)) ? {marginTop: '15px'} : {}} className='details__content'>
                             <h3 className="details__title">{service.name}</h3>
+                            <button onClick={() => {
+                                dispatch(setServices(chosenServices));
+                                setIsServices(false);
+                                navigate(`/?companyId=${companyId}`);
+                            }}>Add</button>
                             <p className='details__descr'>{service.description !== undefined && service.description}</p>
                             <div className='details__bottom'>
                                 <p className='details__price'>

@@ -39,10 +39,10 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
             let priceMin = 0;
             let time = 0;
             services.forEach(service => {
+                if(service.length !== undefined) time += service.length;
                 priceMax += service.priceMax;
                 priceMin += service.priceMin;
                 if((service.priceMin === undefined && service.priceMax === undefined) || (service.priceMin === 0 && service.priceMax === 0)) from = true;
-                if(service.length !== undefined) time += services.length;
             })
             total = ((priceMin !== undefined && priceMax !== undefined) && (priceMin !== 0 && priceMax !== 0))
             ? (priceMax === priceMin ? (priceMax.toLocaleString() + '₽') : (priceMax > priceMin ? `${priceMin.toLocaleString()} - ${priceMax.toLocaleString()}₽` : priceMin.toLocaleString() + '₽'))
