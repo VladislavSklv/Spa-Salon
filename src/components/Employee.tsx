@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IEmployee, useLazyGetEmployeeScheduleQuery } from '../api/mainApi';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { IDateAndTime, setEmployee } from '../redux/redux';
+import { useAppSelector } from '../hooks/hooks';
 import ErrorBlock from './ErrorBlock';
 import Loader from './Loader';
 
@@ -119,9 +118,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
             <div 
                 onClick={(e) => {
                     e.stopPropagation();
-                    setTimeout(() => {
-                        activateDetails();
-                    }, 100);
+                    activateDetails();
                 }}
                 className='info'
             ><img src="../images/info.svg" alt="info" /></div>

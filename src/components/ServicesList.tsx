@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { IServicesCategory } from '../api/mainApi';
 import { IServiceInSlice } from '../redux/redux';
 import ServicesCategory from './ServicesCategory';

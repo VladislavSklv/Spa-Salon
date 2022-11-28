@@ -1,5 +1,4 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { IFilteredSeances } from '../pages/DateAndTimePage';
 import { IDateAndTime } from '../redux/redux';
 import Seance from './Seance';

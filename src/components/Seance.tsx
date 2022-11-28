@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { ISeance } from '../api/mainApi';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { IDateAndTime, setDateAndTime } from '../redux/redux';
+import { IDateAndTime } from '../redux/redux';
 
 interface seanceProps{
     setChosenDateAndTime: React.Dispatch<React.SetStateAction<IDateAndTime>>;

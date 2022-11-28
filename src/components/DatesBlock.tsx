@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import { datesObj } from '../pages/DateAndTimePage';
 import MyNextArrow from './UI/MyNextArrow';

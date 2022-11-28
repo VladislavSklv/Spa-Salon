@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainCard from '../components/MainCard';
 import MainMenuServiceItem from '../components/MainMenuServiceItem';
-import MyButton from '../components/UI/MyButton';
 import MyCheckbox from '../components/UI/MyCheckbox';
 import MyInput from '../components/UI/MyInput';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { removeService, unsetDateAndTime, unsetEmployee } from '../redux/redux';
+import { unsetDateAndTime, unsetEmployee } from '../redux/redux';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 interface mainMenuPageProps {
@@ -25,22 +24,25 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
     const [searchParams, setSearchParams] = useSearchParams();
 	const companyId = searchParams.get('companyId');
     const [totalPrice, setTotalPrice] = useState('');
+    const [totalTime, setTotalTime] = useState(0);
 
     const navigate = useNavigate();
     const {services, employee, dateAndTime} = useAppSelector(state => state.mainSlice);
     const dispatch = useAppDispatch();
 
-    /* Counting total services price */
+    /* Counting total services price and time */
     useEffect(() => {
         if(services.length > 0){
             let total = '';
             let from = false;
             let priceMax = 0;
             let priceMin = 0;
+            let time = 0;
             services.forEach(service => {
                 priceMax += service.priceMax;
                 priceMin += service.priceMin;
                 if((service.priceMin === undefined && service.priceMax === undefined) || (service.priceMin === 0 && service.priceMax === 0)) from = true;
+                if(service.length !== undefined) time += services.length;
             })
             total = ((priceMin !== undefined && priceMax !== undefined) && (priceMin !== 0 && priceMax !== 0))
             ? (priceMax === priceMin ? (priceMax.toLocaleString() + '₽') : (priceMax > priceMin ? `${priceMin.toLocaleString()} - ${priceMax.toLocaleString()}₽` : priceMin.toLocaleString() + '₽'))
@@ -50,6 +52,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                 else total = '';
             }
             setTotalPrice(total);
+            setTotalTime(time);
         }
     }, [services]);
 
@@ -135,7 +138,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                                 ?
                                 <>
                                     <p className='menu-item__category'>Услуги</p>
-                                    {totalPrice !== '' && <h2 className="menu-item__title">{totalPrice}{/* <span><img src='../images/time.svg' alt='time'/> time</span> */}</h2>}
+                                    {totalPrice !== '' && <h2 className="menu-item__title">{totalPrice}{totalTime > 0 && <span><img src='../images/time.svg' alt='time'/> {totalTime}</span>}</h2>}
                                 </>
                                 :
                                 <>

@@ -7,7 +7,7 @@ import EmployeeDetails from '../components/EmployeeDetails';
 import ErrorBlock from '../components/ErrorBlock';
 import Loader from '../components/Loader';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { IDateAndTime, setDateAndTime, setEmployee } from '../redux/redux';
+import { setDateAndTime, setEmployee } from '../redux/redux';
 
 interface employeesPageProps{
     companyId: string;

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
 import { IServicesCategory } from '../api/mainApi';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { addService, IServiceInSlice, setServices } from '../redux/redux';
+import { useAppDispatch } from '../hooks/hooks';
+import { IServiceInSlice, setServices } from '../redux/redux';
 import Modal from './Modal';
 
 interface serviceDetailsProps {
@@ -107,28 +106,6 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                                 <source src={service.video} type='video/mp4'/>
                             </video>
                         }
-                        {/* <CSSTransition
-                            in={service.images !== undefined && service.images.length > 0 && canPlayVideo === false}
-                            classNames='details-img'
-                            timeout={300}
-                            unmountOnExit
-                            mountOnEnter
-                        >
-                            <div style={canPlayVideo ? {opacity: 0, position: 'absolute', width: 0} : {opacity: 1, position: 'relative'}} className='details__img'><img src={service.images[0]} alt="details preview" /></div>
-                        </CSSTransition>
-
-                        {service.video !== undefined && isDetails === true && 
-                            <div style={!canPlayVideo ? {position: 'absolute', width: 0} : {position: 'relative'}} className='details__video'>
-                                <video onLoadedMetadata={() => setCanPlayVideo(true)} muted autoPlay loop playsInline controls>
-                                    <source style={!canPlayVideo ? {opacity: 0} : {opacity: 1}} src={service.video} type='video/mp4'/>
-                                </video>
-                            </div>
-                        } */}
-                        {/* {service.video !== undefined &&
-                            <video autoPlay loop muted preload='auto'>
-                                <source src={service.video} type='video/mp4'/>
-                            </video>
-                        } */}
                         <div style={(!(service.images !== undefined && service.images.length > 0)) ? {marginTop: '15px'} : {}} className='details__content'>
                             <h3 className="details__title">{service.name}</h3>
                             <p className='details__descr'>{service.description !== undefined && service.description}</p>

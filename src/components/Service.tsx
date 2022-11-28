@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { IService } from '../api/mainApi';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { addService, IServiceInSlice, removeService } from '../redux/redux';
+import { IServiceInSlice } from '../redux/redux';
 import MyButton from './UI/MyButton';
 
 interface serviceProps {
@@ -30,19 +29,6 @@ const Service:React.FC<serviceProps> = ({service, setIsDetails, setIsOpacity, se
         setIsDetails(true);
         setIsOpacity(true);
     }
-
-    /* useEffect(() => {
-        if(service.length !== undefined){
-            let time = service.length;
-            let hours = time / 60 / 60;
-            let minutes = Math.floor(time / 60);
-            if(hours > 0) {
-                hours = Math.floor(time / 60 / 60);
-                minutes = Math.floor(time / 60) - (hours * 60);
-            }
-            console.log(hours + ' ч. ' + minutes + ' мин.');
-        }
-    }, []); */
 
     return (
         <div className={isActive ? (service.isActive ? 'service-card service-card_active' : 'service-card service-card_active service-card_blured') : (service.isActive ? 'service-card' : 'service-card service-card_blured')} key={service.id}>

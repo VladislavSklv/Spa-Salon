@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { enablePageScroll } from 'scroll-lock';
 import { IEmployee, useLazyGetCommentsQuery } from '../api/mainApi';
-import { useAppDispatch } from '../hooks/hooks';
-import { IDateAndTime, setEmployee } from '../redux/redux';
 import Comment from './Comment';
 import ErrorBlock from './ErrorBlock';
-import Loader from './Loader';
 import Modal from './Modal';
 import SkeletonComment from './skeletons/SkeletonComment';
 
@@ -24,9 +20,7 @@ interface employeeDetailsProps{
 const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setIsEmployeeDetails, setIsOpacity, employees, detailsId, companyId, isEmployee, setChosenEmployee}) => {
     const [thisEmployee, setThisEmployee] = useState<IEmployee>(employees[0]);
     const [commentText, setCommentText] = useState('');
-    /* const {data: comments, isError, isLoading, isFetching} = useGetCommentsQuery({companyId, employeeId: thisEmployee.id.toString()}); */
     const [trigger, {data: comments, isError, isLoading, isFetching}] = useLazyGetCommentsQuery();
-    const [canPlayVideo, setCanPlayVideo] = useState(false);
 
     /* Enable scroll */
     useEffect(() => {
@@ -42,8 +36,8 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
     }, [detailsId]);
 
     useEffect(() => {
-        trigger({companyId, employeeId: thisEmployee.id.toString()});
-    }, [thisEmployee]);
+        if(isEmployeeDetails === true) trigger({companyId, employeeId: thisEmployee.id.toString()}, true);
+    }, [thisEmployee, isEmployeeDetails]);
 
     useEffect(() => {
         if(thisEmployee.commentsCount % 10 === 1) {
@@ -55,12 +49,6 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
         }
         else setCommentText('отзывов');
     }, [thisEmployee]);
-
-    useEffect(() => {
-        if(!isEmployeeDetails){
-            setCanPlayVideo(false);
-        }
-    }, [isEmployeeDetails]);
 
     /* Setting Telegram */
     const onMainBtnClick = () => {
@@ -92,18 +80,6 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                     <div className='employee-details'>
                         <div className='employee-details__top'>
                             <div className='employee-details__wrapper'>
-                                {/* <CSSTransition
-                                    in={thisEmployee.video === undefined || !isEmployeeDetails}
-                                    classNames='details-img'
-                                    timeout={300}
-                                    unmountOnExit
-                                    mountOnEnter
-                                >
-                                    <div style={canPlayVideo ? {opacity: 0, position: 'absolute', width: 0} : {opacity: 1, position: 'relative'}} className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
-                                        <img src={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} alt="avatar" />
-                                    </div>
-                                </CSSTransition> */}
-
                                 {thisEmployee.video === undefined &&
                                     <div className={thisEmployee.images !== undefined ? 'employee-details__img' : 'employee-details__img employee-details__img_icon'}>
                                         <img src={thisEmployee.images !== undefined ? thisEmployee.images.full : "../images/specialist-icon.svg"} alt="avatar" />
@@ -115,31 +91,6 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                                         <source src={thisEmployee.video} type='video/mp4'/>
                                     </video>
                                 }
-
-                                {/* <CSSTransition
-                                    in={thisEmployee.video !== undefined && isEmployeeDetails}
-                                    classNames='details-img'
-                                    timeout={300}
-                                    unmountOnExit
-                                    mountOnEnter
-                                >
-                                    <video className='employee-details__video' playsInline muted autoPlay loop controls>
-                                        <source src={thisEmployee.video} type='video/mp4'/>
-                                    </video>
-                                </CSSTransition>
- */}
-                                {/* {isEmployeeDetails === true && thisEmployee.video !== undefined &&
-                                    <div >
-                                        <video className='employee-details__video' playsInline onLoadedData={() => setCanPlayVideo(true)} muted autoPlay loop controls>
-                                            <source src={thisEmployee.video} type='video/mp4'/>
-                                        </video>
-                                    </div>
-                                } */}
-                                {/* {thisEmployee.video !== undefined &&
-                                <video autoPlay loop muted controls>
-                                    <source src={thisEmployee.video} type='video/mp4'/>
-                                </video>
-                                } */}
                                 <div className='employee-details__about'>
                                     <p className='employee-details__specialization'>{thisEmployee.specialization}</p>
                                     <h2 className='employee-details__name'>{thisEmployee.name}</h2>
