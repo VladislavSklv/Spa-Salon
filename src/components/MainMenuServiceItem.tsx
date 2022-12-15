@@ -34,7 +34,7 @@ const MainMenuServiceItem:React.FC<mainMenuServiceItemProps> = ({service}) => {
                         hours = Math.floor(minutes / 60);
                         let lastedMinutes = minutes - hours * 60;
                         if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
-                        else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
+                        else if((hours % 10 > 4 && hours % 10 <= 9) || hours % 10 === 0) hoursStr = 'часов';
                         fullLength = `${hours} ${hoursStr} ${lastedMinutes} мин.`;
                     } 
                 }

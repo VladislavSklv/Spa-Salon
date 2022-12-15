@@ -30,8 +30,13 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
     useEffect(() => {
         if(chosenServices.length > 0 && service !== undefined){
             let checker = true;
-            chosenServices.forEach(chosenService => chosenService.id === service.id ? setIsServiceChosen(true) : checker = false);
-            if(!checker) setIsServiceChosen(false);
+            chosenServices.forEach(chosenService => {
+                if(chosenService.id === service.id) { 
+                    setIsServiceChosen(true);
+                    checker = false
+                }
+            });
+            if(checker) setIsServiceChosen(false);
         }
     }, [chosenServices, service]);
 
@@ -66,7 +71,7 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                         hours = Math.floor(minutes / 60);
                         let lastedMinutes = minutes - hours * 60;
                         if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
-                        else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
+                        else if((hours % 10 > 4 && hours % 10 <= 9) || hours % 10 === 0) hoursStr = 'часов';
                         fullLength = `${hours} ${hoursStr} ${lastedMinutes} мин.`;
                     } 
                 }
@@ -132,11 +137,6 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                         }
                         <div style={(!(service.images !== undefined && service.images.length > 0)) ? {marginTop: '15px'} : {}} className='details__content'>
                             <h3 className="details__title">{service.name}</h3>
-                            <button onClick={() => {
-                                dispatch(setServices(chosenServices));
-                                setIsServices(false);
-                                navigate(`/?companyId=${companyId}`);
-                            }}>Add</button>
                             <p className='details__descr'>{service.description !== undefined && service.description}</p>
                             <div className='details__bottom'>
                                 <p className='details__price'>

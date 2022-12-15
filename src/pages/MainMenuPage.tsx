@@ -24,7 +24,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
     const [searchParams, setSearchParams] = useSearchParams();
 	const companyId = searchParams.get('companyId');
     const [totalPrice, setTotalPrice] = useState('');
-    const [totalTime, setTotalTime] = useState(0);
+    const [totalTime, setTotalTime] = useState('');
 
     const navigate = useNavigate();
     const {services, employee, dateAndTime} = useAppSelector(state => state.mainSlice);
@@ -52,8 +52,33 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                 else total = '';
             }
             setTotalPrice(total);
-            setTotalTime(time);
-        }
+            /* Converting service time */
+            let fullLength = '';
+            let minutes = 0;
+            let hours = 0;
+            if(time < 60) fullLength = `${time} сек.`
+                else if(time >= 60) {
+                    minutes = Math.round(time / 60);
+                    fullLength = `${minutes} мин.`
+                    if(minutes >= 60){
+                        if(minutes % 60 === 0){
+                            let hoursStr = 'час';
+                            hours = minutes / 60;
+                            if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
+                            else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
+                            fullLength = `${hours} ${hoursStr}`;
+                        } else {
+                            let hoursStr = 'час';
+                            hours = Math.floor(minutes / 60);
+                            let lastedMinutes = minutes - hours * 60;
+                            if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
+                            else if((hours % 10 > 4 && hours % 10 <= 9) || hours % 10 === 0) hoursStr = 'часов';
+                            fullLength = `${hours} ${hoursStr} ${lastedMinutes} мин.`;
+                        } 
+                    }
+                }
+                setTotalTime(fullLength);
+            }
     }, [services]);
 
     /* Handlers */
@@ -138,7 +163,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                                 ?
                                 <>
                                     <p className='menu-item__category'>Услуги</p>
-                                    {totalPrice !== '' && <h2 className="menu-item__title">{totalPrice}{totalTime > 0 && <span><img src='../images/time.svg' alt='time'/> {totalTime}</span>}</h2>}
+                                    {totalPrice !== '' && <h2 className="menu-item__title">{totalPrice}{totalTime !== '' && <span><img src='../images/time.svg' alt='time'/> {totalTime}</span>}</h2>}
                                 </>
                                 :
                                 <>

@@ -114,14 +114,6 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                     {employees !== undefined &&
                         <div className='employees-page'>
                             <div ref={employeesWrapperRef} className='employees__wrapper'>
-                                <button
-                                    onClick={() => {
-                                        dispatch(setEmployee(chosenEmployee));
-                                        if((date.date !== '' && date.time !== '') && (dateAndTime.date === '' && dateAndTime.time === '')) dispatch(setDateAndTime(date));
-                                        setIsEmployee(false);
-                                        navigate(`/?companyId=${companyId}`);
-                                    }}
-                                >Submit</button>
                                 <div 
                                     onClick={() => {
                                         setChosenEmployee({commentsCount:0, description: '', id: 0, images:{full:'', tiny:''}, isActive: true, name: 'Любой свободный специалист', rating: 0, sort: 0, specialization: ''});
