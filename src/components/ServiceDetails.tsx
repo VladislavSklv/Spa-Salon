@@ -21,6 +21,7 @@ interface serviceDetailsProps {
 const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCategories, setIsDetails, setIsOpacity, detailsId, isServices, setIsServices, companyId, chosenServices, setChosenServices}) => {
     const [service, setService] = useState<IServiceInSlice>();
     const [isServiceChosen, setIsServiceChosen] = useState(false);
+    const [serviceLength, setServiceLength] = useState('');
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -42,6 +43,37 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
             });
         });
     }, [detailsId]);
+
+    /* Converting service time */
+    useEffect(() => {
+        if(service?.length !== undefined){
+            let fullLength = '';
+            let minutes = 0;
+            let hours = 0;
+            if(service.length < 60) fullLength = `${service.length} сек.`
+            else if(service.length >= 60) {
+                minutes = Math.round(service.length / 60);
+                fullLength = `${minutes} мин.`
+                if(minutes >= 60){
+                    if(minutes % 60 === 0){
+                        let hoursStr = 'час';
+                        hours = minutes / 60;
+                        if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
+                        else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
+                        fullLength = `${hours} ${hoursStr}`;
+                    } else {
+                        let hoursStr = 'час';
+                        hours = Math.floor(minutes / 60);
+                        let lastedMinutes = minutes - hours * 60;
+                        if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
+                        else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
+                        fullLength = `${hours} ${hoursStr} ${lastedMinutes} мин.`;
+                    } 
+                }
+            }
+            setServiceLength(fullLength);
+        } else setServiceLength('');
+    }, [service]);
 
     /* Setting Telegram */
     const onMainBtnClick = () => {
@@ -112,10 +144,10 @@ const ServiceDetails: React.FC<serviceDetailsProps> = ({isDetails, servicesCateg
                                     ? (service.priceMax === service.priceMin ? (service.priceMax.toLocaleString() + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin.toLocaleString()} - ${service.priceMax.toLocaleString()}₽` : service.priceMin.toLocaleString() + '₽'))
                                     : 'Цена не указана'}
                                 </p>
-                                {service.length !== undefined &&
+                                {serviceLength !== '' &&
                                     <p className='details__time'>
                                         <img src="../images/time.svg" alt="time" />
-                                        {service.length}
+                                        {serviceLength}
                                     </p>
                                 }
                             </div>

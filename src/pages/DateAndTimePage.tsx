@@ -51,7 +51,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(dateAndTime.date !== '' && dateAndTime.time !== '' )setChosenDateAndTime(dateAndTime);
+        if(dateAndTime.date !== '' && dateAndTime.time !== '' ) setChosenDateAndTime(dateAndTime);
     }, [dateAndTime]);
 
     useEffect(() => {
@@ -114,7 +114,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     /* Setting first date active */
     useEffect(() => {
         if(dates !== undefined && firstOpened === true && indexOfMonths === 0) {
-            setDate(dates.bookingDates[0]);
+            if(dates.bookingDates.length > 0) setDate(dates.bookingDates[0]);
             setFirstOpened(false);
         }
         if(dates !== undefined && firstOpened === false && months.length > 0){
@@ -202,7 +202,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
                                 </div>}
                             </div>
                         </>  
-                    }
+                   }
                 </div>
             }
         </>
