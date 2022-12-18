@@ -53,32 +53,37 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
             }
             setTotalPrice(total);
             /* Converting service time */
-            let fullLength = '';
-            let minutes = 0;
-            let hours = 0;
-            if(time < 60) fullLength = `${time} сек.`
-                else if(time >= 60) {
-                    minutes = Math.round(time / 60);
-                    fullLength = `${minutes} мин.`
-                    if(minutes >= 60){
-                        if(minutes % 60 === 0){
-                            let hoursStr = 'час';
-                            hours = minutes / 60;
-                            if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
-                            else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
-                            fullLength = `${hours} ${hoursStr}`;
-                        } else {
-                            let hoursStr = 'час';
-                            hours = Math.floor(minutes / 60);
-                            let lastedMinutes = minutes - hours * 60;
-                            if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
-                            else if((hours % 10 > 4 && hours % 10 <= 9) || hours % 10 === 0) hoursStr = 'часов';
-                            fullLength = `${hours} ${hoursStr} ${lastedMinutes} мин.`;
-                        } 
+            if(time !== 0){
+                let fullLength = '';
+                let minutes = 0;
+                let hours = 0;
+                if(time < 60) fullLength = `${time} сек.`
+                    else if(time >= 60) {
+                        minutes = Math.round(time / 60);
+                        fullLength = `${minutes} мин.`
+                        if(minutes >= 60){
+                            if(minutes % 60 === 0){
+                                let hoursStr = 'час';
+                                hours = minutes / 60;
+                                if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
+                                else if(hours % 10 > 4 && hours % 10 <= 9 && hours % 10 === 0) hoursStr = 'часов';
+                                fullLength = `${hours} ${hoursStr}`;
+                            } else {
+                                let hoursStr = 'час';
+                                hours = Math.floor(minutes / 60);
+                                let lastedMinutes = minutes - hours * 60;
+                                if(hours % 10 > 1 && hours % 10 < 5) hoursStr = 'часа';
+                                else if((hours % 10 > 4 && hours % 10 <= 9) || hours % 10 === 0) hoursStr = 'часов';
+                                fullLength = `${hours} ${hoursStr} ${lastedMinutes} мин.`;
+                            } 
+                        }
                     }
-                }
                 setTotalTime(fullLength);
+            } else {
+                setTotalTime('');
             }
+                
+        }
     }, [services]);
 
     /* Handlers */
@@ -130,7 +135,7 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                     onMinusClickHandler={() => dispatch(unsetEmployee())} 
                     title='Выберите специалиста' 
                     imgSrc='../images/specialist-icon.svg'
-                    ifImgFull={employee.images.tiny.length > 0 ? true : false} 
+                    ifImgFull={(employee.images !== undefined && employee.images.tiny.length > 0) ? true : false} 
                     commentsCount={employee.commentsCount}
                     rating={employee.rating}
                 />
