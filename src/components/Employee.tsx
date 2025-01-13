@@ -37,7 +37,7 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
     useEffect(() => {
         if(schedule !== undefined){
             let today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-            let date = new Date(new Date(schedule.date).getFullYear(), new Date(schedule.date).getMonth(), new Date(schedule.date).getDate());
+            let date = new Date(new Date(schedule.data.date).getFullYear(), new Date(schedule.data.date).getMonth(), new Date(schedule.data.date).getDate());
             if(today.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}) === date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'})) setScheduleDate('сегодня');
             else if(date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}) === new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'})) setScheduleDate('завтра');
             else if(date.toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'}) === new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toLocaleString('ru-RU', {year: 'numeric', month: 'numeric', day: 'numeric'})) setScheduleDate('послезавтра');
@@ -107,8 +107,8 @@ const Employee:React.FC<employeeProps> = ({employee, companyId, setDetailsId, se
                                 <>
                                     <h4 className="schedule-date">Ближайшее время для записи {scheduleDate}</h4>
                                     <div className='schedule'>
-                                        {schedule.seances.map((seance, i) => (
-                                            i < 3 && <div onClick={() => setDate({date: schedule.date, time: seance.time, employeeId: employee.id})} key={seance.time + Date.now()} className={(date.employeeId === employee.id && date.time === seance.time && date.date === schedule.date) ? 'schedule__item schedule__item_active' : 'schedule__item'}>{seance.time}</div>
+                                        {schedule.data.seances.map((seance, i) => (
+                                            i < 3 && <div onClick={() => setDate({date: schedule.data.date, time: seance.time, employeeId: employee.id})} key={seance.time + Date.now()} className={(date.employeeId === employee.id && date.time === seance.time && date.date === schedule.data.date) ? 'schedule__item schedule__item_active' : 'schedule__item'}>{seance.time}</div>
                                         ))}
                                     </div>
                                 </>

@@ -11,7 +11,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 // Date And Time page
 interface useTransformFormatOfDatesProps{
     setMonths: React.Dispatch<React.SetStateAction<datesObj[]>>;
-    dates: IDates | undefined;
+    dates: {data: IDates} | undefined;
 }
 
 const numberOfMonths = 3;
@@ -60,7 +60,7 @@ export const useTransformFormatOfDates = ({setMonths, dates}: useTransformFormat
 
             thisMonths.forEach(month => {
                 month.days.forEach(day => {
-                    dates.bookingDates.forEach(bookingDate => {
+                    dates.data.bookingDates.forEach(bookingDate => {
                         if(day.date === bookingDate) day.isActive = true;
                     });
                 });

@@ -101,7 +101,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     useEffect(() => {
         if(seances !== undefined){
             let thisSeances: IFilteredSeances[] = [];
-            seances.map(seance => {
+            seances.data.map(seance => {
                 if(parseInt(seance.time.split(':')[0]) >= 5 && parseInt(seance.time.split(':')[0]) < 12) checkPartOfaDay({part: 'Утро', seance, thisSeances});
                 else if(parseInt(seance.time.split(':')[0]) >= 12 && parseInt(seance.time.split(':')[0]) < 17) checkPartOfaDay({part: 'День', seance, thisSeances});
                 else if(parseInt(seance.time.split(':')[0]) >= 17 && parseInt(seance.time.split(':')[0]) < 24) checkPartOfaDay({part: 'Вечер', seance, thisSeances});
@@ -114,7 +114,7 @@ const DateAndTimePage: React.FC<dateAndTimePageProps> = ({companyId, isDate, set
     /* Setting first date active */
     useEffect(() => {
         if(dates !== undefined && firstOpened === true && indexOfMonths === 0) {
-            if(dates.bookingDates.length > 0) setDate(dates.bookingDates[0]);
+            if(dates.data.bookingDates.length > 0) setDate(dates.data.bookingDates[0]);
             setFirstOpened(false);
         }
         if(dates !== undefined && firstOpened === false && months.length > 0){

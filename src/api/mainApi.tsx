@@ -87,9 +87,9 @@ interface companyIdAndDateProps{
 
 export const mainApi = createApi({
     reducerPath: 'mainApi',
-    baseQuery: fetchBaseQuery({baseUrl: 'https://daomiara.ru/api/v1/'}),
+    baseQuery: fetchBaseQuery({baseUrl: 'https://client.silkroadpro.com/api/v1/'}),
     endpoints: (builder) => ({
-        getServices: builder.query<IServicesCategory[], companyIdProps>({
+        getServices: builder.query<{data: IServicesCategory[]}, companyIdProps>({
             query: ({companyId, datetime, employeeId, serviceIds}) => {
                 let params = '';
                 if(employeeId !== undefined) params = `/?employeeId=${employeeId}`;
@@ -103,10 +103,10 @@ export const mainApi = createApi({
                         else params += `&serviceIds[]=${serviceId}`;
                     });
                 }
-                return `companies/${companyId}/services${params}`;
+                return `companies/${companyId}/services${params}/`;
             }
         }),
-        getEmployees: builder.query<IEmployee[], companyIdProps>({
+        getEmployees: builder.query<{data: IEmployee[]}, companyIdProps>({
             query: ({companyId, datetime, serviceIds}) => {
                 let params = '';
                 if(datetime !== undefined) params = `/?datetime=${datetime}`;
@@ -119,7 +119,7 @@ export const mainApi = createApi({
                 return `companies/${companyId}/employees${params}`;
             }
         }),
-        getEmployeeSchedule: builder.query<IEmployeeSchedule, companyIdAndEmloyeeIDProps>({
+        getEmployeeSchedule: builder.query<{data: IEmployeeSchedule}, companyIdAndEmloyeeIDProps>({
             query: ({companyId, employeeId, serviceIds}) => {
                 let params = '';
                 if(serviceIds !== undefined){
@@ -131,10 +131,10 @@ export const mainApi = createApi({
                 return `companies/${companyId}/employees/${employeeId}/schedule${params}`
             }
         }),
-        getComments: builder.query<IComment[], companyIdAndEmloyeeIDProps>({
+        getComments: builder.query<{data: IComment[]}, companyIdAndEmloyeeIDProps>({
             query: ({companyId, employeeId}) => `companies/${companyId}/employees/${employeeId}/comments`
         }),
-        getDates: builder.query<IDates, companyIdProps>({
+        getDates: builder.query<{data: IDates}, companyIdProps>({
             query: ({companyId, employeeId, serviceIds}) => {
                 let params = '';
                 if(employeeId !== undefined) params = `/?employeeId=${employeeId}`
@@ -147,7 +147,7 @@ export const mainApi = createApi({
                 return `companies/${companyId}/dates${params}`;
             }
         }),
-        getSeances: builder.query<ISeance[], companyIdAndDateProps>({
+        getSeances: builder.query<{data: ISeance[]}, companyIdAndDateProps>({
             query: ({companyId, date, employeeId, serviceIds}) => {
                 let params = '';
                 if(employeeId !== undefined) params = `/?employeeId=${employeeId}`

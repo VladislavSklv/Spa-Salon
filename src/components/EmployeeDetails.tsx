@@ -119,15 +119,15 @@ const EmployeeDetails:React.FC<employeeDetailsProps> = ({isEmployeeDetails, setI
                                     ))}
                                 </>}
                                 {isError && <ErrorBlock/>}
-                                {comments !== undefined && comments.length > 0 && (!isLoading && !isFetching) 
+                                {comments !== undefined && comments.data.length > 0 && (!isLoading && !isFetching) 
                                     &&
                                    <>
-                                        {comments.map(comment => 
+                                        {comments.data.map(comment => 
                                             <Comment isEmployeeDetails={isEmployeeDetails} comment={comment} key={comment.id}/>
                                         )}
                                    </>
                                 }
-                                {!isLoading && !isFetching && (comments === undefined || comments?.length === 0) &&
+                                {!isLoading && !isFetching && (comments === undefined || comments.data?.length === 0) &&
                                     <div className='no-comments'>
                                         <div className='no-comments__img'><img src="../images/no-comments.svg" alt="no comments" /></div>
                                         <h3 className="no-comments__title">Здесь пока ничего нет</h3>

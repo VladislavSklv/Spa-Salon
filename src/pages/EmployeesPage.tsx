@@ -126,7 +126,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                                         <h2 className='employee-card__name'>Любой свободный специалист</h2>
                                     </div>
                                 </div>
-                                {employees.map(employee => (
+                                {employees.data.map(employee => (
                                     <Employee date={date} setDate={setDate} chosenEmployee={chosenEmployee} setChosenEmployee={setChosenEmployee} setDetailsId={setDetailsId} setIsDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity} key={employee.id} employee={employee} companyId={companyId}/>
                                 ))}
                             </div>
@@ -138,7 +138,7 @@ const EmployeesPage: React.FC<employeesPageProps> = ({companyId, isEmployee, set
                                 style={isOpacity ? {opacity: 1, pointerEvents: 'all'} : {opacity: 0, pointerEvents: 'none'}} 
                                 className='opacity-block'
                             ></div>
-                            <EmployeeDetails setChosenEmployee={setChosenEmployee} isEmployee={isEmployee} companyId={companyId} detailsId={detailsId} employees={employees} isEmployeeDetails={isEmployeeDetails} setIsEmployeeDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity}/>
+                            <EmployeeDetails setChosenEmployee={setChosenEmployee} isEmployee={isEmployee} companyId={companyId} detailsId={detailsId} employees={employees.data} isEmployeeDetails={isEmployeeDetails} setIsEmployeeDetails={setIsEmployeeDetails} setIsOpacity={setIsOpacity}/>
                         </div>
                     }
                 </>

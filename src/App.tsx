@@ -15,9 +15,8 @@ function App() {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const companyId = searchParams.get('companyId');
-	/* ?companyId=dafa1b03-788e-4333-b566-10c43c16f6f3 */
+	/* ?companyId=deb15d4d-1b1a-4730-9982-79df9fe431b5 */
 	if(companyId === null) console.error('required parameter companyId was not passed');
-	
 	const { dateAndTime, employee, services } = useAppSelector(state => state.mainSlice);
 	const navigate = useNavigate();
 
