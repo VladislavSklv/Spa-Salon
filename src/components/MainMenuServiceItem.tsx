@@ -47,7 +47,7 @@ const MainMenuServiceItem:React.FC<mainMenuServiceItemProps> = ({service}) => {
         <div className='menu-service'>
             <p className='menu-service__title'>
                 {((service.priceMin !== undefined && service.priceMax !== undefined) && (service.priceMin !== 0 && service.priceMax !== 0))
-                ? (service.priceMax === service.priceMin ? (service.priceMax.toLocaleString() + '₽') : (service.priceMax > service.priceMin ? `${service.priceMin.toLocaleString()} - ${service.priceMax.toLocaleString()}₽` : service.priceMin.toLocaleString() + '₽'))
+                ? (service.priceMax === service.priceMin ? (service.priceMax.toLocaleString() + ' so’m') : (service.priceMax > service.priceMin ? `${service.priceMin.toLocaleString()} - ${service.priceMax.toLocaleString()} so’m` : service.priceMin.toLocaleString() + ' so’m'))
                 : 'Цена не указана'}
                 {serviceLength !== '' && <span><img src='../images/time.svg' alt='time'/> {serviceLength}</span>}
             </p>

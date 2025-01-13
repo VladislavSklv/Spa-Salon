@@ -45,10 +45,10 @@ const MainMenuPage:React.FC<mainMenuPageProps> = ({setIsDate, setIsServices, set
                 if((service.priceMin === undefined && service.priceMax === undefined) || (service.priceMin === 0 && service.priceMax === 0)) from = true;
             })
             total = ((priceMin !== undefined && priceMax !== undefined) && (priceMin !== 0 && priceMax !== 0))
-            ? (priceMax === priceMin ? (priceMax.toLocaleString() + '₽') : (priceMax > priceMin ? `${priceMin.toLocaleString()} - ${priceMax.toLocaleString()}₽` : priceMin.toLocaleString() + '₽'))
+            ? (priceMax === priceMin ? (priceMax.toLocaleString() + ' so’m') : (priceMax > priceMin ? `${priceMin.toLocaleString()} - ${priceMax.toLocaleString()} so’m` : priceMin.toLocaleString() + ' so’m'))
             : '';
             if(from){
-                if(priceMin > 0) total = `от ${priceMin}₽`;
+                if(priceMin > 0) total = `от ${priceMin} so’m`;
                 else total = '';
             }
             setTotalPrice(total);
